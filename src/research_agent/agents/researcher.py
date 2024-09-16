@@ -47,3 +47,7 @@ def build_researcher_node():
         return "analyst"
 
     return researcher, tool_node, should_use_tools
+
+
+import logging
+_log = logging.getLogger(__name__)
