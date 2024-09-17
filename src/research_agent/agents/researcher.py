@@ -4,7 +4,11 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import SystemMessage
 from langgraph.prebuilt import ToolNode
 
+import logging
+
 from research_agent.config import config
+
+logger = logging.getLogger(__name__)
 from research_agent.state import ResearchState
 from research_agent.tools.search import get_search_tool
 
