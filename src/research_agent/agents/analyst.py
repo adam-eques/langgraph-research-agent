@@ -65,3 +65,7 @@ def build_analyst_node():
         }
 
     return analyst
+
+
+import logging
+_log = logging.getLogger(__name__)
