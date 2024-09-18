@@ -4,7 +4,11 @@ from pydantic import BaseModel, Field
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import SystemMessage, HumanMessage
 
+import logging
+
 from research_agent.config import config
+
+logger = logging.getLogger(__name__)
 from research_agent.state import ResearchState
 
 _SYSTEM_PROMPT = """You are an expert analyst. You receive raw research notes and messages \
