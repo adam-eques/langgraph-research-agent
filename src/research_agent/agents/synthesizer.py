@@ -47,3 +47,7 @@ def build_synthesizer_node():
         }
 
     return synthesizer
+
+
+import logging
+_log = logging.getLogger(__name__)
