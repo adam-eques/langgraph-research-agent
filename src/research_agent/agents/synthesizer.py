@@ -3,7 +3,11 @@ from __future__ import annotations
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
+import logging
+
 from research_agent.config import config
+
+logger = logging.getLogger(__name__)
 from research_agent.state import ResearchState
 
 _SYSTEM_PROMPT = """You are a synthesis specialist. You receive analyzed research notes and \
