@@ -50,3 +50,19 @@ def split_documents(docs: list[Document]) -> list[Document]:
 def ingest(path: str | Path) -> list[Document]:
     docs = load_document(path)
     return split_documents(docs)
+
+
+def ingest_directory(directory: str, recursive: bool = False) -> list:
+    """Ingest all supported documents from a directory."""
+    from pathlib import Path
+    p = Path(directory)
+    pattern = "**/*" if recursive else "*"
+    docs = []
+    for path in p.glob(pattern):
+        if path.suffix in {".pdf", ".docx", ".txt", ".md"} and path.is_file():
+            try:
+                docs.extend(ingest(path))
+                logger.info("Ingested: %s", path.name)
+            except Exception as exc:
+                logger.warning("Skipping %s: %s", path.name, exc)
+    return docs
