@@ -66,3 +66,18 @@ def format_context(docs: list[Document]) -> str:
         source = doc.metadata.get("filename", doc.metadata.get("source", "unknown"))
         parts.append(f"[{i}] Source: {source}\n{doc.page_content}")
     return "\n\n---\n\n".join(parts)
+
+
+def delete_collection(collection: str | None = None) -> None:
+    """Drop a Chroma collection and all its indexed documents."""
+    target = collection or config.chroma_collection
+    store = _get_store(target)
+    store.delete_collection()
+    logger.info("Deleted collection: %s", target)
+
+
+def list_collections() -> list[str]:
+    """Return names of all Chroma collections in the persist directory."""
+    import chromadb
+    client = chromadb.PersistentClient(path=_PERSIST_DIR)
+    return [c.name for c in client.list_collections()]
