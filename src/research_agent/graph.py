@@ -62,3 +62,15 @@ def build_graph(checkpointing: bool = False, use_supervisor: bool = False):
 
     checkpointer = MemorySaver() if checkpointing else None
     return graph.compile(checkpointer=checkpointer)
+
+
+def get_graph_visualization() -> str:
+    """Return a Mermaid diagram string of the compiled graph."""
+    return build_graph().get_graph().draw_mermaid()
+
+
+def get_graph_png(output_path: str = "graph.png") -> None:
+    """Save the graph as a PNG image (requires graphviz)."""
+    img = build_graph().get_graph().draw_mermaid_png()
+    with open(output_path, "wb") as f:
+        f.write(img)
