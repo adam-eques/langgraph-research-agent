@@ -11,4 +11,5 @@ class ResearchState(TypedDict):
     messages: Annotated[Sequence[BaseMessage], add_messages]
     query: str
     research_notes: list[str]
+    document_context: str
     next: str
