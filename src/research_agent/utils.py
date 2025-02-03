@@ -61,3 +61,23 @@ def format_sources(sources: list[str]) -> str:
         return ""
     lines = [f"  [{i + 1}] {src}" for i, src in enumerate(sources)]
     return "Sources:\n" + "\n".join(lines)
+
+
+def flatten(nested: list) -> list:
+    """Recursively flatten a nested list."""
+    result = []
+    for item in nested:
+        if isinstance(item, list):
+            result.extend(flatten(item))
+        else:
+            result.append(item)
+    return result
+
+
+def safe_get(d: dict, *keys, default=None):
+    """Safely traverse nested dict keys, returning default on missing."""
+    for key in keys:
+        if not isinstance(d, dict):
+            return default
+        d = d.get(key, default)
+    return d
