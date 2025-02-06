@@ -35,3 +35,19 @@ class ConfigError(ResearchAgentError):
 
     def __init__(self, key: str) -> None:
         super().__init__(f"Required config key '{key}' is not set. Check your .env file.")
+
+
+class RateLimitError(ResearchAgentError):
+    """Raised when the request rate limit is exceeded."""
+
+    def __init__(self, client_id: str, retry_after: int = 60) -> None:
+        self.client_id = client_id
+        self.retry_after = retry_after
+        super().__init__(f"Rate limit exceeded for '{client_id}'. Retry after {retry_after}s.")
+
+
+class TimeoutError(ResearchAgentError):
+    """Raised when an agent node exceeds its time budget."""
+
+    def __init__(self, node: str, timeout_s: float) -> None:
+        super().__init__(f"Node '{node}' timed out after {timeout_s}s.")
