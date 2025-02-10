@@ -57,3 +57,15 @@ def summarize_notes(notes: list[str], max_chars: int = 4000) -> str:
         return full
     logger.debug("Truncating research notes from %d to %d chars", len(full), max_chars)
     return full[:max_chars] + "\n\n[...truncated]"
+
+
+def format_citations(citations: list[dict]) -> str:
+    """Format citation dicts into a numbered references block."""
+    if not citations:
+        return ""
+    lines = []
+    for i, c in enumerate(citations, 1):
+        source = c.get("source", "unknown")
+        excerpt = c.get("excerpt", "")[:150]
+        lines.append(f"[{i}] {source}: {excerpt}")
+    return "References:\n" + "\n".join(lines)
