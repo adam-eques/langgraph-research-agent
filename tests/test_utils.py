@@ -82,3 +82,28 @@ def test_retry_raises_after_all_attempts():
 
     with pytest.raises(RuntimeError):
         fn()
+
+
+def test_flatten_nested():
+    assert flatten([[1, 2], [3, [4, 5]]]) == [1, 2, 3, 4, 5]
+
+
+def test_flatten_empty():
+    assert flatten([]) == []
+
+
+def test_flatten_already_flat():
+    assert flatten([1, 2, 3]) == [1, 2, 3]
+
+
+def test_safe_get_hits():
+    d = {"a": {"b": {"c": 42}}}
+    assert safe_get(d, "a", "b", "c") == 42
+
+
+def test_safe_get_miss():
+    assert safe_get({"a": 1}, "b", default="x") == "x"
+
+
+def test_safe_get_non_dict_intermediate():
+    assert safe_get({"a": "string"}, "a", "b") is None
