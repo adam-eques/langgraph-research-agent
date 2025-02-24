@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from langgraph.graph import StateGraph, END
+from langgraph.checkpoint.memory import MemorySaver
 
 from research_agent.state import ResearchState
 from research_agent.agents.researcher import build_researcher_node
@@ -13,7 +14,7 @@ def _route_after_analyst(state: ResearchState) -> str:
     return state.get("next", "synthesizer")
 
 
-def build_graph():
+def build_graph(checkpointing: bool = False):
     researcher_node, tool_node, should_use_tools = build_researcher_node()
     retriever_node = build_retriever_agent_node()
     analyst_node = build_analyst_node()
@@ -27,7 +28,6 @@ def build_graph():
     graph.add_node("analyst", analyst_node)
     graph.add_node("synthesizer", synthesizer_node)
 
-    # Both retriever (RAG) and researcher (web) run first, then analyst combines
     graph.set_entry_point("retriever")
     graph.add_edge("retriever", "researcher")
 
@@ -45,4 +45,5 @@ def build_graph():
     )
     graph.add_edge("synthesizer", END)
 
-    return graph.compile()
+    checkpointer = MemorySaver() if checkpointing else None
+    return graph.compile(checkpointer=checkpointer)
