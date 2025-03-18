@@ -21,3 +21,10 @@ def async_retry(max_attempts: int = 3, delay: float = 1.0, backoff: float = 2.0)
             raise RuntimeError(f"All {max_attempts} attempts failed") from last_exc
         return wrapper
     return decorator
+
+
+def mask_api_key(key: str) -> str:
+    """Return first 8 and last 4 chars of key, masking the middle."""
+    if len(key) < 12:
+        return "*" * len(key)
+    return key[:8] + "..." + key[-4:]
