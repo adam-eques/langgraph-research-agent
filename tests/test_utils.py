@@ -15,3 +15,16 @@ def test_async_retry_succeeds():
     result = asyncio.run(fn())
     assert result == "ok"
     assert len(calls) == 2
+
+
+def test_mask_api_key_short():
+    from research_agent.utils import mask_api_key
+    assert mask_api_key("abc") == "***"
+
+
+def test_mask_api_key_long():
+    from research_agent.utils import mask_api_key
+    key = "sk-ant-api03-ABCDEF1234"
+    masked = mask_api_key(key)
+    assert masked.startswith("sk-ant-a")
+    assert "..." in masked
