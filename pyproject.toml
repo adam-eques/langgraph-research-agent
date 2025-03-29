@@ -1,4 +1,4 @@
-[build-system]
+﻿[build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.backends.legacy:build"
 
@@ -53,3 +53,11 @@ fastapi = [
     "fastapi>=0.111.0",
     "uvicorn[standard]>=0.30.0",
 ]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/examples/*", "*/scripts/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false

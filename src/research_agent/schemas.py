@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
@@ -52,3 +52,17 @@ class HealthResponse(BaseModel):
     status: str
     version: str = "0.2.0"
     vector_store: str = "chroma"
+
+
+class EvalItemRequest(BaseModel):
+    query: str
+    expected_answer: str = ""
+    expected_sources: list[str] = []
+
+
+class EvalReportResponse(BaseModel):
+    total: int
+    mean_relevance: float
+    mean_faithfulness: float
+    mean_context_recall: float
+    items: list[dict] = []

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import logging
 from typing import Any
@@ -45,3 +45,15 @@ def warn_if_over_budget(tokens: int, budget: int, label: str = "request") -> Non
         )
     else:
         logger.debug("%s uses %d/%d tokens (%.0f%%)", label, tokens, budget, 100 * tokens / budget)
+
+
+def log_token_usage(prompt_tokens: int, completion_tokens: int, model: str = "") -> None:
+    """Log token usage in a consistent format for cost tracking."""
+    total = prompt_tokens + completion_tokens
+    logger.info(
+        "Token usage | model=%s prompt=%d completion=%d total=%d",
+        model or "unknown",
+        prompt_tokens,
+        completion_tokens,
+        total,
+    )

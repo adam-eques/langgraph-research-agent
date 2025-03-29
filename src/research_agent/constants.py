@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 # Default LLM settings
 DEFAULT_MODEL = "claude-3-5-sonnet-20241022"
@@ -48,3 +48,12 @@ MIN_FAITHFULNESS = 0.7
 # Logging
 LOG_MAX_QUERY_CHARS = 120
 LOG_MAX_CONTENT_CHARS = 500
+
+
+# API
+DEFAULT_REQUEST_TIMEOUT = 30  # seconds
+MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10 MB
+
+# Context window
+CONTEXT_WINDOW_TOKENS = 8000
+SYSTEM_PROMPT_BUDGET = 1500

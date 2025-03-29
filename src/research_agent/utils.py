@@ -1,83 +1,30 @@
-from __future__ import annotations
-
-import hashlib
-import re
-import time
-from collections.abc import Callable
-from functools import wraps
-from typing import Any, TypeVar
-
-F = TypeVar("F", bound=Callable[..., Any])
 
 
-def hash_query(query: str) -> str:
-    """Return a stable SHA-256 hex digest of a query string."""
-    return hashlib.sha256(query.strip().lower().encode()).hexdigest()
+def async_retry(max_attempts: int = 3, delay: float = 1.0, backoff: float = 2.0):
+    """Async version of the retry decorator with exponential backoff."""
+    import asyncio
+    import functools
 
-
-def truncate(text: str, max_chars: int = 200, suffix: str = "...") -> str:
-    """Truncate text to max_chars, appending suffix if truncated."""
-    if len(text) <= max_chars:
-        return text
-    return text[: max_chars - len(suffix)] + suffix
-
-
-def clean_whitespace(text: str) -> str:
-    """Collapse runs of whitespace and strip leading/trailing space."""
-    return re.sub(r"\s+", " ", text).strip()
-
-
-def chunk_list(items: list[Any], size: int) -> list[list[Any]]:
-    """Split a list into chunks of at most `size` items."""
-    return [items[i : i + size] for i in range(0, len(items), size)]
-
-
-def retry(max_attempts: int = 3, delay: float = 1.0, backoff: float = 2.0):
-    """Decorator that retries a function on exception with exponential backoff."""
-
-    def decorator(fn: F) -> F:
-        @wraps(fn)
-        def wrapper(*args: Any, **kwargs: Any) -> Any:
+    def decorator(fn):
+        @functools.wraps(fn)
+        async def wrapper(*args, **kwargs):
             current_delay = delay
-            last_exc: Exception | None = None
+            last_exc = None
             for attempt in range(1, max_attempts + 1):
                 try:
-                    return fn(*args, **kwargs)
+                    return await fn(*args, **kwargs)
                 except Exception as exc:
                     last_exc = exc
                     if attempt < max_attempts:
-                        time.sleep(current_delay)
+                        await asyncio.sleep(current_delay)
                         current_delay *= backoff
             raise RuntimeError(f"All {max_attempts} attempts failed") from last_exc
-
-        return wrapper  # type: ignore[return-value]
-
+        return wrapper
     return decorator
 
 
-def format_sources(sources: list[str]) -> str:
-    """Format a list of source names into a readable citations section."""
-    if not sources:
-        return ""
-    lines = [f"  [{i + 1}] {src}" for i, src in enumerate(sources)]
-    return "Sources:\n" + "\n".join(lines)
-
-
-def flatten(nested: list) -> list:
-    """Recursively flatten a nested list."""
-    result = []
-    for item in nested:
-        if isinstance(item, list):
-            result.extend(flatten(item))
-        else:
-            result.append(item)
-    return result
-
-
-def safe_get(d: dict, *keys, default=None):
-    """Safely traverse nested dict keys, returning default on missing."""
-    for key in keys:
-        if not isinstance(d, dict):
-            return default
-        d = d.get(key, default)
-    return d
+def mask_api_key(key: str) -> str:
+    """Return first 8 and last 4 chars of key, masking the middle."""
+    if len(key) < 12:
+        return "*" * len(key)
+    return key[:8] + "..." + key[-4:]
