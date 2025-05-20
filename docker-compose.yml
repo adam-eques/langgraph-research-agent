@@ -1,0 +1,162 @@
+version: "3.9"
+
+# ============================================================
+# LangGraph Research Agent — full-stack Docker Compose setup
+#
+# Services:
+#   app      — FastAPI research agent (this repo)
+#   chroma   — ChromaDB vector store
+#   redis    — Cache + conversation memory backend
+#   postgres — PostgreSQL with pgvector extension (alternative vector store)
+# ============================================================
+
+services:
+
+  # ----------------------------------------------------------
+  # Research Agent API
+  # ----------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+    image: research-agent:latest
+    container_name: research-agent-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # LLM providers (override in .env or docker-compose.override.yml)
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      TAVILY_API_KEY: ${TAVILY_API_KEY:-}
+
+      # Model settings
+      DEFAULT_MODEL: ${DEFAULT_MODEL:-claude-3-5-sonnet-20241022}
+      TEMPERATURE: ${TEMPERATURE:-0}
+      MAX_TOKENS: ${MAX_TOKENS:-4096}
+
+      # ChromaDB vector store
+      CHROMA_HOST: chroma
+      CHROMA_PORT: 8000
+      CHROMA_COLLECTION: ${CHROMA_COLLECTION:-research_docs}
+      VECTOR_STORE_BACKEND: ${VECTOR_STORE_BACKEND:-chroma}
+
+      # PostgreSQL / pgvector (optional alternative to Chroma)
+      DATABASE_URL: postgresql://research:research@postgres:5432/research_agent
+
+      # Redis cache + memory
+      REDIS_URL: redis://redis:6379/0
+      CACHE_BACKEND: ${CACHE_BACKEND:-redis}
+      MEMORY_BACKEND: ${MEMORY_BACKEND:-redis}
+      CACHE_TTL: ${CACHE_TTL:-3600}
+
+      # Auth (comma-separated API keys; leave empty to disable)
+      API_KEYS: ${API_KEYS:-}
+
+      # LangSmith observability (optional)
+      LANGCHAIN_TRACING_V2: ${LANGCHAIN_TRACING_V2:-false}
+      LANGCHAIN_API_KEY: ${LANGCHAIN_API_KEY:-}
+      LANGCHAIN_PROJECT: ${LANGCHAIN_PROJECT:-research-agent}
+
+    depends_on:
+      chroma:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+    volumes:
+      - ./src:/app/src:ro           # mount source for quick iteration (remove in prod)
+      - research-chroma-local:/app/.chroma  # local Chroma fallback
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # ----------------------------------------------------------
+  # ChromaDB Vector Store
+  # ----------------------------------------------------------
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: research-agent-chroma
+    restart: unless-stopped
+    ports:
+      - "8001:8000"   # expose on 8001 to avoid collision with app
+    environment:
+      CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER: ""
+      CHROMA_SERVER_AUTH_PROVIDER: ""
+      ANONYMIZED_TELEMETRY: "false"
+      IS_PERSISTENT: "true"
+      PERSIST_DIRECTORY: /chroma/chroma
+    volumes:
+      - chroma-data:/chroma/chroma
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ----------------------------------------------------------
+  # Redis — cache and conversation memory
+  # ----------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: research-agent-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------
+  # PostgreSQL + pgvector — alternative vector store
+  # ----------------------------------------------------------
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: research-agent-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: research
+      POSTGRES_PASSWORD: research
+      POSTGRES_DB: research_agent
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init_pgvector.sql:/docker-entrypoint-initdb.d/init_pgvector.sql:ro
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U research -d research_agent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+
+# ----------------------------------------------------------
+# Named volumes for persistent data
+# ----------------------------------------------------------
+volumes:
+  chroma-data:
+    driver: local
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+  research-chroma-local:
+    driver: local
