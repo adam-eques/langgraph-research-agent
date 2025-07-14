@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 
 from langchain_core.documents import Document
-from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 
 from research_agent.config import config
@@ -22,7 +22,18 @@ def _get_embeddings():
     )
 
 
-def _get_store(collection: str = config.chroma_collection) -> Chroma:
+def _get_store(collection: str = config.chroma_collection):
+    backend = os.getenv("VECTOR_STORE_BACKEND", "chroma")
+
+    if backend == "pgvector":
+        from langchain_postgres import PGVector
+        return PGVector(
+            embeddings=_get_embeddings(),
+            collection_name=collection,
+            connection=os.getenv("DATABASE_URL", ""),
+        )
+
+    from langchain_chroma import Chroma
     return Chroma(
         collection_name=collection,
         embedding_function=_get_embeddings(),
