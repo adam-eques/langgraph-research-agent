@@ -8,13 +8,10 @@ from research_agent.agents.researcher import build_researcher_node
 from research_agent.agents.retriever_agent import build_retriever_agent_node
 from research_agent.agents.analyst import build_analyst_node
 from research_agent.agents.synthesizer import build_synthesizer_node
+from research_agent.agents.supervisor import build_supervisor_node
 
 
-def _route_after_analyst(state: ResearchState) -> str:
-    return state.get("next", "synthesizer")
-
-
-def build_graph(checkpointing: bool = False):
+def build_graph(checkpointing: bool = False, use_supervisor: bool = False):
     researcher_node, tool_node, should_use_tools = build_researcher_node()
     retriever_node = build_retriever_agent_node()
     analyst_node = build_analyst_node()
@@ -28,22 +25,40 @@ def build_graph(checkpointing: bool = False):
     graph.add_node("analyst", analyst_node)
     graph.add_node("synthesizer", synthesizer_node)
 
-    graph.set_entry_point("retriever")
-    graph.add_edge("retriever", "researcher")
-
-    graph.add_conditional_edges(
-        "researcher",
-        should_use_tools,
-        {"tools": "research_tools", "analyst": "analyst"},
-    )
-    graph.add_edge("research_tools", "researcher")
-
-    graph.add_conditional_edges(
-        "analyst",
-        _route_after_analyst,
-        {"synthesizer": "synthesizer"},
-    )
-    graph.add_edge("synthesizer", END)
+    if use_supervisor:
+        supervisor_node, supervisor_route = build_supervisor_node()
+        graph.add_node("supervisor", supervisor_node)
+        graph.set_entry_point("supervisor")
+        graph.add_conditional_edges(
+            "supervisor",
+            supervisor_route,
+            {
+                "retriever": "retriever",
+                "researcher": "researcher",
+                "analyst": "analyst",
+                "synthesizer": "synthesizer",
+                "end": END,
+            },
+        )
+        for node in ("retriever", "analyst", "synthesizer"):
+            graph.add_edge(node, "supervisor")
+        graph.add_conditional_edges(
+            "researcher",
+            should_use_tools,
+            {"tools": "research_tools", "analyst": "supervisor"},
+        )
+        graph.add_edge("research_tools", "researcher")
+    else:
+        graph.set_entry_point("retriever")
+        graph.add_edge("retriever", "researcher")
+        graph.add_conditional_edges(
+            "researcher",
+            should_use_tools,
+            {"tools": "research_tools", "analyst": "analyst"},
+        )
+        graph.add_edge("research_tools", "researcher")
+        graph.add_edge("analyst", "synthesizer")
+        graph.add_edge("synthesizer", END)
 
     checkpointer = MemorySaver() if checkpointing else None
     return graph.compile(checkpointer=checkpointer)
