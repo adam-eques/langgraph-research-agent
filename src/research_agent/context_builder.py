@@ -1,71 +1,47 @@
 from __future__ import annotations
 
 import logging
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
-_TOKEN_ESTIMATE = 4  # chars per token (rough estimate)
+_HEADER = "## Context\n\n"
+_DOC_SEP = "\n---\n"
 
 
-def estimate_tokens(text: str) -> int:
-    """Rough token estimate: chars / 4."""
-    return max(1, len(text) // _TOKEN_ESTIMATE)
+def format_document(doc: dict, index: int = 0) -> str:
+    content = doc.get("content", "").strip()
+    source = doc.get("source", "")
+    header = f"[{index + 1}] {source}\n" if source else f"[{index + 1}]\n"
+    return header + content
 
 
-def build_context_window(
-    messages: list[BaseMessage],
-    max_tokens: int = 8000,
-    system_budget: int = 1000,
-) -> list[BaseMessage]:
-    """Trim message history to fit within a token budget.
-
-    Keeps the system message intact, then fills from the most recent
-    messages backwards until the budget is exhausted.
-    """
-    system_msgs = [m for m in messages if isinstance(m, SystemMessage)]
-    other_msgs = [m for m in messages if not isinstance(m, SystemMessage)]
-
-    system_tokens = sum(estimate_tokens(str(m.content)) for m in system_msgs)
-    remaining = max_tokens - system_tokens - system_budget
-    if remaining <= 0:
-        logger.warning("System messages alone exceed context budget")
-        return system_msgs
-
-    selected: list[BaseMessage] = []
-    token_count = 0
-    for msg in reversed(other_msgs):
-        msg_tokens = estimate_tokens(str(msg.content))
-        if token_count + msg_tokens > remaining:
+def build_context(
+    documents: list[dict],
+    max_chars: int = 8000,
+    include_header: bool = True,
+) -> str:
+    parts: list[str] = []
+    total_chars = 0
+    for i, doc in enumerate(documents):
+        formatted = format_document(doc, i)
+        if total_chars + len(formatted) > max_chars:
+            logger.debug("Context truncated after %d documents", i)
             break
-        selected.insert(0, msg)
-        token_count += msg_tokens
+        parts.append(formatted)
+        total_chars += len(formatted)
 
-    logger.debug(
-        "Context window: %d/%d messages kept (%d estimated tokens)",
-        len(selected),
-        len(other_msgs),
-        token_count,
-    )
-    return system_msgs + selected
+    body = _DOC_SEP.join(parts)
+    return (_HEADER + body) if include_header else body
 
 
-def summarize_notes(notes: list[str], max_chars: int = 4000) -> str:
-    """Concatenate research notes, truncating to max_chars."""
-    full = "\n\n".join(notes)
-    if len(full) <= max_chars:
-        return full
-    logger.debug("Truncating research notes from %d to %d chars", len(full), max_chars)
-    return full[:max_chars] + "\n\n[...truncated]"
-
-
-def format_citations(citations: list[dict]) -> str:
-    """Format citation dicts into a numbered references block."""
-    if not citations:
-        return ""
-    lines = []
-    for i, c in enumerate(citations, 1):
-        source = c.get("source", "unknown")
-        excerpt = c.get("excerpt", "")[:150]
-        lines.append(f"[{i}] {source}: {excerpt}")
-    return "References:\n" + "\n".join(lines)
+def build_messages(
+    system_prompt: str,
+    user_query: str,
+    context: str = "",
+    history: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    messages: list[dict[str, Any]] = list(history or [])
+    user_content = f"{context}\n\n{user_query}".strip() if context else user_query
+    messages.append({"role": "user", "content": user_content})
+    return messages
