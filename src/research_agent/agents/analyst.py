@@ -8,10 +8,11 @@ from research_agent.config import config
 from research_agent.state import ResearchState
 
 _SYSTEM_PROMPT = """You are an expert analyst. You receive raw research notes and messages \
-from the researcher agent and produce a structured, insightful analysis.
+from the researcher and retriever agents and produce a structured, insightful analysis.
 
 Your output must:
 - Identify the core findings and their significance
+- Distinguish between web-sourced and document-sourced evidence
 - Highlight contradictions or gaps in the research
 - Draw connections between disparate data points
 - Flag areas that need further investigation
@@ -25,6 +26,10 @@ class AnalysisOutput(BaseModel):
     gaps: list[str] = Field(description="Areas where research is incomplete or uncertain")
     confidence: str = Field(description="Overall confidence level: high, medium, or low")
     next_steps: list[str] = Field(description="Recommended follow-up questions or actions")
+    source_breakdown: dict[str, int] = Field(
+        default_factory=dict,
+        description="Count of evidence by source type: {'web': N, 'documents': N}",
+    )
 
 
 def build_analyst_node():
@@ -48,6 +53,7 @@ def build_analyst_node():
             "Key findings:\n" + "\n".join(f"  - {f}" for f in analysis.key_findings),
             "Gaps: " + "; ".join(analysis.gaps),
             f"Confidence: {analysis.confidence}",
+            f"Sources: {analysis.source_breakdown}",
         ]
         return {
             "research_notes": notes,
