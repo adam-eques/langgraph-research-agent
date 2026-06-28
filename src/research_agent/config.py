@@ -21,9 +21,12 @@ class Config:
 
     max_search_results: int = int(os.getenv("MAX_SEARCH_RESULTS", "5"))
     max_retrieval_results: int = int(os.getenv("MAX_RETRIEVAL_RESULTS", "4"))
+    retrieval_score_threshold: float = float(os.getenv("RETRIEVAL_SCORE_THRESHOLD", "0.5"))
 
     langchain_tracing: bool = os.getenv("LANGCHAIN_TRACING_V2", "false").lower() == "true"
     langchain_project: str = os.getenv("LANGCHAIN_PROJECT", "research-agent")
+
+    max_supervisor_iterations: int = int(os.getenv("MAX_SUPERVISOR_ITERATIONS", "10"))
 
 
 config = Config()
