@@ -1,6 +1,6 @@
-﻿[build-system]
+[build-system]
 requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "research-agent"
@@ -23,7 +23,14 @@ dependencies = [
     "pydantic>=2.8.0",
     "python-dotenv>=1.0.1",
     "chromadb>=0.5.0",
-    "langsmith>=0.1.0",`r`n    "rank-bm25>=0.2.2",`r`n    "sentence-transformers>=3.0.0",`r`n    "click>=8.1.0",`r`n    "rich>=13.0.0",`r`n    "fpdf2>=2.7.0",`r`n    "markdown>=3.6.0",`r`n    "tqdm>=4.66.0",
+    "langsmith>=0.1.0",
+    "rank-bm25>=0.2.2",
+    "sentence-transformers>=3.0.0",
+    "click>=8.1.0",
+    "rich>=13.0.0",
+    "fpdf2>=2.7.0",
+    "markdown>=3.6.0",
+    "tqdm>=4.66.0",
 ]
 
 [project.optional-dependencies]
@@ -37,6 +44,10 @@ dev = [
     "pytest-cov>=5.0.0",
     "ruff>=0.6.0",
 ]
+fastapi = [
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -48,11 +59,6 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-
-fastapi = [
-    "fastapi>=0.111.0",
-    "uvicorn[standard]>=0.30.0",
-]
 
 [tool.coverage.run]
 source = ["src"]
