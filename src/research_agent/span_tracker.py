@@ -40,9 +40,12 @@ class SpanTracker:
         self._current_span_id = span.span_id
         return span
 
-    def end_span(self, span: Span, status: str = "ok") -> None:
+    def end_span(self, span: Span, status: str | None = None) -> None:
         span.end_time = time.monotonic()
-        span.status = status
+        # Preserve a status already set on the span (e.g. "error" from the
+        # context manager) unless an explicit status is passed.
+        if status is not None:
+            span.status = status
         parent_ids = {s.span_id for s in self._spans}
         candidates = [s for s in self._spans if s.parent_id in parent_ids or s.parent_id is None]
         open_candidates = [

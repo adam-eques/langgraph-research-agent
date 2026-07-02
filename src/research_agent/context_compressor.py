@@ -11,14 +11,14 @@ class ContextCompressor:
     """Compress research context by removing boilerplate and redundant sentences."""
 
     _BOILERPLATE: ClassVar[list[str]] = [
-        r"(?i)cookie policy",
-        r"(?i)privacy policy",
-        r"(?i)terms of service",
-        r"(?i)all rights reserved",
-        r"(?i)subscribe to",
-        r"(?i)click here",
-        r"(?i)sign up for",
-        r"(?i)advertisement",
+        r"cookie policy",
+        r"privacy policy",
+        r"terms of service",
+        r"all rights reserved",
+        r"subscribe to",
+        r"click here",
+        r"sign up for",
+        r"advertisement",
     ]
 
     def __init__(self, max_chars: int = 8000) -> None:
@@ -26,7 +26,7 @@ class ContextCompressor:
 
     def strip_boilerplate(self, text: str) -> str:
         for pattern in self._BOILERPLATE:
-            text = re.sub(rf"[^\n]*{pattern}[^\n]*\n?", "", text)
+            text = re.sub(rf"[^\n]*{pattern}[^\n]*\n?", "", text, flags=re.IGNORECASE)
         return text.strip()
 
     def remove_duplicate_sentences(self, text: str) -> str:
@@ -43,6 +43,8 @@ class ContextCompressor:
         text = self.strip_boilerplate(text)
         text = self.remove_duplicate_sentences(text)
         if len(text) > self.max_chars:
-            text = text[: self.max_chars] + " [compressed]"
+            marker = " [compressed]"
+            keep = max(0, self.max_chars - len(marker))
+            text = text[:keep] + marker
             logger.debug("Context compressed to %d chars", self.max_chars)
         return text

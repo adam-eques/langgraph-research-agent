@@ -14,7 +14,7 @@ def test_to_html_bold():
 
 
 def test_to_html_code():
-    result = to_html("code snippet")
+    result = to_html("`code snippet`")
     assert "<code>code snippet</code>" in result
 
 

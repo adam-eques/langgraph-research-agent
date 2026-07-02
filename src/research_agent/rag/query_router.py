@@ -37,6 +37,7 @@ _KEYWORD_SIGNALS = [
 _MULTI_HOP_SIGNALS = [
     re.compile(r"\b(because|therefore|as a result of|which led to|due to)\b", re.I),
     re.compile(r"\b(and then|followed by|subsequently|after that)\b", re.I),
+    re.compile(r"\b(leads? to|led to|results? in|resulted in|how did)\b", re.I),
 ]
 
 _DIRECT_SIGNALS = [

@@ -48,6 +48,11 @@ fastapi = [
     "fastapi>=0.111.0",
     "uvicorn[standard]>=0.30.0",
 ]
+test = [
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.0",
+    "httpx>=0.27.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -55,6 +60,9 @@ where = ["src"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+markers = [
+    "integration: marks integration tests (may require external services)",
+]
 
 [tool.ruff]
 line-length = 100

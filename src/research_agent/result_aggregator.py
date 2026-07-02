@@ -41,7 +41,7 @@ def aggregate_results(
         for r in results
         if confidence_key in r and isinstance(r[confidence_key], (int, float))
     ]
-    avg_confidence = sum(confidences) / len(confidences) if confidences else 0.5
+    avg_confidence = round(sum(confidences) / len(confidences), 4) if confidences else 0.5
     return AggregatedResult(
         query=query,
         answers=answers,

@@ -5,7 +5,9 @@ import unicodedata
 
 
 def remove_html_tags(text: str) -> str:
-    return re.sub(r"<[^>]+>", " ", text)
+    # Collapse each run of adjacent tags into a single space so "</b></p>"
+    # does not leave a double space.
+    return re.sub(r"(?:<[^>]+>)+", " ", text)
 
 
 def normalize_whitespace(text: str) -> str:

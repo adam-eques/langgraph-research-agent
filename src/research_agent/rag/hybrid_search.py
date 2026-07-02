@@ -40,7 +40,20 @@ def index_for_bm25(docs: list[Document]) -> Any:  # returns BM25Okapi
         ) from exc
 
     tokenised = [doc.page_content.lower().split() for doc in docs]
-    return BM25Okapi(tokenised)
+    if not tokenised:
+        # BM25Okapi divides by the corpus size, so an empty corpus raises
+        # ZeroDivisionError. Seed a single placeholder document instead.
+        tokenised = [["__empty__"]]
+
+    bm25 = BM25Okapi(tokenised)
+
+    # On tiny corpora a term appearing in half the documents collapses to an
+    # idf of 0, which makes every document score 0. Floor non-positive idf so
+    # relevant documents still rank above irrelevant ones.
+    for term, value in bm25.idf.items():
+        if value <= 0:
+            bm25.idf[term] = 0.5
+    return bm25
 
 
 def _reciprocal_rank_fusion(

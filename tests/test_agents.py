@@ -5,8 +5,16 @@ from __future__ import annotations
 from unittest.mock import MagicMock, patch
 
 from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.tools import tool
 
 from research_agent.state import ResearchState
+
+
+@tool
+def _stub_search_tool(query: str) -> str:
+    """Stub search tool used so ToolNode gets a valid tool in tests."""
+    return "stub results"
+
 
 # ---------------------------------------------------------------------------
 # Helpers / fixtures
@@ -43,7 +51,7 @@ class TestResearcherNode:
         mock_llm.bind_tools.return_value = mock_llm
         mock_llm.invoke.return_value = _ai_msg("Research result")
         mock_llm_cls.return_value = mock_llm
-        mock_search.return_value = MagicMock()
+        mock_search.return_value = _stub_search_tool
 
         from research_agent.agents.researcher import build_researcher_node
 
@@ -65,7 +73,7 @@ class TestResearcherNode:
         response.tool_calls = [{"name": "search", "args": {}, "id": "1"}]
         mock_llm.invoke.return_value = response
         mock_llm_cls.return_value = mock_llm
-        mock_search.return_value = MagicMock()
+        mock_search.return_value = _stub_search_tool
 
         from research_agent.agents.researcher import build_researcher_node
 
@@ -83,7 +91,7 @@ class TestResearcherNode:
         response.tool_calls = []
         mock_llm.invoke.return_value = response
         mock_llm_cls.return_value = mock_llm
-        mock_search.return_value = MagicMock()
+        mock_search.return_value = _stub_search_tool
 
         from research_agent.agents.researcher import build_researcher_node
 

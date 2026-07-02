@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from research_agent.streaming import astream_tokens, run
+from research_agent import streaming
 
 app = FastAPI(
     title="Research Agent API",
@@ -26,7 +26,7 @@ class QueryResponse(BaseModel):
 
 @app.post("/research", response_model=QueryResponse)
 async def research(req: QueryRequest) -> QueryResponse:
-    result = run(req.query)
+    result = streaming.run(req.query)
     messages = result.get("messages", [])
     answer = messages[-1].content if messages else ""
     return QueryResponse(
@@ -39,7 +39,7 @@ async def research(req: QueryRequest) -> QueryResponse:
 @app.get("/research/stream")
 async def research_stream(query: str):
     async def token_generator():
-        async for token in astream_tokens(query):
+        async for token in streaming.astream_tokens(query):
             yield token
 
     return StreamingResponse(token_generator(), media_type="text/plain")

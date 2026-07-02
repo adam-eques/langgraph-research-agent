@@ -30,7 +30,7 @@ _DATE_PATTERNS = [
         r"\s+(\d{1,2}),?\s+(\d{4})\b",
         re.I,
     ),
-    re.compile(r"\bin (\d{4})\b"),
+    re.compile(r"\bin (\d{4})\b", re.I),
 ]
 
 

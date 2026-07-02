@@ -25,7 +25,9 @@ _NEGATION_PATTERNS = [
 
 def _extract_subject_predicate(sentence: str) -> tuple[str, str]:
     words = sentence.lower().split()
-    return " ".join(words[:2]) if len(words) >= 2 else ("", "")
+    if len(words) >= 2:
+        return " ".join(words[:2]), " ".join(words[2:])
+    return ("", "")
 
 
 def detect_contradictions(claims: list[str]) -> list[Contradiction]:

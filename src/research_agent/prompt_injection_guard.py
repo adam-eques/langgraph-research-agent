@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 _INJECTION_PATTERNS = [
-    r"ignore\s+(previous|above|all)\s+(instructions|prompts?|context)",
+    r"ignore\s+(previous|above|all|prior)\b.*?(instructions|prompts?|context)",
     r"forget\s+(everything|what|all\s+previous)",
     r"you\s+are\s+now\s+(a\s+)?(?:an?\s+)?\w+",
     r"act\s+as\s+(?:if\s+)?(?:a\s+)?(?:an?\s+)?\w+\s+with\s+no\s+restrictions",

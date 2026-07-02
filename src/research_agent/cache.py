@@ -150,7 +150,7 @@ class ResultCache:
     True
     """
 
-    def __init__(self) -> None:
+    def __init__(self, max_size: int = _DEFAULT_MEMORY_CAPACITY) -> None:
         backend_name = os.getenv(_BACKEND_ENV, "memory").lower()
         self._default_ttl = int(os.getenv(_TTL_ENV, str(_DEFAULT_TTL)))
 
@@ -159,7 +159,7 @@ class ResultCache:
             self._backend: _BaseCacheBackend = _RedisBackend(redis_url)
             logger.info("ResultCache: using Redis backend (ttl=%ds)", self._default_ttl)
         else:
-            self._backend = _InMemoryLRUBackend()
+            self._backend = _InMemoryLRUBackend(max_size=max_size)
             logger.info("ResultCache: using in-memory LRU backend (ttl=%ds)", self._default_ttl)
 
     def get(self, query: str) -> dict[str, Any] | None:

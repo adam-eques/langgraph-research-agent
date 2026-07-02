@@ -13,13 +13,13 @@ def collapse_whitespace(text: str) -> str:
 
 
 def remove_punctuation_edges(text: str) -> str:
-    return text.strip(".,;:!?\"'()[]{}\\/-")
+    return text.rstrip(".,;:!?\"'()[]{}\\/-")
 
 
 def lowercase_unless_acronym(text: str) -> str:
     words = []
     for word in text.split():
-        words.append(word if word.isupper() and len(word) > 1 else word.lower())
+        words.append(word if word.isupper() and len(word) > 2 else word.lower())
     return " ".join(words)
 
 
