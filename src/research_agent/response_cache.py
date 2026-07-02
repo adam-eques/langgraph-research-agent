@@ -22,7 +22,7 @@ class ResponseCache:
         if entry is None:
             return None
         value, ts = entry
-        if time.monotonic() - ts > self._ttl:
+        if time.perf_counter() - ts > self._ttl:
             del self._store[key]
             return None
         return value
@@ -32,7 +32,7 @@ class ResponseCache:
             oldest = min(self._store, key=lambda k: self._store[k][1])
             del self._store[oldest]
         key = self._key(prompt, model)
-        self._store[key] = (response, time.monotonic())
+        self._store[key] = (response, time.perf_counter())
 
     def clear(self) -> None:
         self._store.clear()

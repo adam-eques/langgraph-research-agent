@@ -35,7 +35,7 @@ class PromptVersioner:
 
     def get_latest(self, name: str) -> str | None:
         versions = self._store.get(name, [])
-        return versions[-1]["template"] if versions else None
+        return cast(str, versions[-1]["template"]) if versions else None
 
     def list_versions(self, name: str) -> list[str]:
         return [e["digest"] for e in self._store.get(name, [])]

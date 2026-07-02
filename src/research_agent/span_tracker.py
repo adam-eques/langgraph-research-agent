@@ -33,7 +33,7 @@ class SpanTracker:
             span_id=str(uuid.uuid4())[:8],
             name=name,
             parent_id=self._current_span_id,
-            start_time=time.monotonic(),
+            start_time=time.perf_counter(),
             attributes=attributes or {},
         )
         self._spans.append(span)
@@ -41,7 +41,7 @@ class SpanTracker:
         return span
 
     def end_span(self, span: Span, status: str | None = None) -> None:
-        span.end_time = time.monotonic()
+        span.end_time = time.perf_counter()
         # Preserve a status already set on the span (e.g. "error" from the
         # context manager) unless an explicit status is passed.
         if status is not None:

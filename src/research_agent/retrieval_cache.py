@@ -21,7 +21,7 @@ class RetrievalCache:
         if entry is None:
             return None
         result, ts = entry
-        if time.monotonic() - ts > self._ttl:
+        if time.perf_counter() - ts > self._ttl:
             del self._store[key]
             return None
         return cast(list[Any] | None, result)
@@ -31,7 +31,7 @@ class RetrievalCache:
             oldest = min(self._store, key=lambda k: self._store[k][1])
             del self._store[oldest]
         key = self._key(query, collection)
-        self._store[key] = (results, time.monotonic())
+        self._store[key] = (results, time.perf_counter())
 
     def invalidate(self, query: str, collection: str = "default") -> bool:
         key = self._key(query, collection)

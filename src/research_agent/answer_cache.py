@@ -26,7 +26,7 @@ class AnswerCache:
         return hashlib.sha256(query.strip().lower().encode()).hexdigest()[:20]
 
     def get(self, query: str) -> dict | None:
-        return self._store.get(self._key(query))
+        return cast("dict | None", self._store.get(self._key(query)))
 
     def set(self, query: str, result: dict) -> None:
         self._store[self._key(query)] = result
