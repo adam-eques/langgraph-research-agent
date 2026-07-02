@@ -1,8 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-import re
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -30,9 +28,7 @@ def mean_reciprocal_rank(retrieved: list[str], relevant: list[str]) -> float:
     return 0.0
 
 
-def evaluate_retrieval(
-    retrieved: list[str], relevant: list[str], k: int = 5
-) -> dict[str, float]:
+def evaluate_retrieval(retrieved: list[str], relevant: list[str], k: int = 5) -> dict[str, float]:
     return {
         "precision_at_k": precision_at_k(retrieved, relevant, k),
         "recall_at_k": recall_at_k(retrieved, relevant, k),

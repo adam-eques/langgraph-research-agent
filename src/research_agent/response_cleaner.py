@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import re
 
@@ -8,7 +8,7 @@ def remove_repetitive_phrases(text: str, min_repeat: int = 3) -> str:
     words = text.split()
     cleaned, i = [], 0
     while i < len(words):
-        window = words[i:i+4]
+        window = words[i : i + 4]
         phrase = " ".join(window)
         if text.count(phrase) >= min_repeat and len(window) > 1:
             i += len(window)

@@ -1,4 +1,5 @@
 """Result cache for research pipeline outputs — in-memory LRU and Redis backends."""
+
 from __future__ import annotations
 
 import hashlib
@@ -16,7 +17,7 @@ _BACKEND_ENV = "CACHE_BACKEND"
 _TTL_ENV = "CACHE_TTL"
 _REDIS_URL_ENV = "REDIS_URL"
 _DEFAULT_REDIS_URL = "redis://localhost:6379/0"
-_DEFAULT_TTL = 3600          # 1 hour
+_DEFAULT_TTL = 3600  # 1 hour
 _DEFAULT_MEMORY_CAPACITY = 256  # max cached entries for in-memory LRU
 
 

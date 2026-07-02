@@ -1,8 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
 import re
-from typing import Any
+from typing import ClassVar
 
 logger = logging.getLogger(__name__)
 
@@ -10,10 +10,15 @@ logger = logging.getLogger(__name__)
 class ContextCompressor:
     """Compress research context by removing boilerplate and redundant sentences."""
 
-    _BOILERPLATE = [
-        r"(?i)cookie policy", r"(?i)privacy policy", r"(?i)terms of service",
-        r"(?i)all rights reserved", r"(?i)subscribe to", r"(?i)click here",
-        r"(?i)sign up for", r"(?i)advertisement",
+    _BOILERPLATE: ClassVar[list[str]] = [
+        r"(?i)cookie policy",
+        r"(?i)privacy policy",
+        r"(?i)terms of service",
+        r"(?i)all rights reserved",
+        r"(?i)subscribe to",
+        r"(?i)click here",
+        r"(?i)sign up for",
+        r"(?i)advertisement",
     ]
 
     def __init__(self, max_chars: int = 8000) -> None:
@@ -38,6 +43,6 @@ class ContextCompressor:
         text = self.strip_boilerplate(text)
         text = self.remove_duplicate_sentences(text)
         if len(text) > self.max_chars:
-            text = text[:self.max_chars] + " [compressed]"
+            text = text[: self.max_chars] + " [compressed]"
             logger.debug("Context compressed to %d chars", self.max_chars)
         return text

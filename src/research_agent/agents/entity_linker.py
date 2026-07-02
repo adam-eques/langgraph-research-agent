@@ -34,14 +34,16 @@ def link_entities(text: str) -> list[LinkedEntity]:
     for etype, patterns in _ENTITY_PATTERNS.items():
         for pattern in patterns:
             for m in re.finditer(pattern, text):
-                entities.append(LinkedEntity(
-                    text=m.group(0),
-                    entity_type=etype,
-                    canonical=m.group(0).strip(),
-                    confidence=0.8,
-                    start=m.start(),
-                    end=m.end(),
-                ))
+                entities.append(
+                    LinkedEntity(
+                        text=m.group(0),
+                        entity_type=etype,
+                        canonical=m.group(0).strip(),
+                        confidence=0.8,
+                        start=m.start(),
+                        end=m.end(),
+                    )
+                )
     entities.sort(key=lambda e: e.start)
     return entities
 

@@ -27,6 +27,7 @@ def _get_store(collection: str = config.chroma_collection):
 
     if backend == "pgvector":
         from langchain_postgres import PGVector
+
         return PGVector(
             embeddings=_get_embeddings(),
             collection_name=collection,
@@ -34,6 +35,7 @@ def _get_store(collection: str = config.chroma_collection):
         )
 
     from langchain_chroma import Chroma
+
     return Chroma(
         collection_name=collection,
         embedding_function=_get_embeddings(),
@@ -79,5 +81,6 @@ def delete_collection(collection: str | None = None) -> None:
 def list_collections() -> list[str]:
     """Return names of all Chroma collections in the persist directory."""
     import chromadb
+
     client = chromadb.PersistentClient(path=_PERSIST_DIR)
     return [c.name for c in client.list_collections()]

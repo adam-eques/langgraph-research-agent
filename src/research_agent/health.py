@@ -12,12 +12,14 @@ def check_vector_store() -> dict:
     try:
         if backend == "pgvector":
             import psycopg
+
             dsn = os.getenv("DATABASE_URL", "")
             with psycopg.connect(dsn, connect_timeout=3) as conn:
                 conn.execute("SELECT 1")
             return {"backend": "pgvector", "status": "ok"}
         else:
             import chromadb
+
             client = chromadb.PersistentClient(path=".chroma")
             client.list_collections()
             return {"backend": "chroma", "status": "ok"}
@@ -32,6 +34,7 @@ def check_redis() -> dict:
         return {"status": "not_configured"}
     try:
         import redis
+
         r = redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
         r.ping()
         return {"status": "ok"}

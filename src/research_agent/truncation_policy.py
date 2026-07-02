@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class TruncationStrategy(str, Enum):
+class TruncationStrategy(StrEnum):
     TAIL = "tail"
     HEAD = "head"
     MIDDLE = "middle"
@@ -31,7 +31,7 @@ def truncate(text: str, policy: TruncationPolicy) -> str:
 
     if policy.strategy == TruncationStrategy.MIDDLE:
         half = limit // 2
-        return text[:half] + policy.ellipsis + text[-(limit - half):]
+        return text[:half] + policy.ellipsis + text[-(limit - half) :]
 
     if policy.strategy == TruncationStrategy.SENTENCE_BOUNDARY:
         truncated = text[:limit]

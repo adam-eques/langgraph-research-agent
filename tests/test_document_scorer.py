@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.document_scorer import score_document_quality, filter_low_quality
+from research_agent.document_scorer import filter_low_quality, score_document_quality
 
 
 def test_empty_document():

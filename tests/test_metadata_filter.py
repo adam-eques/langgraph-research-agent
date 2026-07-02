@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import pytest
 from datetime import datetime
+
 from langchain_core.documents import Document
 
 from research_agent.rag.metadata_filter import MetadataFilter, filter_by_date

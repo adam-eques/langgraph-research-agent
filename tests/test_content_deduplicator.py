@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from research_agent.content_deduplicator import deduplicate_by_content, deduplicate_documents
 

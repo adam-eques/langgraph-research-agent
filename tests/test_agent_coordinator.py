@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import pytest
-from research_agent.agent_coordinator import AgentCoordinator, AgentStatus, AgentTask
+
+from research_agent.agent_coordinator import AgentCoordinator, AgentStatus
 
 
 def test_register_and_run_sync():

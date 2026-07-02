@@ -20,11 +20,7 @@ def load_json_config(path: str) -> dict[str, Any]:
 
 
 def load_env_config(prefix: str = "RESEARCH_") -> dict[str, str]:
-    return {
-        k[len(prefix):].lower(): v
-        for k, v in os.environ.items()
-        if k.startswith(prefix)
-    }
+    return {k[len(prefix) :].lower(): v for k, v in os.environ.items() if k.startswith(prefix)}
 
 
 def merge_configs(*configs: dict[str, Any]) -> dict[str, Any]:

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
+
 from langchain_core.documents import Document
 
 logger = logging.getLogger(__name__)
@@ -13,7 +14,7 @@ class MetadataFilter:
     def __init__(self) -> None:
         self._conditions: list[tuple[str, str, object]] = []
 
-    def where(self, field: str, op: str, value: object) -> "MetadataFilter":
+    def where(self, field: str, op: str, value: object) -> MetadataFilter:
         """Add a condition. op: 'eq', 'ne', 'gt', 'lt', 'contains', 'in'."""
         self._conditions.append((field, op, value))
         return self

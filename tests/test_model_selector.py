@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.model_selector import select_model, list_models
+
+from research_agent.model_selector import list_models, select_model
 
 
 def test_list_models_not_empty():

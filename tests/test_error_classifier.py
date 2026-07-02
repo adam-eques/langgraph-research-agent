@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.error_classifier import classify_error, is_retryable, ErrorCategory
+
+from research_agent.error_classifier import ErrorCategory, classify_error, is_retryable
 
 
 def test_classify_timeout():

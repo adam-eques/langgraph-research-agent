@@ -14,21 +14,38 @@ class SourceCredibility:
 
 
 _TRUSTED_DOMAINS = {
-    "arxiv.org", "nature.com", "science.org", "pubmed.ncbi.nlm.nih.gov",
-    "ieee.org", "acm.org", "dl.acm.org", "scholar.google.com",
-    "github.com", "docs.python.org", "pytorch.org", "tensorflow.org",
-    "anthropic.com", "openai.com", "huggingface.co",
+    "arxiv.org",
+    "nature.com",
+    "science.org",
+    "pubmed.ncbi.nlm.nih.gov",
+    "ieee.org",
+    "acm.org",
+    "dl.acm.org",
+    "scholar.google.com",
+    "github.com",
+    "docs.python.org",
+    "pytorch.org",
+    "tensorflow.org",
+    "anthropic.com",
+    "openai.com",
+    "huggingface.co",
 }
 
 _SUSPICIOUS_PATTERNS = [
-    r"click.*?here", r"buy now", r"sponsored", r"affiliate",
-    r"advertisement", r"promo", r"referral",
+    r"click.*?here",
+    r"buy now",
+    r"sponsored",
+    r"affiliate",
+    r"advertisement",
+    r"promo",
+    r"referral",
 ]
 
 
 def assess_source(url: str, content: str = "") -> SourceCredibility:
     domain = url.split("/")[2] if "://" in url else url
-    domain = domain.lstrip("www.")
+    if domain.startswith("www."):
+        domain = domain[4:]
     flags: list[str] = []
     score = 0.5
 
@@ -52,8 +69,11 @@ def assess_source(url: str, content: str = "") -> SourceCredibility:
 
     score = max(0.0, min(1.0, score))
     return SourceCredibility(
-        url=url, domain=domain, score=round(score, 3),
-        flags=flags, is_trusted=domain in _TRUSTED_DOMAINS,
+        url=url,
+        domain=domain,
+        score=round(score, 3),
+        flags=flags,
+        is_trusted=domain in _TRUSTED_DOMAINS,
     )
 
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.agents.entity_linker import link_entities, group_by_type
+
+from research_agent.agents.entity_linker import group_by_type, link_entities
 
 
 def test_links_organization():

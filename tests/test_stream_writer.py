@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import asyncio
+
 from research_agent.stream_writer import StreamWriter, stream_to_string, write_chunks
 
 
@@ -28,6 +30,7 @@ def test_total_written():
         await w.write("abc")
         await w.write("de")
         return w.total_written
+
     assert asyncio.run(run()) == 5
 
 
@@ -40,4 +43,5 @@ def test_write_after_close_raises():
             return False
         except RuntimeError:
             return True
+
     assert asyncio.run(run())

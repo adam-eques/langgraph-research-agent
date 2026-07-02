@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import AsyncIterator, Any
+from collections.abc import AsyncIterator
 
 logger = logging.getLogger(__name__)
 

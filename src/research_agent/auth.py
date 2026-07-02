@@ -1,9 +1,10 @@
 """FastAPI middleware for API-key authentication."""
+
 from __future__ import annotations
 
 import logging
 import os
-from typing import Callable
+from collections.abc import Callable
 
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
@@ -54,7 +55,9 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
     ) -> None:
         super().__init__(app)
         self._api_keys: set[str] = api_keys if api_keys is not None else _load_keys_from_env()
-        self._public_paths: frozenset[str] = public_paths if public_paths is not None else _PUBLIC_PATHS
+        self._public_paths: frozenset[str] = (
+            public_paths if public_paths is not None else _PUBLIC_PATHS
+        )
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         # Allow public / unauthenticated paths
@@ -72,9 +75,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
             )
             return JSONResponse(
                 status_code=401,
-                content={
-                    "detail": "Missing API key. Provide a valid key in the X-API-Key header."
-                },
+                content={"detail": "Missing API key. Provide a valid key in the X-API-Key header."},
             )
 
         if api_key not in self._api_keys:

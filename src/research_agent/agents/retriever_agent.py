@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
 from research_agent.config import config
-from research_agent.state import ResearchState, Citation
-from research_agent.rag.retriever import retrieve, format_context
+from research_agent.rag.retriever import format_context, retrieve
+from research_agent.state import Citation, ResearchState
 
 _SYSTEM_PROMPT = """You are a document retrieval specialist with access to an indexed knowledge base.
 
@@ -34,7 +34,9 @@ def build_retriever_agent_node():
 
         if not docs:
             return {
-                "messages": [AIMessage(content="No relevant documents found in the knowledge base.")],
+                "messages": [
+                    AIMessage(content="No relevant documents found in the knowledge base.")
+                ],
                 "research_notes": ["No document context available — relying on web search only."],
                 "citations": [],
             }
@@ -56,7 +58,9 @@ def build_retriever_agent_node():
         response: AIMessage = llm.invoke(messages)
         return {
             "messages": [response],
-            "research_notes": [f"Document context retrieved ({len(docs)} passages):\n{context[:500]}..."],
+            "research_notes": [
+                f"Document context retrieved ({len(docs)} passages):\n{context[:500]}..."
+            ],
             "citations": citations,
         }
 

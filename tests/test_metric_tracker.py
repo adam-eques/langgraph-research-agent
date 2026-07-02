@@ -1,10 +1,12 @@
 from __future__ import annotations
+
 from research_agent.metric_tracker import MetricTracker
 
 
 def test_counter():
     mt = MetricTracker()
-    mt.increment("req"); mt.increment("req", 3)
+    mt.increment("req")
+    mt.increment("req", 3)
     assert mt.counter("req") == 4.0
 
 
@@ -30,6 +32,7 @@ def test_p95():
 
 def test_reset():
     mt = MetricTracker()
-    mt.increment("x"); mt.gauge("y", 1)
+    mt.increment("x")
+    mt.gauge("y", 1)
     mt.reset()
     assert mt.counter("x") == 0 and mt.get_gauge("y") is None

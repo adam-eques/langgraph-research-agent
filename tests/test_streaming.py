@@ -1,16 +1,16 @@
 """Tests for sync and async streaming functions."""
+
 from __future__ import annotations
 
-import asyncio
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from langchain_core.messages import AIMessage, AIMessageChunk
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _make_chunk(node: str, content: str) -> tuple[str, list]:
     chunk = AIMessageChunk(content=content)
@@ -32,18 +32,22 @@ def _base_initial():
 # sync stream_tokens
 # ---------------------------------------------------------------------------
 
+
 class TestStreamTokens:
     @patch("research_agent.streaming.build_graph")
     def test_yields_synthesizer_tokens(self, mock_build_graph):
         mock_graph = MagicMock()
-        mock_graph.stream.return_value = iter([
-            ("retriever", [AIMessageChunk(content="")]),
-            ("synthesizer", [AIMessageChunk(content="Hello")]),
-            ("synthesizer", [AIMessageChunk(content=" world")]),
-        ])
+        mock_graph.stream.return_value = iter(
+            [
+                ("retriever", [AIMessageChunk(content="")]),
+                ("synthesizer", [AIMessageChunk(content="Hello")]),
+                ("synthesizer", [AIMessageChunk(content=" world")]),
+            ]
+        )
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import stream_tokens
+
         tokens = list(stream_tokens("test query"))
 
         assert tokens == ["Hello", " world"]
@@ -51,14 +55,17 @@ class TestStreamTokens:
     @patch("research_agent.streaming.build_graph")
     def test_skips_non_synthesizer_nodes(self, mock_build_graph):
         mock_graph = MagicMock()
-        mock_graph.stream.return_value = iter([
-            ("researcher", [AIMessageChunk(content="research data")]),
-            ("analyst", [AIMessageChunk(content="analysis data")]),
-            ("synthesizer", [AIMessageChunk(content="final answer")]),
-        ])
+        mock_graph.stream.return_value = iter(
+            [
+                ("researcher", [AIMessageChunk(content="research data")]),
+                ("analyst", [AIMessageChunk(content="analysis data")]),
+                ("synthesizer", [AIMessageChunk(content="final answer")]),
+            ]
+        )
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import stream_tokens
+
         tokens = list(stream_tokens("query"))
 
         assert tokens == ["final answer"]
@@ -68,12 +75,15 @@ class TestStreamTokens:
     @patch("research_agent.streaming.build_graph")
     def test_returns_empty_when_no_synthesizer(self, mock_build_graph):
         mock_graph = MagicMock()
-        mock_graph.stream.return_value = iter([
-            ("researcher", [AIMessageChunk(content="data")]),
-        ])
+        mock_graph.stream.return_value = iter(
+            [
+                ("researcher", [AIMessageChunk(content="data")]),
+            ]
+        )
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import stream_tokens
+
         tokens = list(stream_tokens("query"))
 
         assert tokens == []
@@ -81,14 +91,17 @@ class TestStreamTokens:
     @patch("research_agent.streaming.build_graph")
     def test_skips_empty_content_chunks(self, mock_build_graph):
         mock_graph = MagicMock()
-        mock_graph.stream.return_value = iter([
-            ("synthesizer", [AIMessageChunk(content="")]),
-            ("synthesizer", [AIMessageChunk(content="real content")]),
-            ("synthesizer", [AIMessageChunk(content="")]),
-        ])
+        mock_graph.stream.return_value = iter(
+            [
+                ("synthesizer", [AIMessageChunk(content="")]),
+                ("synthesizer", [AIMessageChunk(content="real content")]),
+                ("synthesizer", [AIMessageChunk(content="")]),
+            ]
+        )
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import stream_tokens
+
         tokens = list(stream_tokens("query"))
 
         # Only non-empty tokens
@@ -99,6 +112,7 @@ class TestStreamTokens:
 # ---------------------------------------------------------------------------
 # async astream_tokens
 # ---------------------------------------------------------------------------
+
 
 class TestAstreamTokens:
     @pytest.mark.asyncio
@@ -117,6 +131,7 @@ class TestAstreamTokens:
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import astream_tokens
+
         tokens = []
         async for token in astream_tokens("async query"):
             tokens.append(token)
@@ -135,6 +150,7 @@ class TestAstreamTokens:
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import astream_tokens
+
         tokens = []
         async for token in astream_tokens("query"):
             tokens.append(token)
@@ -145,6 +161,7 @@ class TestAstreamTokens:
 # ---------------------------------------------------------------------------
 # run() function
 # ---------------------------------------------------------------------------
+
 
 class TestRun:
     @patch("research_agent.streaming.build_graph")
@@ -162,6 +179,7 @@ class TestRun:
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import run
+
         result = run("test")
 
         assert result["query"] == "test"
@@ -170,11 +188,18 @@ class TestRun:
     @patch("research_agent.streaming.build_graph")
     def test_run_passes_correct_initial_state(self, mock_build_graph):
         mock_graph = MagicMock()
-        mock_graph.invoke.return_value = {"messages": [], "query": "q", "research_notes": [],
-                                          "document_context": "", "citations": [], "next": ""}
+        mock_graph.invoke.return_value = {
+            "messages": [],
+            "query": "q",
+            "research_notes": [],
+            "document_context": "",
+            "citations": [],
+            "next": "",
+        }
         mock_build_graph.return_value = mock_graph
 
         from research_agent.streaming import run
+
         run("my research query")
 
         call_args = mock_graph.invoke.call_args[0][0]

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.final_answer_builder import build_final_answer, FinalAnswer
+
+from research_agent.final_answer_builder import FinalAnswer, build_final_answer
 
 
 def test_build_with_model_answer():

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
 
 @dataclass
@@ -39,12 +38,14 @@ def reciprocal_rank_fusion(
     result = []
     for key in ranked:
         d = docs[key]
-        result.append(RetrievedDoc(
-            content=d.content,
-            score=scores[key],
-            source=d.source,
-            metadata=d.metadata,
-        ))
+        result.append(
+            RetrievedDoc(
+                content=d.content,
+                score=scores[key],
+                source=d.source,
+                metadata=d.metadata,
+            )
+        )
     return result
 
 

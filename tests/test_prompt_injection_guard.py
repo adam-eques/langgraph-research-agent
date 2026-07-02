@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from research_agent.prompt_injection_guard import (
-    is_injection_attempt, sanitize_query, score_injection_risk,
+    is_injection_attempt,
+    sanitize_query,
+    score_injection_risk,
 )
 
 

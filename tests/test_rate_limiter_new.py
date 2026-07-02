@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.rate_limiter import SlidingWindowLimiter
 
 
@@ -9,7 +10,8 @@ def test_allows_within_limit():
 
 def test_blocks_over_limit():
     lim = SlidingWindowLimiter(max_calls=2, window_seconds=60)
-    lim.allow(); lim.allow()
+    lim.allow()
+    lim.allow()
     assert lim.allow() is False
 
 

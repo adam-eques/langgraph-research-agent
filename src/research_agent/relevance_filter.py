@@ -1,8 +1,7 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
 import re
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +25,9 @@ def filter_relevant(
         if score >= threshold:
             results.append(doc)
         else:
-            logger.debug("Filtered out document with overlap=%.2f (threshold=%.2f)", score, threshold)
+            logger.debug(
+                "Filtered out document with overlap=%.2f (threshold=%.2f)", score, threshold
+            )
     return results
 
 

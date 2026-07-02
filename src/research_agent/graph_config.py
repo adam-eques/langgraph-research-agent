@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any
@@ -7,6 +7,7 @@ from typing import Any
 @dataclass
 class GraphConfig:
     """Runtime configuration for the LangGraph research agent."""
+
     model: str = "claude-3-5-sonnet-20241022"
     temperature: float = 0.0
     max_tokens: int = 4096
@@ -36,5 +37,5 @@ class GraphConfig:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "GraphConfig":
+    def from_dict(cls, data: dict) -> GraphConfig:
         return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})

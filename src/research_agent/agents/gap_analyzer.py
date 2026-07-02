@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any
 
 
 @dataclass
@@ -45,7 +44,7 @@ def identify_covered_topics(notes: list[str], min_length: int = 20) -> set[str]:
     for note in notes:
         words = note.split()
         for i in range(len(words) - 1):
-            bigram = f"{words[i]} {words[i+1]}".lower()
+            bigram = f"{words[i]} {words[i + 1]}".lower()
             if len(bigram) >= min_length / 2:
                 topics.add(bigram)
     return topics
@@ -65,7 +64,10 @@ def find_gaps(
                 topic=topic,
                 description="; ".join(uncertainties[:3]),
                 priority="high",
-                suggested_queries=[f"review of {topic.lower()}", f"{topic.lower()} current research"],
+                suggested_queries=[
+                    f"review of {topic.lower()}",
+                    f"{topic.lower()} current research",
+                ],
             )
             gaps.append(gap)
 
@@ -73,12 +75,14 @@ def find_gaps(
         covered = identify_covered_topics(notes)
         for topic in required_topics:
             if not any(topic.lower() in c for c in covered):
-                gaps.append(ResearchGap(
-                    topic=topic,
-                    description=f"Topic '{topic}' not covered in collected notes.",
-                    priority="medium",
-                    suggested_queries=[topic, f"{topic} overview"],
-                ))
+                gaps.append(
+                    ResearchGap(
+                        topic=topic,
+                        description=f"Topic '{topic}' not covered in collected notes.",
+                        priority="medium",
+                        suggested_queries=[topic, f"{topic} overview"],
+                    )
+                )
 
     return gaps
 

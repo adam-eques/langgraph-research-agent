@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from langchain_community.tools.tavily_search import TavilySearchResults
+
 from research_agent.config import config
 
 

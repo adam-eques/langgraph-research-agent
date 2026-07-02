@@ -1,7 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +17,7 @@ def score_answer_length(answer: str, min_words: int = 50, max_words: int = 800) 
 def score_citation_coverage(answer: str, citations: list[dict]) -> float:
     if not citations:
         return 1.0
-    referenced = sum(
-        1 for c in citations
-        if c.get("source", "").split("/")[-1][:12] in answer
-    )
+    referenced = sum(1 for c in citations if c.get("source", "").split("/")[-1][:12] in answer)
     return referenced / len(citations)
 
 

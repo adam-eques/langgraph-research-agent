@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 class OutlineSection:
     title: str
     level: int
-    subsections: list["OutlineSection"] = field(default_factory=list)
+    subsections: list[OutlineSection] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
@@ -25,7 +25,9 @@ def generate_outline(topic: str, subtopics: list[str], depth: int = 2) -> list[O
         if depth > 1:
             sub_keywords = re.findall(r"\b\w{4,}\b", st.lower())
             for kw in sub_keywords[:2]:
-                section.subsections.append(OutlineSection(title=f"{kw.capitalize()} details", level=2))
+                section.subsections.append(
+                    OutlineSection(title=f"{kw.capitalize()} details", level=2)
+                )
         sections.append(section)
     return sections
 

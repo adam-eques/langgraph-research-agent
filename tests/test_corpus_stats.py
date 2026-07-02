@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.rag.corpus_stats import CorpusStats, tokenize
 
 

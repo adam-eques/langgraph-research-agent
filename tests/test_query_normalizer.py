@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from research_agent.query_normalizer import (
-    normalize_query, expand_contractions, collapse_whitespace,
+    collapse_whitespace,
+    expand_contractions,
+    normalize_query,
     remove_punctuation_edges,
 )
 

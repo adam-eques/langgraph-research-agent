@@ -1,6 +1,10 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.citation_deduplicator import deduplicate_citations, merge_citation_lists, normalize_source
+from research_agent.citation_deduplicator import (
+    deduplicate_citations,
+    merge_citation_lists,
+    normalize_source,
+)
 
 
 def test_normalize_source():

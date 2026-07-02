@@ -1,4 +1,5 @@
 """Initialize the Postgres + pgvector database schema."""
+
 from __future__ import annotations
 
 import argparse
@@ -14,11 +15,10 @@ def init_pgvector(dsn: str) -> None:
         sys.exit(1)
 
     print(f"Connecting to: {dsn[:30]}...")
-    with psycopg.connect(dsn) as conn:
-        with conn.cursor() as cur:
-            cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
-            print("pgvector extension: OK")
-            cur.execute("""
+    with psycopg.connect(dsn) as conn, conn.cursor() as cur:
+        cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+        print("pgvector extension: OK")
+        cur.execute("""
                 CREATE TABLE IF NOT EXISTS langchain_pg_collection (
                     name VARCHAR NOT NULL,
                     cmetadata JSON,
@@ -26,7 +26,7 @@ def init_pgvector(dsn: str) -> None:
                     PRIMARY KEY (uuid)
                 );
             """)
-            cur.execute("""
+        cur.execute("""
                 CREATE TABLE IF NOT EXISTS langchain_pg_embedding (
                     collection_id UUID REFERENCES langchain_pg_collection(uuid) ON DELETE CASCADE,
                     embedding vector,
@@ -37,8 +37,8 @@ def init_pgvector(dsn: str) -> None:
                     PRIMARY KEY (uuid)
                 );
             """)
-            conn.commit()
-            print("Tables: OK")
+        conn.commit()
+        print("Tables: OK")
     print("Database initialization complete.")
 
 

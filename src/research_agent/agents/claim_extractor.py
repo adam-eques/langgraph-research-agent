@@ -29,12 +29,14 @@ def extract_claims(text: str, min_confidence: float = 0.5) -> list[Claim]:
             claim_text = m.group(0).strip()
             confidence = min(1.0, len(claim_text) / 100)
             if confidence >= min_confidence:
-                claims.append(Claim(
-                    text=claim_text,
-                    claim_type=ctype,
-                    confidence=confidence,
-                    source_offset=m.start(),
-                ))
+                claims.append(
+                    Claim(
+                        text=claim_text,
+                        claim_type=ctype,
+                        confidence=confidence,
+                        source_offset=m.start(),
+                    )
+                )
     return sorted(claims, key=lambda c: c.source_offset)
 
 

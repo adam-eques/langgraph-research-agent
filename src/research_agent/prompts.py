@@ -1,7 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,9 @@ def researcher_system_prompt(additional_context: str = "") -> str:
         "Cite sources explicitly.",
         "Do not fabricate data.",
     ]
-    task = "Your task is to perform web research and gather relevant information to answer the query."
+    task = (
+        "Your task is to perform web research and gather relevant information to answer the query."
+    )
     prompt = build_system_prompt("a research assistant", task, constraints=constraints)
     if additional_context:
         prompt += f"\n\nAdditional context:\n{additional_context}"
@@ -36,5 +37,7 @@ def researcher_system_prompt(additional_context: str = "") -> str:
 
 def analyst_system_prompt() -> str:
     task = "Your task is to analyze research notes and produce a structured analysis."
-    output_fmt = "Return a JSON object with: summary, key_findings (list), gaps (list), confidence (0-1)."
+    output_fmt = (
+        "Return a JSON object with: summary, key_findings (list), gaps (list), confidence (0-1)."
+    )
     return build_system_prompt("an expert analyst", task, output_format=output_fmt)

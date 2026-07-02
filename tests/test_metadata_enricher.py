@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from research_agent.agents.metadata_enricher import (
-    enrich_document,
     enrich_batch,
-    extract_year,
+    enrich_document,
     extract_doi,
+    extract_year,
     infer_content_type,
 )
 

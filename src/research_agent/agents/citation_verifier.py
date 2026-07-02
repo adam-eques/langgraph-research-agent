@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import logging
-from pydantic import BaseModel, Field
+
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.messages import HumanMessage, SystemMessage
+from pydantic import BaseModel, Field
 
 from research_agent.config import config
-from research_agent.state import ResearchState, Citation
+from research_agent.state import ResearchState
 
 logger = logging.getLogger(__name__)
 
@@ -51,18 +52,21 @@ def build_citation_verifier_node():
         answer = messages[-1].content if messages else ""
 
         citations_text = "\n".join(
-            f"[{i+1}] {c['source']}: {c['excerpt'][:300]}"
-            for i, c in enumerate(citations)
+            f"[{i + 1}] {c['source']}: {c['excerpt'][:300]}" for i, c in enumerate(citations)
         )
 
-        result: VerificationResult = llm.invoke([
-            SystemMessage(content=_SYSTEM_PROMPT),
-            HumanMessage(content=(
-                f"Answer:\n{answer}\n\n"
-                f"Citations:\n{citations_text}\n\n"
-                "Verify each citation."
-            )),
-        ])
+        result: VerificationResult = llm.invoke(
+            [
+                SystemMessage(content=_SYSTEM_PROMPT),
+                HumanMessage(
+                    content=(
+                        f"Answer:\n{answer}\n\n"
+                        f"Citations:\n{citations_text}\n\n"
+                        "Verify each citation."
+                    )
+                ),
+            ]
+        )
 
         logger.info(
             "Citation verification: %d/%d valid",
@@ -75,9 +79,10 @@ def build_citation_verifier_node():
             logger.warning("Invalid citations detected: %s", invalid)
 
         return {
-            "research_notes": state.get("research_notes", []) + [
+            "research_notes": [
+                *state.get("research_notes", []),
                 f"Citation check: {'PASS' if result.all_valid else 'ISSUES FOUND'} "
-                f"— {len(result.verifications)} citations reviewed"
+                f"— {len(result.verifications)} citations reviewed",
             ]
         }
 

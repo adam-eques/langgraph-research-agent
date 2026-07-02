@@ -1,21 +1,23 @@
 """FastAPI integration tests using httpx AsyncClient."""
+
 from __future__ import annotations
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from langchain_core.messages import AIMessage
 
-
 # ---------------------------------------------------------------------------
 # App fixture
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture
 def app():
     from research_agent.api import app as _app
+
     return _app
 
 
@@ -31,6 +33,7 @@ async def client(app):
 # ---------------------------------------------------------------------------
 # /health
 # ---------------------------------------------------------------------------
+
 
 class TestHealthEndpoint:
     @pytest.mark.asyncio
@@ -49,6 +52,7 @@ class TestHealthEndpoint:
 # ---------------------------------------------------------------------------
 # POST /research
 # ---------------------------------------------------------------------------
+
 
 class TestResearchEndpoint:
     @pytest.mark.asyncio
@@ -111,6 +115,7 @@ class TestResearchEndpoint:
 # ---------------------------------------------------------------------------
 # GET /research/stream
 # ---------------------------------------------------------------------------
+
 
 class TestStreamEndpoint:
     @pytest.mark.asyncio

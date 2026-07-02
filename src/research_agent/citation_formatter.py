@@ -1,12 +1,11 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import re
-from typing import Any
 
 
 def format_apa(source: str, title: str = "", year: str = "") -> str:
     domain = re.search(r"://([^/]+)", source)
-    host = domain.group(1) if domain else source
+    domain.group(1) if domain else source
     parts = []
     if title:
         parts.append(title + ".")

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
 from typing import Any
@@ -18,7 +18,11 @@ def format_tool_result(tool_name: str, result: Any, max_chars: int = 2000) -> st
 def extract_tool_calls(message_content: Any) -> list[dict]:
     """Extract tool call blocks from a LangChain message content."""
     if isinstance(message_content, list):
-        return [block for block in message_content if isinstance(block, dict) and block.get("type") == "tool_use"]
+        return [
+            block
+            for block in message_content
+            if isinstance(block, dict) and block.get("type") == "tool_use"
+        ]
     return []
 
 

@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.note_merger import merge_notes, extract_key_sentences, summarize_research_notes
+from research_agent.note_merger import extract_key_sentences, merge_notes, summarize_research_notes
 
 
 def test_merge_deduplicates():

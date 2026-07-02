@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import asyncio
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable
+from typing import Any
 
 
 @dataclass
@@ -63,6 +64,7 @@ class EventEmitter:
         def wrapper(event: Event) -> None:
             fn(event)
             self.off(event_name, wrapper)
+
         self.on(event_name, wrapper)
 
     def listener_count(self, event_name: str) -> int:

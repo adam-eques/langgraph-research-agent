@@ -1,7 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import pytest
-from research_agent.state_validator import validate_research_state, assert_state_valid
+
+from research_agent.state_validator import assert_state_valid, validate_research_state
 
 
 def test_valid_state():
@@ -19,7 +20,9 @@ def test_missing_query():
 
 
 def test_invalid_notes_type():
-    errors = validate_research_state({"query": "q", "research_notes": "not a list", "citations": []})
+    errors = validate_research_state(
+        {"query": "q", "research_notes": "not a list", "citations": []}
+    )
     assert any("research_notes" in e for e in errors)
 
 

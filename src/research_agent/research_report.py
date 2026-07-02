@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
@@ -32,7 +32,7 @@ class ResearchReport:
         return json.dumps(self.to_dict(), indent=2)
 
     @classmethod
-    def from_dict(cls, data: dict) -> "ResearchReport":
+    def from_dict(cls, data: dict) -> ResearchReport:
         return cls(
             query=data.get("query", ""),
             answer=data.get("answer", ""),

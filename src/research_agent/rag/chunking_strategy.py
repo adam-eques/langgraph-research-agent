@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class ChunkType(str, Enum):
+class ChunkType(StrEnum):
     FIXED = "fixed"
     SENTENCE = "sentence"
     PARAGRAPH = "paragraph"
@@ -24,7 +24,7 @@ def fixed_chunk(text: str, config: ChunkConfig) -> list[str]:
     step = max(1, config.chunk_size - config.chunk_overlap)
     chunks = []
     for i in range(0, len(text), step):
-        chunk = text[i: i + config.chunk_size]
+        chunk = text[i : i + config.chunk_size]
         if len(chunk) >= config.min_chunk_size:
             chunks.append(chunk)
     return chunks

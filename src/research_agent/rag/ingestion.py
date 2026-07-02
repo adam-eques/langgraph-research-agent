@@ -3,9 +3,8 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
+from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader, TextLoader
 from langchain_core.documents import Document
-from research_agent.exceptions import IngestionError
-from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logger = logging.getLogger(__name__)
@@ -55,6 +54,7 @@ def ingest(path: str | Path) -> list[Document]:
 def ingest_directory(directory: str, recursive: bool = False) -> list:
     """Ingest all supported documents from a directory."""
     from pathlib import Path
+
     p = Path(directory)
     pattern = "**/*" if recursive else "*"
     docs = []

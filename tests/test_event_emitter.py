@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import pytest
-from research_agent.event_emitter import EventEmitter, Event
+
+from research_agent.event_emitter import Event, EventEmitter
 
 
 def test_emit_calls_listener():
@@ -19,7 +21,10 @@ def test_emit_no_listeners():
 
 def test_off_removes_listener():
     emitter = EventEmitter()
-    fn = lambda e: None
+
+    def fn(e):
+        return None
+
     emitter.on("x", fn)
     removed = emitter.off("x", fn)
     assert removed is True and emitter.listener_count("x") == 0

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.document_ranker import tf, idf, bm25_score, rank_documents
+
+from research_agent.document_ranker import bm25_score, idf, rank_documents, tf
 
 
 def test_tf_basic():

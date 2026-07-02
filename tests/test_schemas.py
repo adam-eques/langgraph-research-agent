@@ -1,9 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import pytest
 from pydantic import ValidationError
 
-from research_agent.schemas import QueryRequest, QueryResponse, BatchQueryRequest
+from research_agent.schemas import BatchQueryRequest, QueryRequest, QueryResponse
 
 
 def test_query_request_valid():

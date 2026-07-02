@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.url_utils import normalize_url, extract_domain, is_likely_paywalled
+from research_agent.url_utils import extract_domain, is_likely_paywalled, normalize_url
 
 
 def test_normalize_url_strips_slash():

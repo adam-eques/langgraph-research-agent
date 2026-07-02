@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage
-
 import logging
 
+from langchain_anthropic import ChatAnthropic
+from langchain_core.messages import HumanMessage, SystemMessage
+from pydantic import BaseModel, Field
+
 from research_agent.config import config
+from research_agent.state import ResearchState
 
 logger = logging.getLogger(__name__)
-from research_agent.state import ResearchState
 
 _SYSTEM_PROMPT = """You are an expert analyst. You receive raw research notes and messages \
 from the researcher and retriever agents and produce a structured, insightful analysis.
@@ -48,7 +48,9 @@ def build_analyst_node():
         conversation = list(state["messages"])
         prompt = [
             SystemMessage(content=_SYSTEM_PROMPT),
-            HumanMessage(content=f"Research query: {state['query']}\n\nAnalyze the research gathered above."),
+            HumanMessage(
+                content=f"Research query: {state['query']}\n\nAnalyze the research gathered above."
+            ),
         ]
         analysis: AnalysisOutput = llm.invoke(conversation + prompt)
 
@@ -65,7 +67,3 @@ def build_analyst_node():
         }
 
     return analyst
-
-
-import logging
-_log = logging.getLogger(__name__)

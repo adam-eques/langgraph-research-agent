@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import re
+
 from langchain_core.documents import Document
 
 logger = logging.getLogger(__name__)

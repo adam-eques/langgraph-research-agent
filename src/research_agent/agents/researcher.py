@@ -1,16 +1,16 @@
 from __future__ import annotations
 
+import logging
+
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import SystemMessage
 from langgraph.prebuilt import ToolNode
 
-import logging
-
 from research_agent.config import config
-
-logger = logging.getLogger(__name__)
 from research_agent.state import ResearchState
 from research_agent.tools.search import get_search_tool
+
+logger = logging.getLogger(__name__)
 
 _SYSTEM_PROMPT = """You are a research specialist. Your job is to gather comprehensive, \
 accurate information on the given topic using web search.
@@ -36,7 +36,7 @@ def build_researcher_node():
     tool_node = ToolNode(tools)
 
     def researcher(state: ResearchState) -> ResearchState:
-        messages = [SystemMessage(content=_SYSTEM_PROMPT)] + list(state["messages"])
+        messages = [SystemMessage(content=_SYSTEM_PROMPT), *list(state["messages"])]
         response = llm.invoke(messages)
         return {"messages": [response]}
 
@@ -47,7 +47,3 @@ def build_researcher_node():
         return "analyst"
 
     return researcher, tool_node, should_use_tools
-
-
-import logging
-_log = logging.getLogger(__name__)

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import asyncio
 import logging
@@ -17,7 +17,8 @@ async def run_full_pipeline(
     try:
         from research_agent.graph import build_graph
         from research_agent.streaming import run
-        graph = build_graph(
+
+        build_graph(
             checkpointing=config.get("checkpointing", False),
             use_supervisor=config.get("use_supervisor", False),
         )
@@ -26,7 +27,7 @@ async def run_full_pipeline(
             timeout=timeout,
         )
         return result
-    except asyncio.TimeoutError:
+    except TimeoutError:
         logger.error("Pipeline timed out after %.1fs for query: %s", timeout, query[:80])
         return {"query": query, "answer": "", "error": "timeout"}
     except Exception as exc:

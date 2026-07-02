@@ -1,8 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import pytest
+
 from research_agent.prompt_versioner import PromptVersioner
-import tempfile, os
 
 
 @pytest.fixture

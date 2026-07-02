@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import time
 import uuid
-from dataclasses import dataclass, field
 from contextlib import contextmanager
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -45,7 +45,9 @@ class SpanTracker:
         span.status = status
         parent_ids = {s.span_id for s in self._spans}
         candidates = [s for s in self._spans if s.parent_id in parent_ids or s.parent_id is None]
-        open_candidates = [s for s in candidates if s.end_time is not None and s.span_id != span.span_id]
+        open_candidates = [
+            s for s in candidates if s.end_time is not None and s.span_id != span.span_id
+        ]
         self._current_span_id = open_candidates[-1].span_id if open_candidates else None
 
     @contextmanager

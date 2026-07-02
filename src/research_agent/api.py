@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from research_agent.streaming import run, astream_tokens
+from research_agent.streaming import astream_tokens, run
 
 app = FastAPI(
     title="Research Agent API",

@@ -65,10 +65,7 @@ def deduplicate_fuzzy(
     removed: list[int] = []
     unique: list[str] = []
     for i, q in enumerate(queries):
-        is_dup = any(
-            _jaccard_similarity(q, prev) >= similarity_threshold
-            for prev in unique
-        )
+        is_dup = any(_jaccard_similarity(q, prev) >= similarity_threshold for prev in unique)
         if is_dup:
             removed.append(i)
         else:

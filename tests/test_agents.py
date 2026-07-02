@@ -1,17 +1,17 @@
 """Unit tests for all 5 research agent nodes."""
+
 from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-import pytest
 from langchain_core.messages import AIMessage, HumanMessage
 
 from research_agent.state import ResearchState
 
-
 # ---------------------------------------------------------------------------
 # Helpers / fixtures
 # ---------------------------------------------------------------------------
+
 
 def _base_state(**overrides) -> ResearchState:
     defaults: ResearchState = {
@@ -34,6 +34,7 @@ def _ai_msg(content: str) -> AIMessage:
 # Researcher node
 # ---------------------------------------------------------------------------
 
+
 class TestResearcherNode:
     @patch("research_agent.agents.researcher.ChatAnthropic")
     @patch("research_agent.agents.researcher.get_search_tool")
@@ -45,6 +46,7 @@ class TestResearcherNode:
         mock_search.return_value = MagicMock()
 
         from research_agent.agents.researcher import build_researcher_node
+
         researcher, _, _ = build_researcher_node()
 
         state = _base_state(messages=[HumanMessage(content="Tell me about LangGraph")])
@@ -66,6 +68,7 @@ class TestResearcherNode:
         mock_search.return_value = MagicMock()
 
         from research_agent.agents.researcher import build_researcher_node
+
         _, _, should_use_tools = build_researcher_node()
 
         state = _base_state(messages=[response])
@@ -83,6 +86,7 @@ class TestResearcherNode:
         mock_search.return_value = MagicMock()
 
         from research_agent.agents.researcher import build_researcher_node
+
         _, _, should_use_tools = build_researcher_node()
 
         state = _base_state(messages=[response])
@@ -93,10 +97,10 @@ class TestResearcherNode:
 # Analyst node
 # ---------------------------------------------------------------------------
 
+
 class TestAnalystNode:
     @patch("research_agent.agents.analyst.ChatAnthropic")
     def test_returns_research_notes_and_next(self, mock_llm_cls):
-        from pydantic import BaseModel
 
         mock_analysis = MagicMock()
         mock_analysis.summary = "Summary of findings"
@@ -111,6 +115,7 @@ class TestAnalystNode:
         mock_llm_cls.return_value = mock_llm
 
         from research_agent.agents.analyst import build_analyst_node
+
         analyst = build_analyst_node()
 
         state = _base_state(messages=[_ai_msg("Raw research data")])
@@ -137,6 +142,7 @@ class TestAnalystNode:
         mock_llm_cls.return_value = mock_llm
 
         from research_agent.agents.analyst import build_analyst_node
+
         analyst = build_analyst_node()
 
         result = analyst(_base_state())
@@ -149,6 +155,7 @@ class TestAnalystNode:
 # Synthesizer node
 # ---------------------------------------------------------------------------
 
+
 class TestSynthesizerNode:
     @patch("research_agent.agents.synthesizer.ChatAnthropic")
     def test_returns_messages_and_end(self, mock_llm_cls):
@@ -157,6 +164,7 @@ class TestSynthesizerNode:
         mock_llm_cls.return_value = mock_llm
 
         from research_agent.agents.synthesizer import build_synthesizer_node
+
         synthesizer = build_synthesizer_node()
 
         state = _base_state(research_notes=["Note 1", "Note 2"])
@@ -173,6 +181,7 @@ class TestSynthesizerNode:
         mock_llm_cls.return_value = mock_llm
 
         from research_agent.agents.synthesizer import build_synthesizer_node
+
         synthesizer = build_synthesizer_node()
 
         notes = ["Note A", "Note B"]
@@ -180,15 +189,14 @@ class TestSynthesizerNode:
 
         call_args = mock_llm.invoke.call_args[0][0]
         # The human message should contain the notes
-        human_content = " ".join(
-            str(m.content) for m in call_args if hasattr(m, "content")
-        )
+        human_content = " ".join(str(m.content) for m in call_args if hasattr(m, "content"))
         assert "Note A" in human_content
 
 
 # ---------------------------------------------------------------------------
 # Retriever agent node
 # ---------------------------------------------------------------------------
+
 
 class TestRetrieverAgentNode:
     @patch("research_agent.agents.retriever_agent.ChatAnthropic")
@@ -209,6 +217,7 @@ class TestRetrieverAgentNode:
         mock_llm_cls.return_value = mock_llm
 
         from research_agent.agents.retriever_agent import build_retriever_agent_node
+
         retriever_agent = build_retriever_agent_node()
 
         result = retriever_agent(_base_state())
@@ -226,6 +235,7 @@ class TestRetrieverAgentNode:
         mock_llm_cls.return_value = MagicMock()
 
         from research_agent.agents.retriever_agent import build_retriever_agent_node
+
         retriever_agent = build_retriever_agent_node()
 
         result = retriever_agent(_base_state())
@@ -236,6 +246,7 @@ class TestRetrieverAgentNode:
 # ---------------------------------------------------------------------------
 # Supervisor node
 # ---------------------------------------------------------------------------
+
 
 class TestSupervisorNode:
     @patch("research_agent.agents.supervisor.ChatAnthropic")
@@ -249,7 +260,8 @@ class TestSupervisorNode:
         mock_llm_cls.return_value = mock_llm
 
         from research_agent.agents.supervisor import build_supervisor_node
-        supervisor, route = build_supervisor_node()
+
+        supervisor, _route = build_supervisor_node()
 
         result = supervisor(_base_state())
         assert result["next"] == "researcher"
@@ -265,7 +277,8 @@ class TestSupervisorNode:
         mock_llm_cls.return_value = mock_llm
 
         from research_agent.agents.supervisor import build_supervisor_node
-        supervisor, route = build_supervisor_node()
+
+        supervisor, _route = build_supervisor_node()
 
         result = supervisor(_base_state())
         assert result["next"] == "end"
@@ -275,6 +288,7 @@ class TestSupervisorNode:
         mock_llm_cls.return_value = MagicMock()
 
         from research_agent.agents.supervisor import build_supervisor_node
+
         _, route = build_supervisor_node()
 
         state = _base_state(next="analyst")

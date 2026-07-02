@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import asyncio
+
 from research_agent.search_client import MockSearchClient, SearchClientPool
 
 

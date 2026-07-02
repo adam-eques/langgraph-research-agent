@@ -24,9 +24,12 @@ class TimelineEvent:
 
 _DATE_PATTERNS = [
     re.compile(r"\b(\d{4}-\d{2}-\d{2})\b"),
-    re.compile(r"\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|"
-               r"Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)"
-               r"\s+(\d{1,2}),?\s+(\d{4})\b", re.I),
+    re.compile(
+        r"\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|"
+        r"Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)"
+        r"\s+(\d{1,2}),?\s+(\d{4})\b",
+        re.I,
+    ),
     re.compile(r"\bin (\d{4})\b"),
 ]
 

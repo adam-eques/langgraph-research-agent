@@ -38,11 +38,13 @@ def rerank(
         content = doc.get(content_key, "")
         original_score = doc.get(score_key, 0.5)
         rerank_score = cross_encoder_score(query, content)
-        ranked.append(RankedDoc(
-            content=content,
-            original_score=original_score,
-            rerank_score=rerank_score,
-            source=doc.get("source", ""),
-        ))
+        ranked.append(
+            RankedDoc(
+                content=content,
+                original_score=original_score,
+                rerank_score=rerank_score,
+                source=doc.get("source", ""),
+            )
+        )
     ranked.sort(key=lambda d: d.final_score, reverse=True)
     return ranked[:top_k]

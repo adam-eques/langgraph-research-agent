@@ -1,10 +1,11 @@
 """Report exporter — converts research output to Markdown, HTML, PDF, and JSON."""
+
 from __future__ import annotations
 
 import json
 import logging
 import textwrap
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -62,7 +63,7 @@ _HTML_TEMPLATE = """\
 
 
 def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    return datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
 
 
 class ReportExporter:
@@ -104,15 +105,15 @@ class ReportExporter:
         generated_at = _now_iso()
 
         lines = [
-            f"# Research Report",
-            f"",
+            "# Research Report",
+            "",
             f"**Query:** {query}",
             f"**Generated:** {generated_at}",
-            f"",
-            f"---",
-            f"",
-            f"## Answer",
-            f"",
+            "",
+            "---",
+            "",
+            "## Answer",
+            "",
             answer,
         ]
 

@@ -1,6 +1,10 @@
-﻿from __future__ import annotations
-import hashlib, logging
+from __future__ import annotations
+
+import hashlib
+import logging
+
 logger = logging.getLogger(__name__)
+
 
 class EmbeddingCache:
     def __init__(self, max_size: int = 1024) -> None:

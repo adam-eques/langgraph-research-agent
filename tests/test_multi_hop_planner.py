@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.multi_hop_planner import decompose_query, needs_multi_hop, MultiHopPlan
+
+from research_agent.multi_hop_planner import decompose_query, needs_multi_hop
 
 
 def test_simple_query_single_hop():

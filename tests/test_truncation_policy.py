@@ -1,6 +1,10 @@
 from __future__ import annotations
+
 from research_agent.truncation_policy import (
-    truncate, TruncationPolicy, TruncationStrategy, truncate_list,
+    TruncationPolicy,
+    TruncationStrategy,
+    truncate,
+    truncate_list,
 )
 
 

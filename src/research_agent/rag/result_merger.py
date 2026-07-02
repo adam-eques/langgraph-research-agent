@@ -62,18 +62,22 @@ def merge_results(
         sources = list({str(i.get("_source_idx", "")) for i in items})
         metadata = {k: v for k, v in items[0].items() if not k.startswith("_") and k != "score"}
 
-        merged.append(MergedResult(
-            doc_id=doc_id,
-            content=content,
-            score=final_score,
-            sources=sources,
-            metadata=metadata,
-        ))
+        merged.append(
+            MergedResult(
+                doc_id=doc_id,
+                content=content,
+                score=final_score,
+                sources=sources,
+                metadata=metadata,
+            )
+        )
 
     return sorted(merged, key=lambda r: -r.score)[:top_k]
 
 
-def deduplicate_results(results: list[dict], field: str = "content", threshold: float = 0.9) -> list[dict]:
+def deduplicate_results(
+    results: list[dict], field: str = "content", threshold: float = 0.9
+) -> list[dict]:
     seen: list[str] = []
     unique: list[dict] = []
     for r in results:

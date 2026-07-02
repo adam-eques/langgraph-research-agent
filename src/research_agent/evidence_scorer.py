@@ -1,17 +1,24 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import re
-from typing import Any
-
 
 _STRONG_SIGNALS = [
-    r"\bstud(y|ies)\b", r"\bresearch\b", r"\bpaper\b", r"\bjournal\b",
-    r"\bpeer.reviewed\b", r"\bpublished\b", r"\bdata shows?\b",
+    r"\bstud(y|ies)\b",
+    r"\bresearch\b",
+    r"\bpaper\b",
+    r"\bjournal\b",
+    r"\bpeer.reviewed\b",
+    r"\bpublished\b",
+    r"\bdata shows?\b",
 ]
 
 _WEAK_SIGNALS = [
-    r"\bsome say\b", r"\bit is believed\b", r"\bpossibly\b",
-    r"\bmight\b", r"\bmaybe\b", r"\bunclear\b",
+    r"\bsome say\b",
+    r"\bit is believed\b",
+    r"\bpossibly\b",
+    r"\bmight\b",
+    r"\bmaybe\b",
+    r"\bunclear\b",
 ]
 
 

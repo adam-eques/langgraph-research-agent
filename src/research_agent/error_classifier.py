@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class ErrorCategory(str, Enum):
+class ErrorCategory(StrEnum):
     NETWORK = "network"
     TIMEOUT = "timeout"
     RATE_LIMIT = "rate_limit"

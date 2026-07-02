@@ -1,4 +1,5 @@
 """Structured JSON logging setup for the research_agent package."""
+
 from __future__ import annotations
 
 import json
@@ -6,7 +7,6 @@ import logging
 import logging.config
 import sys
 import time
-import traceback
 from typing import Any
 
 
@@ -49,7 +49,7 @@ class _JsonFormatter(logging.Formatter):
         }
     )
 
-    def format(self, record: logging.LogRecord) -> str:  # noqa: A003
+    def format(self, record: logging.LogRecord) -> str:
         record.message = record.getMessage()
         payload: dict[str, Any] = {
             "timestamp": self.formatTime(record, self.datefmt),
@@ -156,10 +156,7 @@ def setup_logging(
     if json_output:
         handler.setFormatter(_JsonFormatter())
     else:
-        fmt = (
-            "%(asctime)s | %(levelname)-8s | %(name)-30s | "
-            "%(funcName)s:%(lineno)d | %(message)s"
-        )
+        fmt = "%(asctime)s | %(levelname)-8s | %(name)-30s | %(funcName)s:%(lineno)d | %(message)s"
         handler.setFormatter(logging.Formatter(fmt, datefmt="%H:%M:%S"))
 
     root = logging.getLogger(logger_name)

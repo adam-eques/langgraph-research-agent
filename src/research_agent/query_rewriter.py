@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
 import re
@@ -8,8 +8,15 @@ logger = logging.getLogger(__name__)
 
 def remove_filler_words(query: str) -> str:
     fillers = {
-        "please", "can you", "could you", "tell me", "i want to know",
-        "what are", "what is the", "i need", "give me",
+        "please",
+        "can you",
+        "could you",
+        "tell me",
+        "i want to know",
+        "what are",
+        "what is the",
+        "i need",
+        "give me",
     }
     q = query.strip()
     for filler in fillers:

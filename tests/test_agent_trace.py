@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from research_agent.agent_trace import AgentTrace
 
@@ -31,5 +31,6 @@ def test_save_creates_file(tmp_path):
     out = str(tmp_path / "trace.json")
     trace.save(out)
     import json
+
     data = json.loads((tmp_path / "trace.json").read_text())
     assert data["summary"]["total_steps"] == 1

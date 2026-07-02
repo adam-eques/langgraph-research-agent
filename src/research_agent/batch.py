@@ -1,10 +1,12 @@
 """Batch processor — runs multiple research queries concurrently with asyncio."""
+
 from __future__ import annotations
 
 import asyncio
 import logging
 import time
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +136,7 @@ class BatchProcessor:
         block the event loop.  Returns a normalised result dict.
         """
         # Import here to avoid circular imports at module load time.
-        from research_agent.streaming import run as sync_run  # noqa: PLC0415
+        from research_agent.streaming import run as sync_run
 
         loop = asyncio.get_running_loop()
         try:

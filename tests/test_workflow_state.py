@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.workflow_state import WorkflowState, WorkflowStatus
 
 
@@ -27,6 +28,7 @@ def test_finish():
 
 def test_elapsed_positive_after_start():
     import time
+
     ws = WorkflowState("wf-4")
     ws.start()
     time.sleep(0.01)

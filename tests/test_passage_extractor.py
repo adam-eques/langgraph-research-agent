@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.rag.passage_extractor import extract_relevant_passages, highlight_terms
 
 

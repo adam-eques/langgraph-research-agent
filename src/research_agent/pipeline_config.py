@@ -37,9 +37,10 @@ class PipelineConfig:
         }
 
     @classmethod
-    def from_dict(cls, d: dict) -> "PipelineConfig":
+    def from_dict(cls, d: dict) -> PipelineConfig:
         return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
 
-    def with_overrides(self, **kwargs) -> "PipelineConfig":
+    def with_overrides(self, **kwargs) -> PipelineConfig:
         from dataclasses import replace
+
         return replace(self, **kwargs)

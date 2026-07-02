@@ -1,4 +1,5 @@
 """Hybrid BM25 + semantic search with Reciprocal Rank Fusion (RRF)."""
+
 from __future__ import annotations
 
 import logging
@@ -139,7 +140,7 @@ class HybridSearcher:
         # Deduplicate and materialise
         seen: set[int] = set()
         results: list[Document] = []
-        for doc_idx, score in fused:
+        for doc_idx, _score in fused:
             if doc_idx not in seen and doc_idx < len(docs):
                 seen.add(doc_idx)
                 results.append(docs[doc_idx])
@@ -185,9 +186,7 @@ class HybridSearcher:
             return []
 
         # Build a content-hash → index map for fast lookup
-        content_to_idx: dict[str, int] = {
-            doc.page_content: i for i, doc in enumerate(docs)
-        }
+        content_to_idx: dict[str, int] = {doc.page_content: i for i, doc in enumerate(docs)}
 
         ranked: list[int] = []
         for sem_doc in semantic_docs:

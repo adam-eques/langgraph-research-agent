@@ -19,7 +19,9 @@ def idf(term: str, documents: list[str]) -> float:
     return math.log((n + 1) / (docs_with_term + 1)) + 1
 
 
-def bm25_score(query: str, document: str, all_docs: list[str], k1: float = 1.5, b: float = 0.75) -> float:
+def bm25_score(
+    query: str, document: str, all_docs: list[str], k1: float = 1.5, b: float = 0.75
+) -> float:
     terms = re.findall(r"\b\w+\b", query.lower())
     avg_dl = sum(len(d.split()) for d in all_docs) / max(len(all_docs), 1)
     dl = len(document.split())
@@ -40,7 +42,6 @@ def rank_documents(
 ) -> list[dict[str, Any]]:
     texts = [d.get(content_key, "") for d in documents]
     scored = [
-        {**doc, "_bm25": bm25_score(query, texts[i], texts)}
-        for i, doc in enumerate(documents)
+        {**doc, "_bm25": bm25_score(query, texts[i], texts)} for i, doc in enumerate(documents)
     ]
     return sorted(scored, key=lambda d: d["_bm25"], reverse=True)

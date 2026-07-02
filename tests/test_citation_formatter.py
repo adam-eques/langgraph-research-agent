@@ -1,6 +1,10 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.citation_formatter import format_apa, format_inline_citation, build_references_section
+from research_agent.citation_formatter import (
+    build_references_section,
+    format_apa,
+    format_inline_citation,
+)
 
 
 def test_format_apa_with_title_year():

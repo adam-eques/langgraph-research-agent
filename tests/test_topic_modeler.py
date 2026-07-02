@@ -1,6 +1,10 @@
 from __future__ import annotations
+
 from research_agent.agents.topic_modeler import (
-    extract_keywords, group_by_topic, infer_topic_label, tokenize,
+    extract_keywords,
+    group_by_topic,
+    infer_topic_label,
+    tokenize,
 )
 
 

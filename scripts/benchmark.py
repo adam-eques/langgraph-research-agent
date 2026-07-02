@@ -1,4 +1,5 @@
 """Benchmark retrieval latency and LLM call latency end-to-end."""
+
 from __future__ import annotations
 
 import argparse
@@ -16,6 +17,7 @@ QUERIES = [
 
 def benchmark_retrieval(n_runs: int, collection: str) -> dict:
     from research_agent.rag.retriever import retrieve
+
     latencies = []
     for q in QUERIES[:n_runs]:
         t0 = time.perf_counter()
@@ -39,7 +41,7 @@ def main() -> None:
     stats = benchmark_retrieval(args.runs, args.collection)
     print(f"  mean:  {stats['mean_ms']:.1f}ms")
     print(f"  p95:   {stats['p95_ms']:.1f}ms")
-    print(f"  range: {stats['min_ms']:.1f}ms – {stats['max_ms']:.1f}ms")
+    print(f"  range: {stats['min_ms']:.1f}ms - {stats['max_ms']:.1f}ms")
 
 
 if __name__ == "__main__":

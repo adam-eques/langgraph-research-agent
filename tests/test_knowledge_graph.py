@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.knowledge_graph import KnowledgeGraph, KGNode, KGEdge
+
+from research_agent.knowledge_graph import KGEdge, KGNode, KnowledgeGraph
 
 
 def make_graph() -> KnowledgeGraph:

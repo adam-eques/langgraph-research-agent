@@ -1,10 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import asyncio
 import logging
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 
-from langchain_core.messages import HumanMessage
 from research_agent.state import ResearchState
 
 logger = logging.getLogger(__name__)

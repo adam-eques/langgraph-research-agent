@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-import asyncio
 import time
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Any, Callable, Awaitable
+from enum import StrEnum
+from typing import Any
 
 
-class ScheduleType(str, Enum):
+class ScheduleType(StrEnum):
     ONCE = "once"
     INTERVAL = "interval"
     CRON_LIKE = "cron_like"
@@ -48,8 +48,11 @@ class PipelineScheduler:
         max_runs: int = -1,
     ) -> None:
         self._jobs[name] = ScheduledJob(
-            name=name, fn=fn, schedule_type=schedule_type,
-            interval_seconds=interval_seconds, max_runs=max_runs,
+            name=name,
+            fn=fn,
+            schedule_type=schedule_type,
+            interval_seconds=interval_seconds,
+            max_runs=max_runs,
         )
 
     def unregister(self, name: str) -> bool:

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from research_agent.search_strategy import SearchConfig, build_search_config
 

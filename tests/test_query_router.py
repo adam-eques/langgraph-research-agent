@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.rag.query_router import route_query, RetrievalStrategy
+
+from research_agent.rag.query_router import RetrievalStrategy, route_query
 
 
 def test_direct_factual_query():

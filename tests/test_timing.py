@@ -1,8 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import time
 import asyncio
-from research_agent.timing import timed, async_timed
+
+from research_agent.timing import async_timed, timed
 
 
 def test_timed_returns_result():

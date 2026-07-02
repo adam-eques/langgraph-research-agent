@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, StateGraph
 
-from research_agent.state import ResearchState
+from research_agent.agents.analyst import build_analyst_node
 from research_agent.agents.researcher import build_researcher_node
 from research_agent.agents.retriever_agent import build_retriever_agent_node
-from research_agent.agents.analyst import build_analyst_node
-from research_agent.agents.synthesizer import build_synthesizer_node
 from research_agent.agents.supervisor import build_supervisor_node
+from research_agent.agents.synthesizer import build_synthesizer_node
+from research_agent.state import ResearchState
 
 
 def build_graph(checkpointing: bool = False, use_supervisor: bool = False):

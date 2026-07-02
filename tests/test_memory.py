@@ -1,16 +1,15 @@
 """Tests for ConversationMemory in-memory backend."""
+
 from __future__ import annotations
 
 import time
 
-import pytest
-
 from research_agent.memory import ConversationMemory, _InMemoryBackend
-
 
 # ---------------------------------------------------------------------------
 # _InMemoryBackend
 # ---------------------------------------------------------------------------
+
 
 class TestInMemoryBackend:
     def setup_method(self):
@@ -82,10 +81,12 @@ class TestInMemoryBackend:
 # ConversationMemory (integration via env var)
 # ---------------------------------------------------------------------------
 
+
 class TestConversationMemory:
     def setup_method(self):
         """Ensure we always use the in-memory backend."""
         import os
+
         os.environ["MEMORY_BACKEND"] = "memory"
         self.memory = ConversationMemory()
 

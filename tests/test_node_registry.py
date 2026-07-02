@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.node_registry import NodeRegistry
 
 
@@ -14,7 +15,8 @@ def test_register_and_get():
 
 def test_list_names_sorted():
     reg = NodeRegistry()
-    reg.register("b", dummy_fn); reg.register("a", dummy_fn)
+    reg.register("b", dummy_fn)
+    reg.register("a", dummy_fn)
     assert reg.list_names() == ["a", "b"]
 
 

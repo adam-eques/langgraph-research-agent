@@ -1,7 +1,8 @@
 from __future__ import annotations
-import json
-from research_agent.output_formatter import format_output, OutputFormat
 
+import json
+
+from research_agent.output_formatter import OutputFormat, format_output
 
 SAMPLE = {
     "title": "AI Research Report",

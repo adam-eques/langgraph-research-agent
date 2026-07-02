@@ -91,10 +91,12 @@ def enrich_batch(
 ) -> list[EnrichedDocument]:
     results = []
     for doc in documents:
-        results.append(enrich_document(
-            doc_id=doc.get("id", ""),
-            text=doc.get("text", ""),
-            original_metadata=doc.get("metadata"),
-            url=doc.get("url", ""),
-        ))
+        results.append(
+            enrich_document(
+                doc_id=doc.get("id", ""),
+                text=doc.get("text", ""),
+                original_metadata=doc.get("metadata"),
+                url=doc.get("url", ""),
+            )
+        )
     return results

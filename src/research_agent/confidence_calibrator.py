@@ -11,10 +11,10 @@ def platt_scaling(raw_score: float, a: float = 1.0, b: float = 0.0) -> float:
 def isotonic_calibration(scores: list[float], labels: list[int]) -> list[float]:
     if not scores or not labels or len(scores) != len(labels):
         return scores
-    pairs = sorted(zip(scores, labels))
+    pairs = sorted(zip(scores, labels, strict=False))
     calibrated = [p[1] for p in pairs]
     result: list[float] = []
-    for i, s in enumerate(scores):
+    for _i, s in enumerate(scores):
         idx = min(range(len(pairs)), key=lambda j: abs(pairs[j][0] - s))
         result.append(float(calibrated[idx]))
     return result

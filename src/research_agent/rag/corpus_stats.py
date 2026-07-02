@@ -58,12 +58,14 @@ class CorpusStats:
         stats = []
         for term in all_terms:
             avg_tf = sum(self.tf(term, i) for i in range(self.num_docs)) / max(self.num_docs, 1)
-            stats.append(TermStats(
-                term=term,
-                df=self.df(term),
-                idf=round(self.idf(term), 4),
-                avg_tf=round(avg_tf, 6),
-            ))
+            stats.append(
+                TermStats(
+                    term=term,
+                    df=self.df(term),
+                    idf=round(self.idf(term), 4),
+                    avg_tf=round(avg_tf, 6),
+                )
+            )
         return sorted(stats, key=lambda s: -s.idf)[:n]
 
     def vocabulary_size(self) -> int:

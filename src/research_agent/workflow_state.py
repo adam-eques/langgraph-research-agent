@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class WorkflowStatus(str, Enum):
+class WorkflowStatus(StrEnum):
     IDLE = "idle"
     RUNNING = "running"
     PAUSED = "paused"

@@ -4,7 +4,7 @@ import logging
 from urllib.parse import urlparse
 
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
 from research_agent.config import config
 from research_agent.state import ResearchState
@@ -34,11 +34,13 @@ def _fetch_page(url: str, timeout: int = 10) -> str:
     """Fetch a URL and return its text content."""
     try:
         import urllib.request
+
         req = urllib.request.Request(url, headers={"User-Agent": "research-agent/1.0"})
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             raw = resp.read().decode("utf-8", errors="replace")
         # Very naive HTML stripping
         import re
+
         text = re.sub(r"<[^>]+>", " ", raw)
         text = re.sub(r"\s+", " ", text)
         return text[:8000]  # cap at 8k chars
@@ -61,6 +63,7 @@ def build_web_scraper_node():
 
         # Extract URLs from the last researcher message
         import re
+
         urls: list[str] = []
         if messages:
             content = str(messages[-1].content)
@@ -77,10 +80,14 @@ def build_web_scraper_node():
             raw_text = _fetch_page(url)
             if not raw_text:
                 continue
-            response: AIMessage = llm.invoke([
-                SystemMessage(content=_SYSTEM_PROMPT),
-                HumanMessage(content=f"Query: {query}\n\nPage content from {url}:\n\n{raw_text}"),
-            ])
+            response: AIMessage = llm.invoke(
+                [
+                    SystemMessage(content=_SYSTEM_PROMPT),
+                    HumanMessage(
+                        content=f"Query: {query}\n\nPage content from {url}:\n\n{raw_text}"
+                    ),
+                ]
+            )
             scraped_notes.append(f"[Scraped: {url}]\n{response.content}")
 
         return {

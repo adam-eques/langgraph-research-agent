@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 from research_agent.query_deduplicator import (
+    deduplicate,
     deduplicate_exact,
     deduplicate_fuzzy,
-    deduplicate,
 )
 
 

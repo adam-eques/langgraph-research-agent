@@ -1,8 +1,9 @@
 """Example: multi-turn research conversation with persistent memory."""
+
 from __future__ import annotations
 
-from research_agent.streaming import run
 from research_agent.memory import ConversationMemory
+from research_agent.streaming import run
 
 SESSION_ID = "demo-session-001"
 

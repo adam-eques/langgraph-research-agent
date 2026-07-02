@@ -1,12 +1,13 @@
 """Fact-checker agent — verifies each key claim in the synthesiser output."""
+
 from __future__ import annotations
 
 import logging
 from typing import Any
 
-from pydantic import BaseModel, Field
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.messages import HumanMessage, SystemMessage
+from pydantic import BaseModel, Field
 
 from research_agent.config import config
 from research_agent.state import ResearchState
@@ -21,7 +22,7 @@ Your task is to verify each key factual claim in the answer against the research
 
 For every claim you identify:
 - verdict: SUPPORTED | UNSUPPORTED | PARTIALLY_SUPPORTED | UNVERIFIABLE
-- confidence: 0.0–1.0 (how certain you are of your verdict)
+- confidence: 0.0-1.0 (how certain you are of your verdict)
 - evidence: the specific snippet from research notes that supports or refutes the claim
 
 Then give an overall_verdict for the whole answer:
@@ -39,17 +40,13 @@ class ClaimVerdict(BaseModel):
     """Verdict on a single factual claim."""
 
     claim: str = Field(description="The exact claim from the answer being verified")
-    verdict: str = Field(
-        description="SUPPORTED | UNSUPPORTED | PARTIALLY_SUPPORTED | UNVERIFIABLE"
-    )
+    verdict: str = Field(description="SUPPORTED | UNSUPPORTED | PARTIALLY_SUPPORTED | UNVERIFIABLE")
     confidence: float = Field(
-        description="Confidence in the verdict, 0.0–1.0",
+        description="Confidence in the verdict, 0.0-1.0",
         ge=0.0,
         le=1.0,
     )
-    evidence: str = Field(
-        description="The research note excerpt supporting or refuting this claim"
-    )
+    evidence: str = Field(description="The research note excerpt supporting or refuting this claim")
 
 
 class FactCheckResult(BaseModel):
@@ -58,24 +55,18 @@ class FactCheckResult(BaseModel):
     claims: list[ClaimVerdict] = Field(
         description="Individual claim verdicts, ordered as they appear in the answer"
     )
-    overall_verdict: str = Field(
-        description="VERIFIED | MOSTLY_VERIFIED | MIXED | UNRELIABLE"
-    )
-    summary: str = Field(
-        description="Brief human-readable summary of the fact-check findings"
-    )
+    overall_verdict: str = Field(description="VERIFIED | MOSTLY_VERIFIED | MIXED | UNRELIABLE")
+    summary: str = Field(description="Brief human-readable summary of the fact-check findings")
     unsupported_count: int = Field(
         description="Number of claims that are UNSUPPORTED or UNVERIFIABLE"
     )
 
     @property
     def support_rate(self) -> float:
-        """Fraction of claims that are SUPPORTED (0–1)."""
+        """Fraction of claims that are SUPPORTED (0-1)."""
         if not self.claims:
             return 1.0
-        supported = sum(
-            1 for c in self.claims if c.verdict in ("SUPPORTED", "PARTIALLY_SUPPORTED")
-        )
+        supported = sum(1 for c in self.claims if c.verdict in ("SUPPORTED", "PARTIALLY_SUPPORTED"))
         return supported / len(self.claims)
 
 
@@ -128,17 +119,14 @@ class FactCheckerAgent:
             )
 
         notes_block = "\n\n".join(research_notes) if research_notes else "(no research notes)"
-        logger.info("Fact-checking answer (%d chars) against %d notes", len(answer), len(research_notes))
+        logger.info(
+            "Fact-checking answer (%d chars) against %d notes", len(answer), len(research_notes)
+        )
 
         messages = [
             SystemMessage(content=_SYSTEM_PROMPT),
             HumanMessage(
-                content=(
-                    "## Answer to verify\n\n"
-                    f"{answer}\n\n"
-                    "## Research notes\n\n"
-                    f"{notes_block}"
-                )
+                content=(f"## Answer to verify\n\n{answer}\n\n## Research notes\n\n{notes_block}")
             ),
         ]
         result: FactCheckResult = self._llm.invoke(messages)

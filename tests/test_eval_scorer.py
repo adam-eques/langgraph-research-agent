@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.eval.scorer import score_answer_length, score_citation_coverage, composite_score
+from research_agent.eval.scorer import composite_score, score_answer_length, score_citation_coverage
 
 
 def test_length_score_in_range():

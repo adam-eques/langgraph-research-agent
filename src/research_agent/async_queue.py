@@ -1,7 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import asyncio
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
+from typing import Any
 
 
 class AsyncQueue:
@@ -23,5 +24,5 @@ class AsyncQueue:
             try:
                 item = await asyncio.wait_for(self._q.get(), timeout=0.05)
                 yield item
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue

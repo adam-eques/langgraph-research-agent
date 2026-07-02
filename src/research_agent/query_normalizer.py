@@ -33,11 +33,20 @@ def normalize_query(text: str) -> str:
 
 def expand_contractions(text: str) -> str:
     contractions = {
-        "can't": "cannot", "won't": "will not", "don't": "do not",
-        "doesn't": "does not", "isn't": "is not", "aren't": "are not",
-        "wasn't": "was not", "weren't": "were not", "it's": "it is",
-        "i'm": "i am", "i've": "i have", "i'll": "i will",
-        "what's": "what is", "that's": "that is",
+        "can't": "cannot",
+        "won't": "will not",
+        "don't": "do not",
+        "doesn't": "does not",
+        "isn't": "is not",
+        "aren't": "are not",
+        "wasn't": "was not",
+        "weren't": "were not",
+        "it's": "it is",
+        "i'm": "i am",
+        "i've": "i have",
+        "i'll": "i will",
+        "what's": "what is",
+        "that's": "that is",
     }
     for k, v in contractions.items():
         text = re.sub(re.escape(k), v, text, flags=re.IGNORECASE)

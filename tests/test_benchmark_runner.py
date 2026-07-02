@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import time
-from research_agent.benchmark_runner import BenchmarkRunner, BenchmarkResult
+
+from research_agent.benchmark_runner import BenchmarkResult, BenchmarkRunner
 
 
 def test_run_basic():

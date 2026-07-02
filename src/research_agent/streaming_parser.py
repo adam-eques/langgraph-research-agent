@@ -1,8 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import json
 import logging
-from typing import AsyncIterator, Any
+from collections.abc import AsyncIterator
+from typing import Any
 
 logger = logging.getLogger(__name__)
 

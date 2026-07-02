@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from research_agent.query_expansion import (
-    expand_query_with_synonyms, add_related_terms, deduplicate_queries,
+    add_related_terms,
+    deduplicate_queries,
+    expand_query_with_synonyms,
 )
 
 

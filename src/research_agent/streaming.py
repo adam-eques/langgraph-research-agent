@@ -34,7 +34,7 @@ def stream_tokens(query: str) -> Iterator[str]:
     for chunk in graph.stream(initial, stream_mode="messages"):
         node, messages = chunk if isinstance(chunk, tuple) else (None, chunk)
         if node == "synthesizer":
-            for msg in (messages if isinstance(messages, list) else [messages]):
+            for msg in messages if isinstance(messages, list) else [messages]:
                 if isinstance(msg, AIMessageChunk) and msg.content:
                     yield str(msg.content)
 
@@ -52,6 +52,6 @@ async def astream_tokens(query: str) -> AsyncIterator[str]:
     async for chunk in graph.astream(initial, stream_mode="messages"):
         node, messages = chunk if isinstance(chunk, tuple) else (None, chunk)
         if node == "synthesizer":
-            for msg in (messages if isinstance(messages, list) else [messages]):
+            for msg in messages if isinstance(messages, list) else [messages]:
                 if isinstance(msg, AIMessageChunk) and msg.content:
                     yield str(msg.content)

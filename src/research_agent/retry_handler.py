@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import asyncio
 import time
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable, TypeVar
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -75,7 +76,8 @@ class RetryHandler:
     async def run_async(self, fn: Callable[[], Awaitable[Any]]) -> RetryResult:
         return await retry_async(fn, self._config)
 
-    def with_config(self, **kwargs) -> "RetryHandler":
+    def with_config(self, **kwargs) -> RetryHandler:
         import dataclasses
+
         cfg = dataclasses.replace(self._config, **kwargs)
         return RetryHandler(cfg)

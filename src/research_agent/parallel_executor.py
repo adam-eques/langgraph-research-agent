@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Callable, Awaitable
+from collections.abc import Awaitable, Callable
+from typing import Any
 
 
 async def run_parallel(
@@ -24,10 +25,7 @@ async def run_parallel(
             except Exception as exc:
                 errors[task_id] = str(exc)
 
-    await asyncio.gather(*[
-        run_one(tid, fn, args, kwargs)
-        for tid, fn, args, kwargs in tasks
-    ])
+    await asyncio.gather(*[run_one(tid, fn, args, kwargs) for tid, fn, args, kwargs in tasks])
     return {"results": results, "errors": errors}
 
 

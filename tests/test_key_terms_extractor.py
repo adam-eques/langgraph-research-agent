@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from research_agent.agents.key_terms_extractor import (
     KeyTerm,
-    extract_single_terms,
-    extract_named_phrases,
     extract_key_terms,
+    extract_named_phrases,
+    extract_single_terms,
 )
 
 
@@ -24,11 +25,15 @@ def test_extract_named_phrases():
     text = "Natural Language Processing and Machine Learning are growing fields."
     phrases = extract_named_phrases(text)
     names = [p.term for p in phrases]
-    assert any("Natural Language" in n for n in names) or any("Machine Learning" in n for n in names)
+    assert any("Natural Language" in n for n in names) or any(
+        "Machine Learning" in n for n in names
+    )
 
 
 def test_extract_key_terms_top_n():
-    text = "deep learning is a subset of machine learning which is a subset of artificial intelligence"
+    text = (
+        "deep learning is a subset of machine learning which is a subset of artificial intelligence"
+    )
     terms = extract_key_terms(text, top_n=5)
     assert len(terms) <= 5
 

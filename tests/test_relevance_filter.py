@@ -1,6 +1,10 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.relevance_filter import compute_keyword_overlap, filter_relevant, rank_by_relevance
+from research_agent.relevance_filter import (
+    compute_keyword_overlap,
+    filter_relevant,
+    rank_by_relevance,
+)
 
 
 def test_keyword_overlap_high():

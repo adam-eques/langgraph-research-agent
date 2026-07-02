@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import logging
 import time
 import uuid
-import logging
 
 from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware

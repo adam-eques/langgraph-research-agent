@@ -43,13 +43,17 @@ def validate_query(
     if not normalized and not allow_empty:
         errors.append(ValidationError("EMPTY", "Query must not be empty."))
     elif len(normalized) < min_length:
-        errors.append(ValidationError("TOO_SHORT", f"Query must be at least {min_length} characters."))
+        errors.append(
+            ValidationError("TOO_SHORT", f"Query must be at least {min_length} characters.")
+        )
 
     if len(normalized) > max_length:
         errors.append(ValidationError("TOO_LONG", f"Query exceeds {max_length} character limit."))
 
     if _INJECTION_RE.search(normalized):
-        errors.append(ValidationError("INJECTION", "Query contains disallowed instruction patterns."))
+        errors.append(
+            ValidationError("INJECTION", "Query contains disallowed instruction patterns.")
+        )
 
     return QueryValidationResult(
         query=query,
