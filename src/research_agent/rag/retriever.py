@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import os
 from pathlib import Path
+from typing import cast
 
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
@@ -18,7 +19,7 @@ _PERSIST_DIR = ".chroma"
 def _get_embeddings():
     return OpenAIEmbeddings(
         model="text-embedding-3-small",
-        api_key=config.openai_api_key,
+        openai_api_key=config.openai_api_key,
     )
 
 
@@ -59,7 +60,7 @@ def retrieve(
     store = _get_store(collection)
     results = store.similarity_search(query, k=k)
     logger.info("Retrieved %d documents for query: %.80s", len(results), query)
-    return results
+    return cast(list[Document], results)
 
 
 def format_context(docs: list[Document]) -> str:

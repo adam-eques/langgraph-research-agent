@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Any
+from typing import Any, cast
 
 from langchain_core.documents import Document
 
@@ -304,10 +304,10 @@ class AdvancedChunker:
             import nltk  # type: ignore[import-untyped]
 
             try:
-                return nltk.sent_tokenize(text)
+                return cast(list[str], nltk.sent_tokenize(text))
             except LookupError:
                 nltk.download("punkt", quiet=True)
-                return nltk.sent_tokenize(text)
+                return cast(list[str], nltk.sent_tokenize(text))
         except ImportError:
             pass
 

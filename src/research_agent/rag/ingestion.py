@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 
 from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader, TextLoader
+from langchain_core.document_loaders import BaseLoader
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
@@ -25,6 +26,7 @@ def load_document(path: str | Path) -> list[Document]:
 
     logger.info("Loading document: %s", path)
 
+    loader: BaseLoader
     if path.suffix == ".pdf":
         loader = PyPDFLoader(str(path))
     elif path.suffix == ".docx":

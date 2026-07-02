@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+from typing import cast
 
 
 class PromptVersioner:
@@ -15,7 +16,7 @@ class PromptVersioner:
     def _load(self) -> dict:
         if self._path.exists():
             try:
-                return json.loads(self._path.read_text())
+                return cast(dict, json.loads(self._path.read_text()))
             except Exception:
                 pass
         return {}

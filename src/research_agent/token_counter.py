@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ def count_tokens_anthropic(
         client = anthropic.Anthropic(api_key=config.anthropic_api_key)
         result = client.messages.count_tokens(
             model=model,
-            messages=messages,
+            messages=cast(Any, messages),
         )
         logger.debug("Token count for %d messages: %d", len(messages), result.input_tokens)
         return result.input_tokens

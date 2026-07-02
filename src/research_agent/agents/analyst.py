@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from typing import cast
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -52,7 +53,7 @@ def build_analyst_node():
                 content=f"Research query: {state['query']}\n\nAnalyze the research gathered above."
             ),
         ]
-        analysis: AnalysisOutput = llm.invoke(conversation + prompt)
+        analysis = cast(AnalysisOutput, llm.invoke(conversation + prompt))
 
         notes = [
             f"Summary: {analysis.summary}",

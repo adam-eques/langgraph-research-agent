@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 
 class DocumentRegistry:
@@ -16,7 +16,7 @@ class DocumentRegistry:
     def _load(self) -> dict:
         if self._path.exists():
             try:
-                return json.loads(self._path.read_text())
+                return cast(dict, json.loads(self._path.read_text()))
             except Exception:
                 return {}
         return {}

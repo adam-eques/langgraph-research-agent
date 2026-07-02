@@ -15,7 +15,7 @@ class Feedback:
     rating: int
     comment: str = ""
     helpful: bool = True
-    tags: list = None
+    tags: list | None = None
 
     def __post_init__(self):
         if self.tags is None:

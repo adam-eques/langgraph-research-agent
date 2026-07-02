@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import os
 from collections.abc import Callable
+from typing import cast
 
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
@@ -62,7 +63,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         # Allow public / unauthenticated paths
         if request.url.path in self._public_paths:
-            return await call_next(request)
+            return cast(Response, await call_next(request))
 
         # Extract the API key from the request header
         api_key = request.headers.get("X-API-Key", "").strip()
@@ -91,7 +92,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
                 content={"detail": "Invalid API key."},
             )
 
-        return await call_next(request)
+        return cast(Response, await call_next(request))
 
 
 def add_api_key_auth(app: ASGIApp, api_keys: set[str] | None = None) -> None:

@@ -37,7 +37,7 @@ class MetadataFilter:
                 return False
             if op == "lt" and not (actual < value):  # type: ignore[operator]
                 return False
-            if op == "contains" and value not in str(actual):
+            if op == "contains" and str(value) not in str(actual):
                 return False
             if op == "in" and actual not in value:  # type: ignore[operator]
                 return False

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ async def run_full_pipeline(
             asyncio.get_event_loop().run_in_executor(None, run, query),
             timeout=timeout,
         )
-        return result
+        return cast("dict[str, Any]", result)
     except TimeoutError:
         logger.error("Pipeline timed out after %.1fs for query: %s", timeout, query[:80])
         return {"query": query, "answer": "", "error": "timeout"}

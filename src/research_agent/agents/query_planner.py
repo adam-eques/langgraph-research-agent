@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from typing import cast
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +24,6 @@ async def plan_query(query: str, llm) -> list[str]:
     content = response.content if hasattr(response, "content") else str(response)
     parsed = extract_and_parse_json(content)
     if parsed and "sub_queries" in parsed:
-        return parsed["sub_queries"]
+        return cast(list[str], parsed["sub_queries"])
     logger.warning("Planner returned unparseable output, using original query")
     return [query]

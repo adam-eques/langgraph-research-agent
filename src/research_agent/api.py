@@ -28,7 +28,7 @@ class QueryResponse(BaseModel):
 async def research(req: QueryRequest) -> QueryResponse:
     result = streaming.run(req.query)
     messages = result.get("messages", [])
-    answer = messages[-1].content if messages else ""
+    answer = str(messages[-1].content) if messages else ""
     return QueryResponse(
         query=req.query,
         answer=answer,

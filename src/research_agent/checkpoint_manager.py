@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
+from typing import cast
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ class CheckpointManager:
         if not files:
             return None
         try:
-            return json.loads(files[-1].read_text())
+            return cast("dict | None", json.loads(files[-1].read_text()))
         except Exception:
             return None
 

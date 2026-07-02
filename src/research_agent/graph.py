@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import cast
+
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, StateGraph
 
@@ -66,7 +68,7 @@ def build_graph(checkpointing: bool = False, use_supervisor: bool = False):
 
 def get_graph_visualization() -> str:
     """Return a Mermaid diagram string of the compiled graph."""
-    return build_graph().get_graph().draw_mermaid()
+    return cast(str, build_graph().get_graph().draw_mermaid())
 
 
 def get_graph_png(output_path: str = "graph.png") -> None:

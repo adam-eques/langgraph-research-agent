@@ -29,8 +29,8 @@ async def process_batch(
     concurrency: int = 5,
     on_error: str = "continue",
 ) -> BatchResult:
-    results = []
-    errors = []
+    results: list[Any] = []
+    errors: list[str] = []
     sem = asyncio.Semaphore(concurrency)
 
     async def process_one(item: Any) -> Any:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from typing import cast
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -55,17 +56,20 @@ def build_citation_verifier_node():
             f"[{i + 1}] {c['source']}: {c['excerpt'][:300]}" for i, c in enumerate(citations)
         )
 
-        result: VerificationResult = llm.invoke(
-            [
-                SystemMessage(content=_SYSTEM_PROMPT),
-                HumanMessage(
-                    content=(
-                        f"Answer:\n{answer}\n\n"
-                        f"Citations:\n{citations_text}\n\n"
-                        "Verify each citation."
-                    )
-                ),
-            ]
+        result = cast(
+            VerificationResult,
+            llm.invoke(
+                [
+                    SystemMessage(content=_SYSTEM_PROMPT),
+                    HumanMessage(
+                        content=(
+                            f"Answer:\n{answer}\n\n"
+                            f"Citations:\n{citations_text}\n\n"
+                            "Verify each citation."
+                        )
+                    ),
+                ]
+            ),
         )
 
         logger.info(

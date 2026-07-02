@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, cast
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -47,7 +47,7 @@ def build_supervisor_node():
             *list(state["messages"]),
         ]
 
-        decision: SupervisorDecision = llm.invoke(messages)
+        decision = cast(SupervisorDecision, llm.invoke(messages))
         next_node = "end" if decision.next == "FINISH" else decision.next
         return {"next": next_node}
 

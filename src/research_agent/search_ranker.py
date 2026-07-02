@@ -82,7 +82,7 @@ def rank_search_results(
             )
         )
 
-    ranked.sort(key=lambda r: -r.final_score)
-    for i, r in enumerate(ranked):
-        r.rank = i + 1
+    ranked.sort(key=lambda rr: -rr.final_score)
+    for i, ranked_result in enumerate(ranked):
+        ranked_result.rank = i + 1
     return ranked

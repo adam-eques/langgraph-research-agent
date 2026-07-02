@@ -25,7 +25,9 @@ def token_aware_split(text: str, max_tokens: int, chars_per_token: int = 4) -> l
     if len(text) <= max_chars:
         return [text]
     sentences = sentence_split(text)
-    chunks, current, current_len = [], [], 0
+    chunks: list[str] = []
+    current: list[str] = []
+    current_len = 0
     for s in sentences:
         if current_len + len(s) > max_chars and current:
             chunks.append(" ".join(current))

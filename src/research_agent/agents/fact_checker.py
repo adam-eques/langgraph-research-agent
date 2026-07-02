@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, cast
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -129,7 +129,7 @@ class FactCheckerAgent:
                 content=(f"## Answer to verify\n\n{answer}\n\n## Research notes\n\n{notes_block}")
             ),
         ]
-        result: FactCheckResult = self._llm.invoke(messages)
+        result = cast(FactCheckResult, self._llm.invoke(messages))
         logger.info(
             "Fact-check complete: overall=%s, support_rate=%.2f",
             result.overall_verdict,

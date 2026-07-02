@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ def format_document(doc: dict, index: int = 0) -> str:
     content = doc.get("content", "").strip()
     source = doc.get("source", "")
     header = f"[{index + 1}] {source}\n" if source else f"[{index + 1}]\n"
-    return header + content
+    return cast(str, header + content)
 
 
 def build_context(
@@ -45,3 +45,26 @@ def build_messages(
     user_content = f"{context}\n\n{user_query}".strip() if context else user_query
     messages.append({"role": "user", "content": user_content})
     return messages
+
+
+def summarize_notes(notes: list[str], max_chars: int = 5000) -> str:
+    """Join research notes into a single block, truncated to *max_chars*."""
+    joined = "\n\n".join(n.strip() for n in notes if n.strip())
+    if len(joined) > max_chars:
+        return joined[:max_chars].rstrip() + " …"
+    return joined
+
+
+def format_citations(citations: list[dict]) -> str:
+    """Render citation dicts as a numbered ``Sources`` block (empty if none)."""
+    if not citations:
+        return ""
+    lines = ["Sources:"]
+    for i, cite in enumerate(citations, 1):
+        source = cite.get("source", "unknown")
+        excerpt = cite.get("excerpt", "")
+        line = f"[{i}] {source}"
+        if excerpt:
+            line += f" — {excerpt[:150].strip()}"
+        lines.append(line)
+    return "\n".join(lines)

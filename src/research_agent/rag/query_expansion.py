@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import cast
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -88,7 +89,7 @@ class QueryExpander:
         ]
 
         try:
-            result: ExpandedQueries = self._llm.invoke(messages)
+            result = cast(ExpandedQueries, self._llm.invoke(messages))
             alternatives = result.alternatives[:n]
         except Exception:
             logger.exception("Query expansion failed — returning original query only")

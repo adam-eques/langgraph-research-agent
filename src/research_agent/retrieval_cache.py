@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import time
-from typing import Any
+from typing import Any, cast
 
 
 class RetrievalCache:
@@ -24,7 +24,7 @@ class RetrievalCache:
         if time.monotonic() - ts > self._ttl:
             del self._store[key]
             return None
-        return result
+        return cast(list[Any] | None, result)
 
     def set(self, query: str, results: list, collection: str = "default") -> None:
         if len(self._store) >= self._max_size:

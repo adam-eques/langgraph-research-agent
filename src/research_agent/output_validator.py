@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ def extract_and_parse_json(text: str) -> dict | None:
     match = re.search(r"```(?:json)?\s*([\s\S]+?)```", text)
     raw = match.group(1).strip() if match else text.strip()
     try:
-        return json.loads(raw)
+        return cast("dict | None", json.loads(raw))
     except json.JSONDecodeError as e:
         logger.debug("JSON parse failed: %s", e)
         return None

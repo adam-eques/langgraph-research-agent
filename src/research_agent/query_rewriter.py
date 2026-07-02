@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 def remove_filler_words(query: str) -> str:
-    fillers = {
+    fillers = [
         "please",
         "can you",
         "could you",
@@ -17,10 +17,18 @@ def remove_filler_words(query: str) -> str:
         "what is the",
         "i need",
         "give me",
-    }
+    ]
     q = query.strip()
-    for filler in fillers:
-        q = re.sub(rf"(?i)^{re.escape(filler)}\s*", "", q)
+    # Repeatedly strip leading fillers until none match, so stacked fillers
+    # (e.g. "Please tell me ...") are all removed regardless of ordering.
+    changed = True
+    while changed:
+        changed = False
+        for filler in fillers:
+            stripped = re.sub(rf"(?i)^{re.escape(filler)}\s*", "", q)
+            if stripped != q:
+                q = stripped
+                changed = True
     return q.strip()
 
 

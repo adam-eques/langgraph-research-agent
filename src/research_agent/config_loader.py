@@ -4,7 +4,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +14,7 @@ def load_json_config(path: str) -> dict[str, Any]:
     if not p.exists():
         raise FileNotFoundError(f"Config file not found: {path}")
     try:
-        return json.loads(p.read_text(encoding="utf-8"))
+        return cast("dict[str, Any]", json.loads(p.read_text(encoding="utf-8")))
     except json.JSONDecodeError as exc:
         raise ValueError(f"Invalid JSON in {path}: {exc}") from exc
 

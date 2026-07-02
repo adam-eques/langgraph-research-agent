@@ -14,7 +14,7 @@ class Citation(TypedDict):
     relevance: str
 
 
-class ResearchState(TypedDict):
+class ResearchState(TypedDict, total=False):
     messages: Annotated[Sequence[BaseMessage], add_messages]
     query: str
     research_notes: list[str]

@@ -48,11 +48,11 @@ except ImportError:
             print(f"\n=== {title} ===")
         print(text)
 
-    class _spinner:  # type: ignore[misc]  # noqa: N801  # mirrors the _spinner() fallback above
+    class _spinner:  # type: ignore[misc,no-redef]  # noqa: N801  # mirrors the _spinner() fallback above
         def __init__(self, description: str) -> None:
             self._desc = description
 
-        def __enter__(self) -> _spinner:
+        def __enter__(self):
             print(f"{self._desc}...", flush=True)
             return self
 

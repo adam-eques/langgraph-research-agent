@@ -8,7 +8,7 @@ class RetrievedDoc:
     content: str
     score: float
     source: str = ""
-    metadata: dict = None
+    metadata: dict | None = None
 
     def __post_init__(self):
         if self.metadata is None:

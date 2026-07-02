@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from dataclasses import dataclass
+from typing import cast
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +42,7 @@ class SearchClientPool:
     async def search_all(self, query: str, num_results: int = 5) -> list[SearchResult]:
         async def _search(client) -> list[SearchResult]:
             async with self._sem:
-                return await client.search(query, num_results)
+                return cast(list[SearchResult], await client.search(query, num_results))
 
         results = await asyncio.gather(*[_search(c) for c in self._clients], return_exceptions=True)
         merged = []

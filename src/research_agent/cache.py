@@ -9,7 +9,7 @@ import os
 import time
 from abc import ABC, abstractmethod
 from collections import OrderedDict
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -110,7 +110,7 @@ class _RedisBackend(_BaseCacheBackend):
         if raw is None:
             return None
         try:
-            return json.loads(raw)
+            return cast("dict[str, Any] | None", json.loads(raw))
         except json.JSONDecodeError:
             logger.warning("Cache: corrupted entry for key %s — removing", key[:16])
             self.invalidate(key)
