@@ -1,6 +1,7 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import pytest
+
 from research_agent.agent_registry import AgentRegistry
 
 

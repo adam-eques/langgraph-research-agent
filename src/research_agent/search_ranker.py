@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import math
 import re
 from dataclasses import dataclass, field
 from typing import Any
@@ -73,15 +72,17 @@ def rank_search_results(
             "length": _length_score(r.content),
         }
         final = sum(w.get(k, 0.0) * v for k, v in signals.items())
-        ranked.append(RankedSearchResult(
-            doc_id=r.doc_id,
-            content=r.content,
-            final_score=final,
-            rank=0,
-            signals=signals,
-        ))
+        ranked.append(
+            RankedSearchResult(
+                doc_id=r.doc_id,
+                content=r.content,
+                final_score=final,
+                rank=0,
+                signals=signals,
+            )
+        )
 
-    ranked.sort(key=lambda r: -r.final_score)
-    for i, r in enumerate(ranked):
-        r.rank = i + 1
+    ranked.sort(key=lambda rr: -rr.final_score)
+    for i, ranked_result in enumerate(ranked):
+        ranked_result.rank = i + 1
     return ranked

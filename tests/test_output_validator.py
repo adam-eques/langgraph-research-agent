@@ -1,10 +1,14 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.output_validator import extract_and_parse_json, validate_required_keys, coerce_to_list
+from research_agent.output_validator import (
+    coerce_to_list,
+    extract_and_parse_json,
+    validate_required_keys,
+)
 
 
 def test_extract_json_from_code_block():
-    text = "Here is output:\n```json\n{\"key\": \"val\"}\n```"
+    text = 'Here is output:\n```json\n{"key": "val"}\n```'
     result = extract_and_parse_json(text)
     assert result == {"key": "val"}
 

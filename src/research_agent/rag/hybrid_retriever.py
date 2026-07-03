@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
 
 @dataclass
@@ -9,7 +8,7 @@ class RetrievedDoc:
     content: str
     score: float
     source: str = ""
-    metadata: dict = None
+    metadata: dict | None = None
 
     def __post_init__(self):
         if self.metadata is None:
@@ -39,12 +38,14 @@ def reciprocal_rank_fusion(
     result = []
     for key in ranked:
         d = docs[key]
-        result.append(RetrievedDoc(
-            content=d.content,
-            score=scores[key],
-            source=d.source,
-            metadata=d.metadata,
-        ))
+        result.append(
+            RetrievedDoc(
+                content=d.content,
+                score=scores[key],
+                source=d.source,
+                metadata=d.metadata,
+            )
+        )
     return result
 
 

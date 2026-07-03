@@ -25,7 +25,7 @@ class WorkflowCheckpoint:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "WorkflowCheckpoint":
+    def from_dict(cls, data: dict) -> WorkflowCheckpoint:
         return cls(
             checkpoint_id=data["checkpoint_id"],
             workflow_id=data["workflow_id"],

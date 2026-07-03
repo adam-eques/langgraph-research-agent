@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from research_agent.agents.narrative_builder import (
-    build_narrative,
-    render_narrative,
     NarrativeSegment,
     add_transition,
+    build_narrative,
+    render_narrative,
 )
 
 

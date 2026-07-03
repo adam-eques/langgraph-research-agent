@@ -1,6 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.hallucination_detector import detect_overconfident_claims, hallucination_risk_score
+from research_agent.hallucination_detector import (
+    detect_overconfident_claims,
+    hallucination_risk_score,
+)
 
 
 def test_detect_overconfident_no_hedge():

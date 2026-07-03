@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.search_ranker import rank_search_results, SearchResult, RankedSearchResult
+
+from research_agent.search_ranker import RankedSearchResult, SearchResult, rank_search_results
 
 
 def make_result(doc_id, content, score=0.5, year=None):

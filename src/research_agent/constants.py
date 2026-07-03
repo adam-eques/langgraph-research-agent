@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 # Default LLM settings
 DEFAULT_MODEL = "claude-3-5-sonnet-20241022"

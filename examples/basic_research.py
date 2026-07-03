@@ -1,4 +1,5 @@
 """Basic example: run the research agent on a query and print the result."""
+
 from __future__ import annotations
 
 from research_agent.streaming import run

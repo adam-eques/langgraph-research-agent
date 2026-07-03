@@ -34,10 +34,14 @@ def aggregate_results(
     source_key: str = "source",
     confidence_key: str = "confidence",
 ) -> AggregatedResult:
-    answers = [r[answer_key] for r in results if answer_key in r and r[answer_key]]
+    answers = [r[answer_key] for r in results if r.get(answer_key)]
     sources = list(dict.fromkeys(r[source_key] for r in results if source_key in r))
-    confidences = [r[confidence_key] for r in results if confidence_key in r and isinstance(r[confidence_key], (int, float))]
-    avg_confidence = sum(confidences) / len(confidences) if confidences else 0.5
+    confidences = [
+        r[confidence_key]
+        for r in results
+        if confidence_key in r and isinstance(r[confidence_key], (int, float))
+    ]
+    avg_confidence = round(sum(confidences) / len(confidences), 4) if confidences else 0.5
     return AggregatedResult(
         query=query,
         answers=answers,

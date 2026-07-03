@@ -1,8 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any, AsyncIterator
+from collections.abc import AsyncIterator
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ class StreamAggregator:
     def __init__(self) -> None:
         self._streams: list[AsyncIterator[Any]] = []
 
-    def add(self, stream: AsyncIterator[Any]) -> "StreamAggregator":
+    def add(self, stream: AsyncIterator[Any]) -> StreamAggregator:
         self._streams.append(stream)
         return self
 

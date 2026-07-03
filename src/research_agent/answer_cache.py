@@ -4,6 +4,7 @@ import hashlib
 import json
 import logging
 from pathlib import Path
+from typing import cast
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ class AnswerCache:
     def _load(self) -> dict:
         if self._path.exists():
             try:
-                return json.loads(self._path.read_text())
+                return cast(dict, json.loads(self._path.read_text()))
             except Exception:
                 return {}
         return {}
@@ -25,7 +26,7 @@ class AnswerCache:
         return hashlib.sha256(query.strip().lower().encode()).hexdigest()[:20]
 
     def get(self, query: str) -> dict | None:
-        return self._store.get(self._key(query))
+        return cast("dict | None", self._store.get(self._key(query)))
 
     def set(self, query: str, result: dict) -> None:
         self._store[self._key(query)] = result

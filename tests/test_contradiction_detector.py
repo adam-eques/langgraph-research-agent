@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.agents.contradiction_detector import detect_contradictions, has_contradictions
 
 

@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.markdown_utils import to_html, strip_markdown
+from research_agent.markdown_utils import strip_markdown, to_html
 
 
 def test_to_html_header():
@@ -14,7 +14,7 @@ def test_to_html_bold():
 
 
 def test_to_html_code():
-    result = to_html("code snippet")
+    result = to_html("`code snippet`")
     assert "<code>code snippet</code>" in result
 
 

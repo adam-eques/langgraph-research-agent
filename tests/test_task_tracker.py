@@ -1,11 +1,11 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.task_tracker import TaskTracker, TaskStatus
+from research_agent.task_tracker import TaskStatus, TaskTracker
 
 
 def test_add_and_start():
     tt = TaskTracker()
-    task = tt.add("t1", "Search for papers")
+    tt.add("t1", "Search for papers")
     tt.start("t1")
     assert tt._tasks["t1"].status == TaskStatus.IN_PROGRESS
 

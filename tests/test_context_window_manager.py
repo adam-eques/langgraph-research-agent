@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from research_agent.context_window_manager import ContextWindowManager
 
@@ -12,7 +12,7 @@ def test_add_and_retrieve():
 
 def test_trim_on_overflow():
     mgr = ContextWindowManager(max_tokens=10, chars_per_token=1)
-    for i in range(20):
+    for _i in range(20):
         mgr.add("user", "x")
     assert mgr.message_count < 20
 

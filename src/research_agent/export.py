@@ -1,10 +1,11 @@
 """Report exporter — converts research output to Markdown, HTML, PDF, and JSON."""
+
 from __future__ import annotations
 
 import json
 import logging
 import textwrap
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -62,7 +63,7 @@ _HTML_TEMPLATE = """\
 
 
 def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    return datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
 
 
 class ReportExporter:
@@ -84,7 +85,8 @@ class ReportExporter:
     # Public API
     # ------------------------------------------------------------------
 
-    def to_markdown(self, result: dict[str, Any]) -> str:
+    @staticmethod
+    def to_markdown(result: dict[str, Any]) -> str:
         """Format the research result as a Markdown document.
 
         Parameters
@@ -104,15 +106,15 @@ class ReportExporter:
         generated_at = _now_iso()
 
         lines = [
-            f"# Research Report",
-            f"",
+            "# Research Report",
+            "",
             f"**Query:** {query}",
             f"**Generated:** {generated_at}",
-            f"",
-            f"---",
-            f"",
-            f"## Answer",
-            f"",
+            "",
+            "---",
+            "",
+            "## Answer",
+            "",
             answer,
         ]
 
@@ -136,7 +138,8 @@ class ReportExporter:
 
         return "\n".join(lines)
 
-    def to_html(self, result: dict[str, Any]) -> str:
+    @staticmethod
+    def to_html(result: dict[str, Any]) -> str:
         """Format the research result as a self-contained HTML page.
 
         Converts the Markdown output to HTML using a simple ``<pre>``-based
@@ -155,14 +158,14 @@ class ReportExporter:
         try:
             import markdown as _md  # type: ignore[import-untyped]
 
-            md_text = self.to_markdown(result)
+            md_text = ReportExporter.to_markdown(result)
             body_html = _md.markdown(
                 md_text,
                 extensions=["fenced_code", "tables", "nl2br"],
             )
         except ImportError:
             # Fallback: wrap markdown in <pre> for readable plain text
-            md_text = self.to_markdown(result)
+            md_text = ReportExporter.to_markdown(result)
             escaped = md_text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
             body_html = f"<pre style='white-space:pre-wrap'>{escaped}</pre>"
 
@@ -170,7 +173,8 @@ class ReportExporter:
         title = f"Research: {query[:80]}"
         return _HTML_TEMPLATE.format(title=title, body=body_html)
 
-    def to_pdf(self, result: dict[str, Any], output_path: str) -> None:
+    @staticmethod
+    def to_pdf(result: dict[str, Any], output_path: str) -> None:
         """Save the research result as a PDF file.
 
         Requires ``fpdf2`` (``pip install fpdf2``).  The content is the
@@ -195,7 +199,7 @@ class ReportExporter:
                 "fpdf2 is required for PDF export. Install it with: pip install fpdf2"
             ) from exc
 
-        md_text = self.to_markdown(result)
+        md_text = ReportExporter.to_markdown(result)
         pdf = FPDF()
         pdf.set_auto_page_break(auto=True, margin=15)
         pdf.add_page()
@@ -234,7 +238,8 @@ class ReportExporter:
         pdf.output(str(output))
         logger.info("PDF report saved to %s", output)
 
-    def to_json(self, result: dict[str, Any]) -> str:
+    @staticmethod
+    def to_json(result: dict[str, Any]) -> str:
         """Return a clean JSON representation of the research result.
 
         Strips any non-serialisable objects (LangChain message objects, etc.)

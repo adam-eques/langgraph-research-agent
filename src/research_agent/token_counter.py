@@ -1,12 +1,14 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
 
-def count_tokens_anthropic(messages: list[dict[str, Any]], model: str = "claude-3-5-sonnet-20241022") -> int:
+def count_tokens_anthropic(
+    messages: list[dict[str, Any]], model: str = "claude-3-5-sonnet-20241022"
+) -> int:
     """Count tokens using the Anthropic messages API.
 
     Requires ANTHROPIC_API_KEY and anthropic SDK.
@@ -14,12 +16,13 @@ def count_tokens_anthropic(messages: list[dict[str, Any]], model: str = "claude-
     """
     try:
         import anthropic
+
         from research_agent.config import config
 
         client = anthropic.Anthropic(api_key=config.anthropic_api_key)
         result = client.messages.count_tokens(
             model=model,
-            messages=messages,
+            messages=cast(Any, messages),
         )
         logger.debug("Token count for %d messages: %d", len(messages), result.input_tokens)
         return result.input_tokens

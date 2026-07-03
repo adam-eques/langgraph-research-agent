@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.priority_queue_manager import PriorityQueueManager, PriorityItem
+
+from research_agent.priority_queue_manager import PriorityQueueManager
 
 
 def test_enqueue_and_dequeue_order():

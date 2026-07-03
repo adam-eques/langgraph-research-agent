@@ -1,8 +1,8 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ async def run_multi_query(
                 return {"query": q, "result": None, "error": str(exc)}
 
     tasks = [_run(q) for q in queries]
-    return await asyncio.gather(*tasks)
+    return cast(list[dict[str, Any]], await asyncio.gather(*tasks))
 
 
 def deduplicate_results(results: list[dict]) -> list[dict]:

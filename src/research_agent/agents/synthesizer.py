@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
-
 import logging
 
+from langchain_anthropic import ChatAnthropic
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+
 from research_agent.config import config
+from research_agent.state import ResearchState
 
 logger = logging.getLogger(__name__)
-from research_agent.state import ResearchState
 
 _SYSTEM_PROMPT = """You are a synthesis specialist. You receive analyzed research notes and \
 produce a clear, concise, well-structured final report for the end user.
@@ -34,11 +34,13 @@ def build_synthesizer_node():
         notes_block = "\n\n".join(state.get("research_notes", []))
         messages = [
             SystemMessage(content=_SYSTEM_PROMPT),
-            HumanMessage(content=(
-                f"Original query: {state['query']}\n\n"
-                f"Research analysis:\n{notes_block}\n\n"
-                "Produce the final report."
-            )),
+            HumanMessage(
+                content=(
+                    f"Original query: {state['query']}\n\n"
+                    f"Research analysis:\n{notes_block}\n\n"
+                    "Produce the final report."
+                )
+            ),
         ]
         response: AIMessage = llm.invoke(messages)
         return {
@@ -47,7 +49,3 @@ def build_synthesizer_node():
         }
 
     return synthesizer
-
-
-import logging
-_log = logging.getLogger(__name__)

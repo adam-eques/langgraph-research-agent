@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import logging
 import time
 import uuid
-import logging
+from typing import cast
 
 from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -20,7 +21,7 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
         request.state.request_id = request_id
         response = await call_next(request)
         response.headers["X-Request-ID"] = request_id
-        return response
+        return cast(Response, response)
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
@@ -39,7 +40,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             duration_ms,
             request_id,
         )
-        return response
+        return cast(Response, response)
 
 
 def register_middleware(app: FastAPI) -> None:

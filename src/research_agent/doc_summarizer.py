@@ -13,9 +13,8 @@ def extractive_summary(text: str, num_sentences: int = 3) -> str:
     for i in range(step, len(sentences), step):
         if len(selected) < num_sentences:
             selected.append(sentences[i])
-    if len(sentences) > 1 and sentences[-1] not in selected:
-        if len(selected) < num_sentences:
-            selected.append(sentences[-1])
+    if len(sentences) > 1 and sentences[-1] not in selected and len(selected) < num_sentences:
+        selected.append(sentences[-1])
     return " ".join(selected)
 
 

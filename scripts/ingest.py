@@ -7,6 +7,7 @@ Usage examples:
     python scripts/ingest.py ./paper.pdf --collection papers
     python scripts/ingest.py ./docs/ --dry-run  # preview without indexing
 """
+
 from __future__ import annotations
 
 import argparse
@@ -15,8 +16,7 @@ import sys
 from pathlib import Path
 
 # Ensure the src/ directory is on the path when running as a script.
-_REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(_REPO_ROOT / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from research_agent.logging_config import setup_logging
 
@@ -98,7 +98,10 @@ def main() -> None:
     files = _collect_files(args.path, args.recursive)
 
     if not files:
-        print("No supported files found. Supported extensions:", ", ".join(sorted(_SUPPORTED_EXTENSIONS)))
+        print(
+            "No supported files found. Supported extensions:",
+            ", ".join(sorted(_SUPPORTED_EXTENSIONS)),
+        )
         sys.exit(0)
 
     print(f"Found {len(files)} file(s) to index")
@@ -110,8 +113,8 @@ def main() -> None:
         sys.exit(0)
 
     # --- Import indexing deps after argument parsing so --help is fast ---
-    from research_agent.config import config as cfg  # noqa: PLC0415
-    from research_agent.rag.retriever import index_document  # noqa: PLC0415
+    from research_agent.config import config as cfg
+    from research_agent.rag.retriever import index_document
 
     collection = args.collection or cfg.chroma_collection
     print(f"Indexing into collection: {collection!r}\n")
@@ -139,8 +142,8 @@ def main() -> None:
             logger.error("Failed to index %s: %s", file_path.name, exc)
 
     # --- Summary ---
-    print(f"\n{'='*50}")
-    print(f"Indexing complete")
+    print(f"\n{'=' * 50}")
+    print("Indexing complete")
     print(f"  Indexed:  {indexed_count} / {len(files)} files")
     print(f"  Failed:   {failed_count} file(s)")
     if failed_files:

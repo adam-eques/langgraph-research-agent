@@ -1,7 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +18,7 @@ class DependencyResolver:
         """Return tasks in topological order (Kahn algorithm)."""
         in_degree = {t: 0 for t in self._tasks}
         for t, deps in self._tasks.items():
-            for d in deps:
+            for _d in deps:
                 in_degree[t] = in_degree.get(t, 0) + 1
         queue = [t for t, deg in in_degree.items() if deg == 0]
         order = []

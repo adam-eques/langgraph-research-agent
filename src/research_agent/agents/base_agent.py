@@ -1,11 +1,15 @@
-﻿from __future__ import annotations
+from __future__ import annotations
+
 import logging
-from typing import Any
+
 from langchain_core.messages import BaseMessage
+
 logger = logging.getLogger(__name__)
+
 
 class BaseResearchAgent:
     """Abstract base for all research agent nodes."""
+
     name: str = "base"
     description: str = ""
 

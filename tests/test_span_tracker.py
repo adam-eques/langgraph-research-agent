@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import time
-from research_agent.span_tracker import SpanTracker, Span
+
+from research_agent.span_tracker import SpanTracker
 
 
 def test_start_and_end_span():

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.rag.result_merger import merge_results, deduplicate_results, MergedResult
+
+from research_agent.rag.result_merger import MergedResult, deduplicate_results, merge_results
 
 
 def test_merge_single_source():

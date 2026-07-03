@@ -1,15 +1,15 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import pytest
 
 from research_agent.exceptions import (
+    CacheError,
+    ConfigError,
+    EvalError,
+    IngestionError,
+    LLMError,
     ResearchAgentError,
     RetrievalError,
-    LLMError,
-    IngestionError,
-    CacheError,
-    EvalError,
-    ConfigError,
 )
 
 
@@ -45,12 +45,14 @@ def test_retrieval_error_is_catchable():
 
 def test_ingestion_error_path():
     from research_agent.exceptions import IngestionError
+
     exc = IngestionError("/docs/file.pdf", "permission denied")
     assert exc.path == "/docs/file.pdf"
 
 
 def test_rate_limit_error():
     from research_agent.exceptions import RateLimitError
+
     exc = RateLimitError("user123", retry_after=30)
     assert exc.retry_after == 30
     assert "30s" in str(exc)

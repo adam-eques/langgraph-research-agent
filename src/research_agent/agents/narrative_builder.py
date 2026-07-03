@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
@@ -49,7 +48,7 @@ def build_narrative(
         intro = f"This analysis examines {topic}."
         segments.append(NarrativeSegment(content=intro, segment_type="intro", order=0))
 
-    for i, frag in enumerate(fragments[:max_segments]):
+    for _i, frag in enumerate(fragments[:max_segments]):
         text = frag.get("text", "")
         frag_type = frag.get("type", "general")
         if not text.strip():
@@ -58,15 +57,19 @@ def build_narrative(
         if segments:
             prev_type = segments[-1].segment_type
             prefix = add_transition(prev_type, frag_type)
-        segments.append(NarrativeSegment(
-            content=prefix + text.strip(),
-            segment_type=frag_type,
-            order=len(segments),
-        ))
+        segments.append(
+            NarrativeSegment(
+                content=prefix + text.strip(),
+                segment_type=frag_type,
+                order=len(segments),
+            )
+        )
 
     if segments:
         conclusion = "In summary, the evidence points to a need for continued investigation."
-        segments.append(NarrativeSegment(content=conclusion, segment_type="conclusion", order=len(segments)))
+        segments.append(
+            NarrativeSegment(content=conclusion, segment_type="conclusion", order=len(segments))
+        )
 
     return segments
 

@@ -1,16 +1,18 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import asyncio
 import pytest
-from research_agent.error_recovery import with_fallback, with_default_on_error, safe_dict_get
+
+from research_agent.error_recovery import safe_dict_get, with_default_on_error, with_fallback
 
 
 @pytest.mark.asyncio
 async def test_with_fallback_uses_primary():
     async def primary():
         return "primary"
+
     async def fallback():
         return "fallback"
+
     result = await with_fallback(primary, fallback)
     assert result == "primary"
 
@@ -19,8 +21,10 @@ async def test_with_fallback_uses_primary():
 async def test_with_fallback_falls_back():
     async def primary():
         raise RuntimeError("fail")
+
     async def fallback():
         return "fallback"
+
     result = await with_fallback(primary, fallback)
     assert result == "fallback"
 
@@ -29,6 +33,7 @@ async def test_with_fallback_falls_back():
 async def test_with_default_on_error():
     async def failing():
         raise ValueError("oops")
+
     result = await with_default_on_error(failing, "default")
     assert result == "default"
 

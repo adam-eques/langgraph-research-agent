@@ -1,10 +1,12 @@
-﻿from __future__ import annotations
+from __future__ import annotations
+
 import logging
 from pathlib import Path
-from typing import Any
+
 logger = logging.getLogger(__name__)
 
 SUPPORTED_EXTENSIONS = {".txt", ".md", ".pdf", ".docx"}
+
 
 def load_text_file(path: str) -> str:
     p = Path(path)
@@ -14,9 +16,11 @@ def load_text_file(path: str) -> str:
         raise ValueError(f"Unsupported file type: {p.suffix}")
     return p.read_text(encoding="utf-8", errors="replace")
 
+
 def detect_file_type(path: str) -> str:
     suffix = Path(path).suffix.lower()
     return {".pdf": "pdf", ".docx": "docx", ".md": "markdown"}.get(suffix, "text")
+
 
 def list_documents(directory: str, recursive: bool = False) -> list[str]:
     base = Path(directory)

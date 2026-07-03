@@ -20,7 +20,9 @@ def expand_query_with_synonyms(query: str, max_expansions: int = 3) -> list[str]
     for word in words:
         if word in _SYNONYMS and len(expansions) < max_expansions + 1:
             for synonym in _SYNONYMS[word]:
-                expanded = re.sub(r"\b" + re.escape(word) + r"\b", synonym, query, flags=re.IGNORECASE)
+                expanded = re.sub(
+                    r"\b" + re.escape(word) + r"\b", synonym, query, flags=re.IGNORECASE
+                )
                 if expanded != query and len(expansions) <= max_expansions:
                     expansions.append(expanded)
     return expansions

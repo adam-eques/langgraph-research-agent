@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.token_usage_tracker import TokenUsageTracker, TokenUsageRecord
+
+from research_agent.token_usage_tracker import TokenUsageTracker
 
 
 def test_record_basic():

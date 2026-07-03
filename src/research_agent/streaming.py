@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Iterator
-from typing import Any
+from typing import Any, cast
 
 from langchain_core.messages import AIMessageChunk
 
@@ -18,7 +18,7 @@ def run(query: str, **kwargs: Any) -> ResearchState:
         "document_context": "",
         "next": "",
     }
-    return graph.invoke(initial, **kwargs)
+    return cast(ResearchState, graph.invoke(initial, **kwargs))
 
 
 def stream_tokens(query: str) -> Iterator[str]:
@@ -34,7 +34,7 @@ def stream_tokens(query: str) -> Iterator[str]:
     for chunk in graph.stream(initial, stream_mode="messages"):
         node, messages = chunk if isinstance(chunk, tuple) else (None, chunk)
         if node == "synthesizer":
-            for msg in (messages if isinstance(messages, list) else [messages]):
+            for msg in messages if isinstance(messages, list) else [messages]:
                 if isinstance(msg, AIMessageChunk) and msg.content:
                     yield str(msg.content)
 
@@ -52,6 +52,6 @@ async def astream_tokens(query: str) -> AsyncIterator[str]:
     async for chunk in graph.astream(initial, stream_mode="messages"):
         node, messages = chunk if isinstance(chunk, tuple) else (None, chunk)
         if node == "synthesizer":
-            for msg in (messages if isinstance(messages, list) else [messages]):
+            for msg in messages if isinstance(messages, list) else [messages]:
                 if isinstance(msg, AIMessageChunk) and msg.content:
                     yield str(msg.content)

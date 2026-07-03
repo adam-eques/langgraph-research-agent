@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Any, Callable, Awaitable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -28,8 +29,8 @@ async def process_batch(
     concurrency: int = 5,
     on_error: str = "continue",
 ) -> BatchResult:
-    results = []
-    errors = []
+    results: list[Any] = []
+    errors: list[str] = []
     sem = asyncio.Semaphore(concurrency)
 
     async def process_one(item: Any) -> Any:
@@ -37,7 +38,7 @@ async def process_batch(
             return await processor(item)
 
     for i in range(0, len(items), batch_size):
-        batch = items[i: i + batch_size]
+        batch = items[i : i + batch_size]
         batch_results = await asyncio.gather(
             *[process_one(item) for item in batch],
             return_exceptions=True,

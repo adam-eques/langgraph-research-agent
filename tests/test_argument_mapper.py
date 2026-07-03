@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.agents.argument_mapper import extract_argument_structure, ArgumentMap, Argument
+
+from research_agent.agents.argument_mapper import Argument, ArgumentMap, extract_argument_structure
 
 
 def test_extracts_pro_arguments():

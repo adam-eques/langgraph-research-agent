@@ -1,4 +1,5 @@
 """Evaluation harness — runs the research pipeline on a dataset and collects metrics."""
+
 from __future__ import annotations
 
 import asyncio
@@ -9,7 +10,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from research_agent.eval.metrics import answer_relevance, faithfulness, context_recall, f1_score
+from research_agent.eval.metrics import answer_relevance, context_recall, f1_score, faithfulness
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +103,9 @@ class EvalHarness:
         if use_langsmith:
             self._configure_langsmith()
 
-        logger.info("EvalHarness: running %d items (max_concurrent=%d)", len(dataset), self._max_concurrent)
+        logger.info(
+            "EvalHarness: running %d items (max_concurrent=%d)", len(dataset), self._max_concurrent
+        )
 
         try:
             loop = asyncio.get_running_loop()
@@ -121,15 +124,13 @@ class EvalHarness:
 
         async def _eval_one(item: dict[str, Any]) -> ItemScore:
             async with semaphore:
-                return await asyncio.get_running_loop().run_in_executor(
-                    None, self._eval_item, item
-                )
+                return await asyncio.get_running_loop().run_in_executor(None, self._eval_item, item)
 
         tasks = [_eval_one(item) for item in dataset]
         return list(await asyncio.gather(*tasks))
 
     def _eval_item(self, item: dict[str, Any]) -> ItemScore:
-        from research_agent.streaming import run as sync_run  # noqa: PLC0415
+        from research_agent.streaming import run as sync_run
 
         query: str = item["query"]
         expected_answer: str = item.get("expected_answer", "")
@@ -146,7 +147,9 @@ class EvalHarness:
                     break
 
             research_notes: list[str] = list(state.get("research_notes", []))
-            context_passages = research_notes + list(state.get("document_context", "").split("\n\n"))
+            context_passages = research_notes + list(
+                state.get("document_context", "").split("\n\n")
+            )
             latency = time.perf_counter() - start
 
             rel = answer_relevance(query, generated)
@@ -203,9 +206,12 @@ class EvalHarness:
     @staticmethod
     def _configure_langsmith() -> None:
         """Enable LangSmith tracing for the evaluation run if configured."""
-        import os  # noqa: PLC0415
+        import os
 
-        if os.getenv("LANGCHAIN_API_KEY") and os.getenv("LANGCHAIN_TRACING_V2", "").lower() == "true":
+        if (
+            os.getenv("LANGCHAIN_API_KEY")
+            and os.getenv("LANGCHAIN_TRACING_V2", "").lower() == "true"
+        ):
             os.environ.setdefault("LANGCHAIN_PROJECT", "research-agent-eval")
             logger.info("LangSmith tracing enabled for eval run")
         else:

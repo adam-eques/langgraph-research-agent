@@ -1,11 +1,16 @@
 from __future__ import annotations
+
 from research_agent.agents.abstract_generator import (
-    generate_abstract, extract_contributions, format_abstract,
+    extract_contributions,
+    format_abstract,
+    generate_abstract,
 )
 
 
 def test_generate_abstract_includes_title():
-    result = generate_abstract("LangGraph workflows", ["This system handles stateful multi-agent pipelines."])
+    result = generate_abstract(
+        "LangGraph workflows", ["This system handles stateful multi-agent pipelines."]
+    )
     assert "langgraph" in result.lower()
 
 

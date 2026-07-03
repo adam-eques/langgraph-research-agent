@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from research_agent.agents.summary_ranker import (
-    score_summary,
-    rank_summaries,
-    select_best,
     RankedSummary,
+    rank_summaries,
+    score_summary,
+    select_best,
 )
 
 

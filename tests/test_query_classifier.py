@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.query_classifier import classify_query, QueryType
+from research_agent.query_classifier import QueryType, classify_query
 
 
 def test_factual_query():

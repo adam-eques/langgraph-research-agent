@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import pytest
-from research_agent.retry_handler import RetryConfig, RetryHandler, compute_delay, retry_sync
+
+from research_agent.retry_handler import RetryConfig, RetryHandler, compute_delay
 
 
 def test_retry_succeeds_first_try():

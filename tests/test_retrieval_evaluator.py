@@ -1,6 +1,11 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.retrieval_evaluator import precision_at_k, recall_at_k, mean_reciprocal_rank, evaluate_retrieval
+from research_agent.retrieval_evaluator import (
+    evaluate_retrieval,
+    mean_reciprocal_rank,
+    precision_at_k,
+    recall_at_k,
+)
 
 
 def test_precision_at_k():

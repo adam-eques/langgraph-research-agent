@@ -1,6 +1,7 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
+
 from research_agent.research_report import ResearchReport
 
 

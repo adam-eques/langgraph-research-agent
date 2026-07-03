@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import time
+
 from research_agent.pipeline_monitor import PipelineMonitor
 
 
@@ -20,8 +22,10 @@ def test_node_failed():
 
 def test_summary_counts():
     pm = PipelineMonitor("pipe-3")
-    r1 = pm.node_started("step1"); pm.node_finished(r1)
-    r2 = pm.node_started("step2"); pm.node_failed(r2, "err")
+    r1 = pm.node_started("step1")
+    pm.node_finished(r1)
+    r2 = pm.node_started("step2")
+    pm.node_failed(r2, "err")
     s = pm.summary()
     assert s["nodes_succeeded"] == 1 and s["nodes_failed"] == 1
 

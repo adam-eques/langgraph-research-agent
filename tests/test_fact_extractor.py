@@ -1,7 +1,12 @@
 from __future__ import annotations
+
 import asyncio
+
 from research_agent.agents.fact_extractor import (
-    extract_facts, filter_high_confidence, deduplicate_facts, extract_facts_from_notes,
+    deduplicate_facts,
+    extract_facts,
+    extract_facts_from_notes,
+    filter_high_confidence,
 )
 
 

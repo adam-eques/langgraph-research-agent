@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.response_cleaner import fix_spacing, clean_llm_output
+from research_agent.response_cleaner import clean_llm_output, fix_spacing
 
 
 def test_fix_spacing_collapses_spaces():

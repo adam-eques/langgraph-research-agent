@@ -1,12 +1,19 @@
 from __future__ import annotations
+
 from research_agent.rag.chunking_strategy import (
-    chunk_text, ChunkConfig, ChunkType, sentence_chunk, paragraph_chunk,
+    ChunkConfig,
+    ChunkType,
+    chunk_text,
+    paragraph_chunk,
+    sentence_chunk,
 )
 
 
 def test_fixed_chunk_count():
     text = "x" * 2000
-    config = ChunkConfig(chunk_type=ChunkType.FIXED, chunk_size=200, chunk_overlap=0, min_chunk_size=10)
+    config = ChunkConfig(
+        chunk_type=ChunkType.FIXED, chunk_size=200, chunk_overlap=0, min_chunk_size=10
+    )
     chunks = chunk_text(text, config)
     assert len(chunks) == 10
 

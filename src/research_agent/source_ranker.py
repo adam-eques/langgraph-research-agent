@@ -1,13 +1,12 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import re
-from typing import Any
 
 
 def extract_sources_from_notes(notes: list[str]) -> list[str]:
     """Extract URLs and source references from research notes."""
     sources = []
-    url_pattern = re.compile(r'https?://[^\s\)\"\']+')
+    url_pattern = re.compile(r"https?://[^\s\)\"\']+")
     for note in notes:
         sources.extend(url_pattern.findall(note))
     return list(dict.fromkeys(sources))  # deduplicate preserving order
@@ -16,6 +15,7 @@ def extract_sources_from_notes(notes: list[str]) -> list[str]:
 def count_source_domains(sources: list[str]) -> dict[str, int]:
     """Count occurrences of each domain in source list."""
     from research_agent.url_utils import extract_domain
+
     counts: dict[str, int] = {}
     for url in sources:
         domain = extract_domain(url)

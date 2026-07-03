@@ -1,4 +1,5 @@
 """Tests for BM25 indexing and hybrid search RRF merging."""
+
 from __future__ import annotations
 
 from unittest.mock import MagicMock
@@ -6,18 +7,21 @@ from unittest.mock import MagicMock
 import pytest
 from langchain_core.documents import Document
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _make_docs(contents: list[str]) -> list[Document]:
-    return [Document(page_content=c, metadata={"source": f"doc{i}"}) for i, c in enumerate(contents)]
+    return [
+        Document(page_content=c, metadata={"source": f"doc{i}"}) for i, c in enumerate(contents)
+    ]
 
 
 # ---------------------------------------------------------------------------
 # index_for_bm25
 # ---------------------------------------------------------------------------
+
 
 class TestIndexForBm25:
     def test_returns_bm25_okapi_instance(self):
@@ -35,10 +39,12 @@ class TestIndexForBm25:
         pytest.importorskip("rank_bm25")
         from research_agent.rag.hybrid_search import index_for_bm25
 
-        docs = _make_docs([
-            "neural networks and deep learning",
-            "recipes for banana bread baking",
-        ])
+        docs = _make_docs(
+            [
+                "neural networks and deep learning",
+                "recipes for banana bread baking",
+            ]
+        )
         index = index_for_bm25(docs)
         scores = index.get_scores(["neural", "networks"])
 
@@ -54,10 +60,13 @@ class TestIndexForBm25:
 
     def test_raises_without_rank_bm25(self, monkeypatch):
         import sys
+
         monkeypatch.setitem(sys.modules, "rank_bm25", None)
 
         import importlib
+
         import research_agent.rag.hybrid_search as hs
+
         importlib.reload(hs)
 
         # After reload the import inside the function should raise ImportError
@@ -68,6 +77,7 @@ class TestIndexForBm25:
 # ---------------------------------------------------------------------------
 # RRF fusion (_reciprocal_rank_fusion is private but testable directly)
 # ---------------------------------------------------------------------------
+
 
 class TestReciprocalRankFusion:
     def test_combines_two_lists(self):
@@ -107,11 +117,13 @@ class TestReciprocalRankFusion:
 # HybridSearcher
 # ---------------------------------------------------------------------------
 
+
 class TestHybridSearcher:
     def _make_searcher(self, semantic_docs: list[Document] | None = None):
         mock_store = MagicMock()
         mock_store.similarity_search.return_value = semantic_docs or []
         from research_agent.rag.hybrid_search import HybridSearcher
+
         return HybridSearcher(vector_store=mock_store)
 
     def test_returns_at_most_k_results(self):

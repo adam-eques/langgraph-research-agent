@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class WorkflowStatus(str, Enum):
+class WorkflowStatus(StrEnum):
     IDLE = "idle"
     RUNNING = "running"
     PAUSED = "paused"
@@ -28,7 +28,7 @@ class WorkflowState:
 
     def start(self) -> None:
         self.status = WorkflowStatus.RUNNING
-        self.started_at = time.monotonic()
+        self.started_at = time.perf_counter()
 
     def complete_step(self, step: str) -> None:
         self.steps_completed.append(step)
@@ -41,13 +41,13 @@ class WorkflowState:
 
     def finish(self) -> None:
         self.status = WorkflowStatus.COMPLETED
-        self.completed_at = time.monotonic()
+        self.completed_at = time.perf_counter()
 
     @property
     def elapsed(self) -> float:
         if self.started_at == 0:
             return 0.0
-        end = self.completed_at if self.completed_at else time.monotonic()
+        end = self.completed_at if self.completed_at else time.perf_counter()
         return end - self.started_at
 
     def is_done(self) -> bool:

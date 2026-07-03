@@ -1,7 +1,7 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import asyncio
 import pytest
+
 from research_agent.stream_aggregator import StreamAggregator
 
 

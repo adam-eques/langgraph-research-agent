@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
 from typing import Any
@@ -28,7 +28,7 @@ class ResearchPipeline:
     def __init__(self) -> None:
         self._steps: list[PipelineStep] = []
 
-    def add(self, name: str, fn) -> "ResearchPipeline":
+    def add(self, name: str, fn) -> ResearchPipeline:
         self._steps.append(PipelineStep(name, fn))
         return self
 

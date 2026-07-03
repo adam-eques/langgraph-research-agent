@@ -1,7 +1,7 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-from typing import Any, Callable
+from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +14,9 @@ class AgentRegistry:
 
     def register(self, name: str, builder: Callable, overwrite: bool = False) -> None:
         if name in self._registry and not overwrite:
-            raise ValueError(f"Agent '{name}' is already registered. Use overwrite=True to replace.")
+            raise ValueError(
+                f"Agent '{name}' is already registered. Use overwrite=True to replace."
+            )
         self._registry[name] = builder
         logger.debug("Registered agent: %s", name)
 

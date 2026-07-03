@@ -52,7 +52,7 @@ def select_model(
     elif provider == "openai":
         candidates = [m for m in candidates if "gpt" in m.model_id]
     if not candidates:
-        return list(_MODELS.values())[0]
+        return next(iter(_MODELS.values()))
     if prefer_cheap:
         return min(candidates, key=lambda m: m.cost_per_1k_tokens)
     return max(candidates, key=lambda m: m.context_window)

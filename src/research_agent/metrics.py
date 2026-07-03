@@ -2,12 +2,13 @@
 
 Gracefully no-ops if prometheus_client is not installed.
 """
+
 from __future__ import annotations
 
 import logging
 import time
+from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Generator
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,6 @@ try:
         Counter,
         Gauge,
         Histogram,
-        REGISTRY,
     )
 
     _PROMETHEUS_AVAILABLE = True
@@ -35,20 +35,20 @@ except ImportError:
     # Minimal stubs so the rest of the module can import them without error
     # -------------------------------------------------------------------
     class _NoOpMetric:  # type: ignore[no-untyped-def]
-        def labels(self, **kwargs):  # noqa: ANN001,ANN201
+        def labels(self, **kwargs):
             return self
 
         def inc(self, amount: float = 1) -> None: ...
         def dec(self, amount: float = 1) -> None: ...
         def set(self, value: float) -> None: ...
         def observe(self, amount: float) -> None: ...
-        def time(self):  # noqa: ANN201
+        def time(self):
             return self
 
-        def __enter__(self):  # noqa: ANN204
+        def __enter__(self):
             return self
 
-        def __exit__(self, *args):  # noqa: ANN002,ANN003
+        def __exit__(self, *args):
             pass
 
     def Counter(*args, **kwargs):  # type: ignore[misc]  # noqa: N802
@@ -105,6 +105,7 @@ active_research_sessions = Gauge(
 # ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
+
 
 def record_node_latency(node: str, duration: float) -> None:
     """Record the elapsed time for a pipeline node.

@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from research_agent.rag.hybrid_retriever import (
-    RetrievedDoc, reciprocal_rank_fusion, HybridRetriever,
+    HybridRetriever,
+    RetrievedDoc,
+    reciprocal_rank_fusion,
 )
 
 

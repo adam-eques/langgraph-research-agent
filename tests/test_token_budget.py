@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import pytest
+
 from research_agent.token_budget import TokenBudget
 
 

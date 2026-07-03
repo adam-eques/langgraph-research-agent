@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+
 import pytest
 
 from research_agent.export import ReportExporter
@@ -12,7 +13,9 @@ def sample_result():
         "query": "What is LangGraph?",
         "answer": "LangGraph is a library for building stateful multi-agent applications.",
         "research_notes": ["Key finding: LangGraph uses StateGraph for workflow definition."],
-        "citations": [{"source": "langchain_docs.pdf", "excerpt": "LangGraph...", "relevance": "high"}],
+        "citations": [
+            {"source": "langchain_docs.pdf", "excerpt": "LangGraph...", "relevance": "high"}
+        ],
     }
 
 

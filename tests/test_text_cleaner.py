@@ -1,6 +1,10 @@
 from __future__ import annotations
+
 from research_agent.text_cleaner import (
-    remove_html_tags, normalize_whitespace, remove_urls, clean_scraped_text,
+    clean_scraped_text,
+    normalize_whitespace,
+    remove_html_tags,
+    remove_urls,
 )
 
 

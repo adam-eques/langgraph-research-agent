@@ -13,6 +13,7 @@ Run from the repo root:
 Requirements:
     ANTHROPIC_API_KEY must be set in the environment (or .env file).
 """
+
 from __future__ import annotations
 
 import sys
@@ -22,16 +23,15 @@ from pathlib import Path
 # Add src/ to the path when running as a standalone script.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from research_agent.logging_config import setup_logging
-
-setup_logging(level="INFO")
-
 import logging
 
 from langchain_core.messages import BaseMessage
 
 from research_agent.graph import build_graph
+from research_agent.logging_config import setup_logging
 from research_agent.state import ResearchState
+
+setup_logging(level="INFO")
 
 logger = logging.getLogger(__name__)
 
@@ -54,10 +54,10 @@ def run_with_supervisor(query: str) -> dict:
     dict
         The final pipeline state.
     """
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Research query: {query}")
-    print(f"Mode: SUPERVISOR (dynamic routing)")
-    print(f"{'='*60}\n")
+    print("Mode: SUPERVISOR (dynamic routing)")
+    print(f"{'=' * 60}\n")
 
     graph = build_graph(
         checkpointing=False,
@@ -114,13 +114,13 @@ def print_result(state: ResearchState) -> None:
     print(answer or "(no answer generated)")
 
     if notes:
-        print(f"\n{'─'*40}")
+        print(f"\n{'─' * 40}")
         print(f"Research notes ({len(notes)}):")
         for note in notes[:3]:
             print(f"  • {note[:120]}")
 
     if citations:
-        print(f"\n{'─'*40}")
+        print(f"\n{'─' * 40}")
         print(f"Citations ({len(citations)}):")
         for i, cite in enumerate(citations[:3], 1):
             print(f"  [{i}] {cite.get('source', 'unknown')} — {cite.get('excerpt', '')[:60]}")
@@ -131,7 +131,9 @@ def print_result(state: ResearchState) -> None:
 def compare_modes(query: str) -> None:
     """Compare supervisor vs. linear pipeline on the same query (informational)."""
     print("\nNote: To compare supervisor vs. linear mode, run:")
-    print(f"  python -c \"from research_agent.streaming import run; result = run({query!r}); print(result)\"")
+    print(
+        f'  python -c "from research_agent.streaming import run; result = run({query!r}); print(result)"'
+    )
 
 
 if __name__ == "__main__":

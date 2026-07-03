@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import asyncio
-from research_agent.parallel_executor import run_parallel, map_parallel
+
+from research_agent.parallel_executor import map_parallel, run_parallel
 
 
 async def double(x: int) -> int:
@@ -16,6 +18,7 @@ def test_run_parallel_basic():
 def test_run_parallel_captures_error():
     async def fail():
         raise ValueError("boom")
+
     tasks = [("bad", fail, (), {})]
     out = asyncio.run(run_parallel(tasks))
     assert "bad" in out["errors"]
@@ -29,5 +32,6 @@ def test_map_parallel():
 def test_map_parallel_handles_error():
     async def failing(x):
         raise RuntimeError("err")
+
     result = asyncio.run(map_parallel([1, 2], failing))
     assert all(r is None for r in result)

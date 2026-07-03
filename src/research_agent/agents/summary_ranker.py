@@ -49,9 +49,7 @@ def score_summary(
     coverage_score = min(sent_count / 5, 1.0)
 
     return (
-        keyword_weight * kw_score
-        + length_weight * length_score
-        + coverage_weight * coverage_score
+        keyword_weight * kw_score + length_weight * length_score + coverage_weight * coverage_score
     )
 
 

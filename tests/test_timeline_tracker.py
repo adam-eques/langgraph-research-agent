@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.timeline_tracker import TimelineTracker, extract_date, TimelineEvent
+
+from research_agent.timeline_tracker import TimelineTracker, extract_date
 
 
 def test_extract_date_iso():

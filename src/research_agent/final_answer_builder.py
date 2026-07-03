@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
 
 
 @dataclass
@@ -26,7 +25,7 @@ class FinalAnswer:
         if not self.citations:
             return self.answer
         refs = "\n".join(
-            f"[{i+1}] {c.get('source', 'unknown')}: {c.get('excerpt', '')[:100]}"
+            f"[{i + 1}] {c.get('source', 'unknown')}: {c.get('excerpt', '')[:100]}"
             for i, c in enumerate(self.citations)
         )
         return f"{self.answer}\n\nReferences:\n{refs}"

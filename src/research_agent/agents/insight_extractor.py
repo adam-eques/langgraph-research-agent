@@ -22,7 +22,10 @@ class Insight:
 
 _CATEGORY_PATTERNS: dict[str, list[re.Pattern]] = {
     "finding": [
-        re.compile(r"\b(study|research|analysis|data|experiment)\s+(shows?|reveals?|finds?|confirms?|suggests?)\b", re.I),
+        re.compile(
+            r"\b(study|research|analysis|data|experiment)\s+(shows?|reveals?|finds?|confirms?|suggests?)\b",
+            re.I,
+        ),
         re.compile(r"\baccording to\b", re.I),
     ],
     "trend": [
@@ -48,7 +51,23 @@ def classify_sentence(sentence: str) -> str:
 
 
 def extract_keywords(text: str, top_n: int = 5) -> list[str]:
-    stopwords = {"the", "a", "an", "is", "are", "was", "were", "it", "of", "and", "or", "in", "on", "at", "to"}
+    stopwords = {
+        "the",
+        "a",
+        "an",
+        "is",
+        "are",
+        "was",
+        "were",
+        "it",
+        "of",
+        "and",
+        "or",
+        "in",
+        "on",
+        "at",
+        "to",
+    }
     words = re.findall(r"\b[a-z]{4,}\b", text.lower())
     freq: dict[str, int] = {}
     for w in words:
@@ -70,16 +89,20 @@ def extract_insights(
         category = classify_sentence(sent)
         confidence = 0.8 if category != "general" else 0.5
         if confidence >= min_confidence:
-            insights.append(Insight(
-                text=sent.strip(),
-                category=category,
-                confidence=confidence,
-                keywords=extract_keywords(sent),
-            ))
+            insights.append(
+                Insight(
+                    text=sent.strip(),
+                    category=category,
+                    confidence=confidence,
+                    keywords=extract_keywords(sent),
+                )
+            )
     return insights
 
 
-def deduplicate_insights(insights: list[Insight], similarity_threshold: float = 0.7) -> list[Insight]:
+def deduplicate_insights(
+    insights: list[Insight], similarity_threshold: float = 0.7
+) -> list[Insight]:
     seen: list[str] = []
     result: list[Insight] = []
     for ins in insights:

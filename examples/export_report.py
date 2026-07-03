@@ -1,11 +1,12 @@
 """Example: run research and export the result in multiple formats."""
+
 from __future__ import annotations
 
 import sys
 from pathlib import Path
 
-from research_agent.streaming import run
 from research_agent.export import ReportExporter
+from research_agent.streaming import run
 
 
 def main(query: str, output_dir: str = ".") -> None:

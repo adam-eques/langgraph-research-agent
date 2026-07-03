@@ -1,6 +1,10 @@
 from __future__ import annotations
+
 from research_agent.doc_summarizer import (
-    extractive_summary, truncate_summary, summarize_batch, merge_summaries,
+    extractive_summary,
+    merge_summaries,
+    summarize_batch,
+    truncate_summary,
 )
 
 

@@ -1,11 +1,13 @@
 """Query expansion via LLM — generates alternative phrasings for better retrieval coverage."""
+
 from __future__ import annotations
 
 import logging
+from typing import cast
 
-from pydantic import BaseModel, Field
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_core.messages import HumanMessage, SystemMessage
+from pydantic import BaseModel, Field
 
 from research_agent.config import config
 
@@ -33,9 +35,7 @@ class ExpandedQueries(BaseModel):
         min_length=1,
         max_length=10,
     )
-    reasoning: str = Field(
-        description="Brief explanation of the expansion strategy used"
-    )
+    reasoning: str = Field(description="Brief explanation of the expansion strategy used")
 
 
 class QueryExpander:
@@ -56,7 +56,7 @@ class QueryExpander:
     def __init__(self) -> None:
         self._llm = ChatAnthropic(
             model=config.default_model,
-            temperature=0.3,          # small temperature for creative variation
+            temperature=0.3,  # small temperature for creative variation
             max_tokens=1024,
             api_key=config.anthropic_api_key,
         ).with_structured_output(ExpandedQueries)
@@ -69,7 +69,7 @@ class QueryExpander:
         query:
             The original search query to expand.
         n:
-            Number of alternative phrasings to generate (1–10).
+            Number of alternative phrasings to generate (1-10).
 
         Returns
         -------
@@ -84,15 +84,12 @@ class QueryExpander:
         messages = [
             SystemMessage(content=_SYSTEM_PROMPT),
             HumanMessage(
-                content=(
-                    f"Original query: {query}\n\n"
-                    f"Generate exactly {n} alternative phrasings."
-                )
+                content=(f"Original query: {query}\n\nGenerate exactly {n} alternative phrasings.")
             ),
         ]
 
         try:
-            result: ExpandedQueries = self._llm.invoke(messages)
+            result = cast(ExpandedQueries, self._llm.invoke(messages))
             alternatives = result.alternatives[:n]
         except Exception:
             logger.exception("Query expansion failed — returning original query only")

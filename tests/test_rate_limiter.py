@@ -1,7 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import time
-import pytest
 
 from research_agent.rate_limiter import RateLimiter
 
@@ -43,7 +42,6 @@ def test_reset_clears_client():
 
 
 def test_rate_limiter_window_expiry():
-    import time
     limiter = RateLimiter(max_requests=2, window_seconds=1)
     limiter.is_allowed("c")
     limiter.is_allowed("c")

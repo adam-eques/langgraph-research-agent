@@ -34,12 +34,24 @@ class ArgumentMap:
 
 
 _PRO_PATTERNS = [
-    r"\bsupports?\b", r"\bdemonstrates?\b", r"\bshows?\b", r"\bproves?\b", r"\bconfirms?\b",
-    r"\bevidence\s+for\b", r"\badvantage\b", r"\bbenefit\b",
+    r"\bsupports?\b",
+    r"\bdemonstrates?\b",
+    r"\bshows?\b",
+    r"\bproves?\b",
+    r"\bconfirms?\b",
+    r"\bevidence\s+for\b",
+    r"\badvantage\b",
+    r"\bbenefit\b",
 ]
 _CON_PATTERNS = [
-    r"\bhowever\b", r"\bcontra\w*\b", r"\boppose[sd]?\b", r"\bcritici[sz]\w*\b",
-    r"\blimitation\b", r"\bdisadvantage\b", r"\bweakness\b", r"\bchallenge\b",
+    r"\bhowever\b",
+    r"\bcontra\w*\b",
+    r"\boppose[sd]?\b",
+    r"\bcritici[sz]\w*\b",
+    r"\blimitation\b",
+    r"\bdisadvantage\b",
+    r"\bweakness\b",
+    r"\bchallenge\b",
 ]
 
 

@@ -1,10 +1,12 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from research_agent.answer_validator import check_answer_completeness, is_answer_acceptable
 
 
 def test_check_completeness_keys():
-    result = check_answer_completeness("What is machine learning?", "Machine learning is a subset of AI.")
+    result = check_answer_completeness(
+        "What is machine learning?", "Machine learning is a subset of AI."
+    )
     assert "word_count" in result
     assert "query_coverage" in result
     assert "passed" in result

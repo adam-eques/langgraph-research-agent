@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+import time
+
 from research_agent.retrieval_cache import RetrievalCache
 
 
@@ -16,7 +19,7 @@ def test_miss():
 def test_ttl_expired():
     rc = RetrievalCache(ttl=0.001)
     rc.set("AI", ["doc"])
-    import time; time.sleep(0.01)
+    time.sleep(0.01)
     assert rc.get("AI") is None
 
 
@@ -28,5 +31,7 @@ def test_invalidate():
 
 def test_max_size_evicts():
     rc = RetrievalCache(ttl=60, max_size=2)
-    rc.set("a", [1]); rc.set("b", [2]); rc.set("c", [3])
+    rc.set("a", [1])
+    rc.set("b", [2])
+    rc.set("c", [3])
     assert rc.size == 2

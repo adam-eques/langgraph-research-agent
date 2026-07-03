@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from research_agent.thought_logger import ThoughtLogger
 
@@ -28,6 +28,7 @@ def test_clear():
 
 def test_persists_to_file(tmp_path):
     import json
+
     p = str(tmp_path / "thoughts.jsonl")
     tl = ThoughtLogger(path=p)
     tl.log("agent", "thinking step")

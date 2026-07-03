@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.context_builder import build_context, build_messages, format_document
 
 

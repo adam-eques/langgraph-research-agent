@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.evidence_scorer import score_evidence_strength, classify_evidence
+from research_agent.evidence_scorer import classify_evidence, score_evidence_strength
 
 
 def test_strong_evidence():

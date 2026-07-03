@@ -1,7 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +22,7 @@ class ContextTruncator:
             self.max_chars,
             self.overlap,
         )
-        if self.overlap > 0 and len(text) > self.max_chars + self.overlap:
+        if self.overlap > 0 and len(text) >= self.max_chars + self.overlap:
             truncated += "\n\n[...truncated...]\n\n" + text[-self.overlap :]
         return truncated
 

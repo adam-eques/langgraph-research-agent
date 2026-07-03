@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.pipeline_config import PipelineConfig
 
 

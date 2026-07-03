@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 from pathlib import Path
@@ -25,7 +25,7 @@ class FeedbackStore:
         fb = self.all_feedback()
         if not fb:
             return 0.0
-        return sum(f["rating"] for f in fb) / len(fb)
+        return float(sum(f["rating"] for f in fb) / len(fb))
 
     def low_rated(self, threshold: int = 3) -> list[dict]:
         return [f for f in self.all_feedback() if f["rating"] <= threshold]

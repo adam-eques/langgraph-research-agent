@@ -22,9 +22,60 @@ class KeyTerm:
 
 
 _STOPWORDS = frozenset(
-    "the a an and or but in on at to for of with by from is are was were be been being "
-    "have has had do does did will would could should may might shall can "
-    "that this these those it its there their they we you he she i me my".split()
+    [
+        "the",
+        "a",
+        "an",
+        "and",
+        "or",
+        "but",
+        "in",
+        "on",
+        "at",
+        "to",
+        "for",
+        "of",
+        "with",
+        "by",
+        "from",
+        "is",
+        "are",
+        "was",
+        "were",
+        "be",
+        "been",
+        "being",
+        "have",
+        "has",
+        "had",
+        "do",
+        "does",
+        "did",
+        "will",
+        "would",
+        "could",
+        "should",
+        "may",
+        "might",
+        "shall",
+        "can",
+        "that",
+        "this",
+        "these",
+        "those",
+        "it",
+        "its",
+        "there",
+        "their",
+        "they",
+        "we",
+        "you",
+        "he",
+        "she",
+        "i",
+        "me",
+        "my",
+    ]
 )
 
 _PHRASE_RE = re.compile(r"\b([A-Z][a-z]+(?:\s[A-Z][a-z]+)+)\b")

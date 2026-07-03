@@ -1,4 +1,5 @@
 """Hybrid BM25 + semantic search with Reciprocal Rank Fusion (RRF)."""
+
 from __future__ import annotations
 
 import logging
@@ -39,7 +40,20 @@ def index_for_bm25(docs: list[Document]) -> Any:  # returns BM25Okapi
         ) from exc
 
     tokenised = [doc.page_content.lower().split() for doc in docs]
-    return BM25Okapi(tokenised)
+    if not tokenised:
+        # BM25Okapi divides by the corpus size, so an empty corpus raises
+        # ZeroDivisionError. Seed a single placeholder document instead.
+        tokenised = [["__empty__"]]
+
+    bm25 = BM25Okapi(tokenised)
+
+    # On tiny corpora a term appearing in half the documents collapses to an
+    # idf of 0, which makes every document score 0. Floor non-positive idf so
+    # relevant documents still rank above irrelevant ones.
+    for term, value in bm25.idf.items():
+        if value <= 0:
+            bm25.idf[term] = 0.5
+    return bm25
 
 
 def _reciprocal_rank_fusion(
@@ -139,7 +153,7 @@ class HybridSearcher:
         # Deduplicate and materialise
         seen: set[int] = set()
         results: list[Document] = []
-        for doc_idx, score in fused:
+        for doc_idx, _score in fused:
             if doc_idx not in seen and doc_idx < len(docs):
                 seen.add(doc_idx)
                 results.append(docs[doc_idx])
@@ -185,9 +199,7 @@ class HybridSearcher:
             return []
 
         # Build a content-hash → index map for fast lookup
-        content_to_idx: dict[str, int] = {
-            doc.page_content: i for i, doc in enumerate(docs)
-        }
+        content_to_idx: dict[str, int] = {doc.page_content: i for i, doc in enumerate(docs)}
 
         ranked: list[int] = []
         for sem_doc in semantic_docs:

@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from research_agent.agents.outline_generator import (
-    generate_outline, outline_to_markdown, OutlineSection,
+    OutlineSection,
+    generate_outline,
+    outline_to_markdown,
 )
 
 

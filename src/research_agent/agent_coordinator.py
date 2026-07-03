@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import Any, Callable
+from collections.abc import Callable, Coroutine
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import Any
 
 
-class AgentStatus(str, Enum):
+class AgentStatus(StrEnum):
     IDLE = "idle"
     RUNNING = "running"
     DONE = "done"
@@ -33,7 +34,7 @@ class AgentTask:
 
 
 AgentFn = Callable[[Any], Any]
-AsyncAgentFn = Callable[[Any], "asyncio.Coroutine"]
+AsyncAgentFn = Callable[[Any], Coroutine[Any, Any, None]]
 
 
 class AgentCoordinator:

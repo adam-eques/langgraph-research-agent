@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class CacheEntry:
     key: str
-    created_at: float = field(default_factory=time.monotonic)
+    created_at: float = field(default_factory=time.perf_counter)
     access_count: int = 0
     tags: list[str] = field(default_factory=list)
 
@@ -44,7 +44,7 @@ class CacheInvalidator:
         return count
 
     def invalidate_older_than(self, max_age_seconds: float) -> int:
-        now = time.monotonic()
+        now = time.perf_counter()
         stale = [k for k, e in self._entries.items() if now - e.created_at > max_age_seconds]
         for key in stale:
             self.invalidate(key)

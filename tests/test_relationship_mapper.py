@@ -1,6 +1,10 @@
 from __future__ import annotations
+
 from research_agent.agents.relationship_mapper import (
-    extract_relationships, build_entity_graph, EntityGraph, Relationship,
+    EntityGraph,
+    Relationship,
+    build_entity_graph,
+    extract_relationships,
 )
 
 

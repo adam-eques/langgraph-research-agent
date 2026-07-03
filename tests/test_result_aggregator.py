@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.result_aggregator import aggregate_results, merge_answers, AggregatedResult
+
+from research_agent.result_aggregator import AggregatedResult, aggregate_results, merge_answers
 
 
 def test_aggregate_basic():

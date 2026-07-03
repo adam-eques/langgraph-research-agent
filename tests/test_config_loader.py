@@ -1,8 +1,14 @@
 from __future__ import annotations
+
 import json
+
 import pytest
+
 from research_agent.config_loader import (
-    load_json_config, merge_configs, get_nested, validate_required_keys_config,
+    get_nested,
+    load_json_config,
+    merge_configs,
+    validate_required_keys_config,
 )
 
 

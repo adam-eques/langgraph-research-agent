@@ -1,10 +1,10 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import re
-from enum import Enum
+from enum import StrEnum
 
 
-class QueryType(str, Enum):
+class QueryType(StrEnum):
     FACTUAL = "factual"
     ANALYTICAL = "analytical"
     COMPARATIVE = "comparative"

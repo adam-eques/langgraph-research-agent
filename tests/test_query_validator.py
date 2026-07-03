@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 from research_agent.query_validator import (
-    validate_query,
     batch_validate,
     filter_valid,
+    validate_query,
 )
 
 

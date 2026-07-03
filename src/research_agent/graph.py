@@ -1,14 +1,16 @@
 from __future__ import annotations
 
-from langgraph.graph import StateGraph, END
-from langgraph.checkpoint.memory import MemorySaver
+from typing import cast
 
-from research_agent.state import ResearchState
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, StateGraph
+
+from research_agent.agents.analyst import build_analyst_node
 from research_agent.agents.researcher import build_researcher_node
 from research_agent.agents.retriever_agent import build_retriever_agent_node
-from research_agent.agents.analyst import build_analyst_node
-from research_agent.agents.synthesizer import build_synthesizer_node
 from research_agent.agents.supervisor import build_supervisor_node
+from research_agent.agents.synthesizer import build_synthesizer_node
+from research_agent.state import ResearchState
 
 
 def build_graph(checkpointing: bool = False, use_supervisor: bool = False):
@@ -66,7 +68,7 @@ def build_graph(checkpointing: bool = False, use_supervisor: bool = False):
 
 def get_graph_visualization() -> str:
     """Return a Mermaid diagram string of the compiled graph."""
-    return build_graph().get_graph().draw_mermaid()
+    return cast(str, build_graph().get_graph().draw_mermaid())
 
 
 def get_graph_png(output_path: str = "graph.png") -> None:

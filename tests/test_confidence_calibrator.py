@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from research_agent.confidence_calibrator import (
-    platt_scaling, calibrate_confidence, confidence_label,
+    calibrate_confidence,
+    confidence_label,
+    platt_scaling,
 )
 
 

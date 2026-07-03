@@ -57,13 +57,17 @@ class KnowledgeGraph:
                 continue
             visited.add(node)
             for neighbor in self.neighbors(node):
-                queue.append(path + [neighbor])
+                queue.append([*path, neighbor])
         return None
 
     def to_dict(self) -> dict:
         return {
-            "nodes": [{"id": n.id, "label": n.label, "type": n.node_type} for n in self._nodes.values()],
-            "edges": [{"src": e.source_id, "tgt": e.target_id, "rel": e.relation} for e in self._edges],
+            "nodes": [
+                {"id": n.id, "label": n.label, "type": n.node_type} for n in self._nodes.values()
+            ],
+            "edges": [
+                {"src": e.source_id, "tgt": e.target_id, "rel": e.relation} for e in self._edges
+            ],
         }
 
     @property

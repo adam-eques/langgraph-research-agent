@@ -16,7 +16,9 @@ class QueryHistory:
         if not self._path.exists():
             return []
         try:
-            return [json.loads(l) for l in self._path.read_text().splitlines() if l.strip()]
+            return [
+                json.loads(line) for line in self._path.read_text().splitlines() if line.strip()
+            ]
         except Exception:
             return []
 

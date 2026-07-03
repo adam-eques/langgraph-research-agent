@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.rag.reranker import rerank, cross_encoder_score
+
+from research_agent.rag.reranker import cross_encoder_score, rerank
 
 
 def test_cross_encoder_score_relevant():

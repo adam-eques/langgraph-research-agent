@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import os
 from pathlib import Path
+from typing import cast
 
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
@@ -18,7 +19,7 @@ _PERSIST_DIR = ".chroma"
 def _get_embeddings():
     return OpenAIEmbeddings(
         model="text-embedding-3-small",
-        api_key=config.openai_api_key,
+        openai_api_key=config.openai_api_key,
     )
 
 
@@ -27,6 +28,7 @@ def _get_store(collection: str = config.chroma_collection):
 
     if backend == "pgvector":
         from langchain_postgres import PGVector
+
         return PGVector(
             embeddings=_get_embeddings(),
             collection_name=collection,
@@ -34,6 +36,7 @@ def _get_store(collection: str = config.chroma_collection):
         )
 
     from langchain_chroma import Chroma
+
     return Chroma(
         collection_name=collection,
         embedding_function=_get_embeddings(),
@@ -57,7 +60,7 @@ def retrieve(
     store = _get_store(collection)
     results = store.similarity_search(query, k=k)
     logger.info("Retrieved %d documents for query: %.80s", len(results), query)
-    return results
+    return cast(list[Document], results)
 
 
 def format_context(docs: list[Document]) -> str:
@@ -79,5 +82,6 @@ def delete_collection(collection: str | None = None) -> None:
 def list_collections() -> list[str]:
     """Return names of all Chroma collections in the persist directory."""
     import chromadb
+
     client = chromadb.PersistentClient(path=_PERSIST_DIR)
     return [c.name for c in client.list_collections()]

@@ -1,8 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import asyncio
 import logging
-from typing import AsyncIterator, Any
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +15,7 @@ class TokenBudgetGuard:
     def consume(self, tokens: int) -> bool:
         self._used += tokens
         if self._used > self.max_tokens:
-            logger.warning(
-                "Token budget exceeded: used=%d max=%d", self._used, self.max_tokens
-            )
+            logger.warning("Token budget exceeded: used=%d max=%d", self._used, self.max_tokens)
             return False
         return True
 

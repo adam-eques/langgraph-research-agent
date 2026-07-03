@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import time
+
 from research_agent.session_manager import SessionManager
 
 
@@ -12,6 +14,7 @@ def test_create_and_get(tmp_path):
 
 def test_add_turn():
     from research_agent.session_manager import Session
+
     s = Session("test-id")
     s.add_turn("user", "Hello")
     assert len(s.history) == 1 and s.history[0]["role"] == "user"

@@ -1,19 +1,19 @@
 """Tests for BatchProcessor with mocked research pipeline."""
+
 from __future__ import annotations
 
 import asyncio
-import time
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 from langchain_core.messages import AIMessage
 
 from research_agent.batch import BatchProcessor
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _mock_state(query: str, answer: str = "Test answer") -> dict:
     return {
@@ -29,6 +29,7 @@ def _mock_state(query: str, answer: str = "Test answer") -> dict:
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestBatchProcessor:
     @pytest.mark.asyncio
@@ -110,7 +111,13 @@ class TestBatchProcessor:
     @patch("research_agent.batch.BatchProcessor._run_single")
     async def test_on_complete_callback_called(self, mock_run_single):
         async def _ok(query: str) -> dict:
-            return {"query": query, "answer": "a", "research_notes": [], "citations": [], "error": None}
+            return {
+                "query": query,
+                "answer": "a",
+                "research_notes": [],
+                "citations": [],
+                "error": None,
+            }
 
         mock_run_single.side_effect = _ok
 
@@ -133,7 +140,13 @@ class TestBatchProcessor:
     @patch("research_agent.batch.BatchProcessor._run_single")
     async def test_result_contains_duration(self, mock_run_single):
         async def _timed(query: str) -> dict:
-            return {"query": query, "answer": "a", "research_notes": [], "citations": [], "error": None}
+            return {
+                "query": query,
+                "answer": "a",
+                "research_notes": [],
+                "citations": [],
+                "error": None,
+            }
 
         mock_run_single.side_effect = _timed
 

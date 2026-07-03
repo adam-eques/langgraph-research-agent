@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from research_agent.agents.hypothesis_generator import (
     Hypothesis,
     extract_causal_pairs,
-    generate_hypotheses,
     filter_testable,
+    generate_hypotheses,
     rank_by_confidence,
 )
 
@@ -26,9 +27,7 @@ def test_generate_hypotheses_basic():
 
 
 def test_generate_hypotheses_max():
-    notes = [
-        f"Factor{i} causes outcome{i}." for i in range(10)
-    ]
+    notes = [f"Factor{i} causes outcome{i}." for i in range(10)]
     hyps = generate_hypotheses(notes, max_hypotheses=3)
     assert len(hyps) <= 3
 

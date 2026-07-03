@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ class Feedback:
     rating: int
     comment: str = ""
     helpful: bool = True
-    tags: list = None
+    tags: list | None = None
 
     def __post_init__(self):
         if self.tags is None:
@@ -33,7 +33,9 @@ class FeedbackProcessor:
         self._entries.append(feedback)
         with self._path.open("a") as f:
             f.write(json.dumps(asdict(feedback)) + "\n")
-        logger.info("Feedback submitted: session=%s rating=%d", feedback.session_id, feedback.rating)
+        logger.info(
+            "Feedback submitted: session=%s rating=%d", feedback.session_id, feedback.rating
+        )
 
     def average_rating(self) -> float:
         if not self._entries:

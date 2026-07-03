@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import time
+
 from research_agent.response_cache import ResponseCache
 
 
@@ -25,5 +27,7 @@ def test_ttl_expiry():
 
 def test_max_entries_evicts():
     rc = ResponseCache(ttl=60, max_entries=2)
-    rc.set("A", 1); rc.set("B", 2); rc.set("C", 3)
+    rc.set("A", 1)
+    rc.set("B", 2)
+    rc.set("C", 3)
     assert rc.size == 2

@@ -1,9 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class KnowledgeBase:
     def _load(self) -> dict:
         if self._path.exists():
             try:
-                return json.loads(self._path.read_text())
+                return cast(dict, json.loads(self._path.read_text()))
             except Exception:
                 return {}
         return {}

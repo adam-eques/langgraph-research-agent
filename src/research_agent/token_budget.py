@@ -30,7 +30,9 @@ class TokenBudget:
         if self._used + tokens > self._total:
             logger.warning(
                 "Token budget exceeded: used=%d requested=%d total=%d",
-                self._used, tokens, self._total,
+                self._used,
+                tokens,
+                self._total,
             )
             return False
         self._used += tokens

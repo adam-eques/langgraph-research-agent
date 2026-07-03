@@ -36,7 +36,12 @@ class EntityGraph:
         return {
             "nodes": list(self.nodes),
             "edges": [
-                {"subject": e.subject, "predicate": e.predicate, "object": e.obj, "confidence": e.confidence}
+                {
+                    "subject": e.subject,
+                    "predicate": e.predicate,
+                    "object": e.obj,
+                    "confidence": e.confidence,
+                }
                 for e in self.edges
             ],
         }

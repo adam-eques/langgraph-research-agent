@@ -1,7 +1,11 @@
 from __future__ import annotations
+
 from research_agent.rag.document_filter import (
-    filter_by_min_length, filter_by_score, filter_by_source_domain,
-    filter_by_metadata_key, apply_filters,
+    apply_filters,
+    filter_by_metadata_key,
+    filter_by_min_length,
+    filter_by_score,
+    filter_by_source_domain,
 )
 
 

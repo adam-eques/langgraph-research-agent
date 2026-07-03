@@ -1,16 +1,17 @@
 """Evaluation metric functions for the research pipeline."""
+
 from __future__ import annotations
 
 import logging
 import re
 from collections import Counter
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Pure-Python token-based metrics (no LLM required)
 # ---------------------------------------------------------------------------
+
 
 def _tokenise(text: str) -> list[str]:
     """Lowercase and split *text* into word tokens."""
@@ -84,10 +85,11 @@ def context_recall(expected: str, retrieved: list[str]) -> float:
 # LLM-based metrics (require an Anthropic API key)
 # ---------------------------------------------------------------------------
 
-def answer_relevance(query: str, answer: str) -> float:
-    """Score how relevant *answer* is to *query* using an LLM judge (0–1).
 
-    The LLM is asked to rate relevance on a 0–10 integer scale; the score is
+def answer_relevance(query: str, answer: str) -> float:
+    """Score how relevant *answer* is to *query* using an LLM judge (0-1).
+
+    The LLM is asked to rate relevance on a 0-10 integer scale; the score is
     normalised to [0, 1].  If the LLM call fails, falls back to a simple
     keyword overlap heuristic.
 
@@ -120,7 +122,7 @@ def answer_relevance(query: str, answer: str) -> float:
 
 
 def faithfulness(answer: str, context: str) -> float:
-    """Score whether *answer* is grounded in *context* using an LLM judge (0–1).
+    """Score whether *answer* is grounded in *context* using an LLM judge (0-1).
 
     A faithfulness score of 1 means every claim in the answer can be traced
     back to the context.  A score of 0 means the answer hallucinated everything.
@@ -158,11 +160,13 @@ def faithfulness(answer: str, context: str) -> float:
 # Private helpers
 # ---------------------------------------------------------------------------
 
+
 def _llm_score(prompt: str) -> float:
-    """Call the LLM with *prompt* and parse a 0–10 integer from the response."""
-    from research_agent.config import config  # noqa: PLC0415
-    from langchain_anthropic import ChatAnthropic  # noqa: PLC0415
-    from langchain_core.messages import HumanMessage  # noqa: PLC0415
+    """Call the LLM with *prompt* and parse a 0-10 integer from the response."""
+    from langchain_anthropic import ChatAnthropic
+    from langchain_core.messages import HumanMessage
+
+    from research_agent.config import config
 
     llm = ChatAnthropic(
         model=config.default_model,
@@ -173,7 +177,7 @@ def _llm_score(prompt: str) -> float:
     response = llm.invoke([HumanMessage(content=prompt)])
     raw = str(response.content).strip()
 
-    # Extract first integer 0–10
+    # Extract first integer 0-10
     match = re.search(r"\b([0-9]|10)\b", raw)
     if match:
         return int(match.group(1)) / 10.0

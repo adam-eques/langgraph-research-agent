@@ -1,8 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import hashlib
 import json
 from pathlib import Path
+from typing import cast
 
 
 class SessionStore:
@@ -24,7 +25,7 @@ class SessionStore:
         if not p.exists():
             return None
         try:
-            return json.loads(p.read_text())
+            return cast("dict | None", json.loads(p.read_text()))
         except Exception:
             return None
 

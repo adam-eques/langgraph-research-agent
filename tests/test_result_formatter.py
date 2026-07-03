@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from research_agent.result_formatter import format_research_result
 
@@ -11,6 +11,7 @@ def test_markdown_output():
 
 def test_json_output():
     import json
+
     result = format_research_result("q", "a", [{"source": "x"}], [], style="json")
     data = json.loads(result)
     assert data["query"] == "q"

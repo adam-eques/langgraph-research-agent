@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 import logging
@@ -15,12 +15,14 @@ class AgentTrace:
         self._steps: list[dict[str, Any]] = []
 
     def record(self, node: str, inputs: dict, outputs: dict, duration_ms: float) -> None:
-        self._steps.append({
-            "node": node,
-            "inputs_keys": list(inputs.keys()),
-            "outputs_keys": list(outputs.keys()),
-            "duration_ms": round(duration_ms, 2),
-        })
+        self._steps.append(
+            {
+                "node": node,
+                "inputs_keys": list(inputs.keys()),
+                "outputs_keys": list(outputs.keys()),
+                "duration_ms": round(duration_ms, 2),
+            }
+        )
 
     @property
     def steps(self) -> list[dict]:

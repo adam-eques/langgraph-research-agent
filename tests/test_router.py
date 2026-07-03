@@ -1,7 +1,7 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import pytest
-from unittest.mock import MagicMock
+
 from research_agent.router import QueryRouter
 
 

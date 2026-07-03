@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.query_rewriter import remove_filler_words, normalize_query, rewrite_for_search
+from research_agent.query_rewriter import normalize_query, remove_filler_words, rewrite_for_search
 
 
 def test_remove_filler_words():

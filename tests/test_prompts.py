@@ -1,6 +1,10 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.prompts import build_system_prompt, researcher_system_prompt, analyst_system_prompt
+from research_agent.prompts import (
+    analyst_system_prompt,
+    build_system_prompt,
+    researcher_system_prompt,
+)
 
 
 def test_build_system_prompt_basic():

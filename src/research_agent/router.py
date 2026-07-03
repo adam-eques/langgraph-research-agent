@@ -1,8 +1,7 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
-import statistics
-from typing import Any
+from typing import ClassVar
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +9,7 @@ logger = logging.getLogger(__name__)
 class QueryRouter:
     """Route research queries to the appropriate pipeline based on characteristics."""
 
-    KEYWORD_SIGNALS = {
+    KEYWORD_SIGNALS: ClassVar[dict[str, list[str]]] = {
         "rag": ["document", "file", "pdf", "report", "ingested", "uploaded"],
         "web": ["latest", "recent", "today", "news", "2024", "2025", "current"],
         "supervisor": ["compare", "analyze", "comprehensive", "deep dive", "multi-step"],

@@ -1,6 +1,10 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.source_ranker import extract_sources_from_notes, count_source_domains, rank_sources_by_frequency
+from research_agent.source_ranker import (
+    count_source_domains,
+    extract_sources_from_notes,
+    rank_sources_by_frequency,
+)
 
 
 def test_extract_sources():

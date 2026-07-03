@@ -1,7 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
-from typing import Any
 
 
 def format_research_result(
@@ -12,12 +11,15 @@ def format_research_result(
     style: str = "markdown",
 ) -> str:
     if style == "json":
-        return json.dumps({
-            "query": query,
-            "answer": answer,
-            "citations": citations,
-            "research_notes": notes,
-        }, indent=2)
+        return json.dumps(
+            {
+                "query": query,
+                "answer": answer,
+                "citations": citations,
+                "research_notes": notes,
+            },
+            indent=2,
+        )
     if style == "plain":
         parts = [f"Query: {query}", "", answer]
         if citations:

@@ -11,11 +11,11 @@ class LatencyTracker:
 
     @contextmanager
     def track(self, name: str):
-        start = time.monotonic()
+        start = time.perf_counter()
         try:
             yield
         finally:
-            elapsed_ms = (time.monotonic() - start) * 1000
+            elapsed_ms = (time.perf_counter() - start) * 1000
             self._samples[name].append(elapsed_ms)
 
     def record(self, name: str, latency_ms: float) -> None:

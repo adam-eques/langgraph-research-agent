@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import logging
 import re
@@ -19,11 +19,12 @@ def check_answer_completeness(query: str, answer: str) -> dict[str, Any]:
         "not_empty": bool(answer.strip()),
         "not_too_short": word_count >= 20,
     }
-    checks["passed"] = all(v is True or (isinstance(v, (int, float)) and v > 0)
-                           for v in checks.values())
+    checks["passed"] = all(
+        v is True or (isinstance(v, (int, float)) and v > 0) for v in checks.values()
+    )
     return checks
 
 
 def is_answer_acceptable(query: str, answer: str, min_coverage: float = 0.2) -> bool:
     result = check_answer_completeness(query, answer)
-    return result.get("not_empty", False) and result.get("query_coverage", 0) >= min_coverage
+    return bool(result.get("not_empty", False) and result.get("query_coverage", 0) >= min_coverage)

@@ -1,4 +1,5 @@
 """Multi-turn conversation memory with in-memory and Redis backends."""
+
 from __future__ import annotations
 
 import json
@@ -79,9 +80,7 @@ class _RedisBackend(_BaseMemoryBackend):
         return f"{self._KEY_PREFIX}{session_id}"
 
     def save_turn(self, session_id: str, query: str, response: str) -> None:
-        turn = json.dumps(
-            {"query": query, "response": response, "timestamp": time.time()}
-        )
+        turn = json.dumps({"query": query, "response": response, "timestamp": time.time()})
         self._client.rpush(self._key(session_id), turn)
 
     def get_history(self, session_id: str, max_turns: int = 10) -> list[dict[str, Any]]:
@@ -133,9 +132,7 @@ class ConversationMemory:
         logger.debug("Saving turn for session %s", session_id)
         self._backend.save_turn(session_id, query, response)
 
-    def get_history(
-        self, session_id: str, max_turns: int = 10
-    ) -> list[dict[str, Any]]:
+    def get_history(self, session_id: str, max_turns: int = 10) -> list[dict[str, Any]]:
         """Retrieve the most recent conversation turns for a session.
 
         Parameters
@@ -163,9 +160,7 @@ class ConversationMemory:
         logger.info("Clearing conversation history for session %s", session_id)
         self._backend.clear(session_id)
 
-    def format_as_context(
-        self, session_id: str, max_turns: int = 5
-    ) -> str:
+    def format_as_context(self, session_id: str, max_turns: int = 5) -> str:
         """Return conversation history formatted as a context block for prompts.
 
         Parameters

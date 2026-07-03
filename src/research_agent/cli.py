@@ -1,7 +1,7 @@
 """Click-based CLI for the research agent."""
+
 from __future__ import annotations
 
-import asyncio
 import sys
 from pathlib import Path
 from typing import Any
@@ -26,7 +26,7 @@ try:
     def _print_panel(text: str, title: str = "") -> None:
         _console.print(Panel(text, title=title, expand=False))
 
-    def _spinner(description: str):  # noqa: ANN201
+    def _spinner(description: str):
         return Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
@@ -48,18 +48,18 @@ except ImportError:
             print(f"\n=== {title} ===")
         print(text)
 
-    class _spinner:  # type: ignore[misc]
+    class _spinner:  # type: ignore[misc,no-redef]  # noqa: N801  # mirrors the _spinner() fallback above
         def __init__(self, description: str) -> None:
             self._desc = description
 
-        def __enter__(self) -> "_spinner":
+        def __enter__(self):
             print(f"{self._desc}...", flush=True)
             return self
 
-        def add_task(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN002
+        def add_task(self, *args: Any, **kwargs: Any) -> None:
             pass
 
-        def __exit__(self, *args: Any) -> None:  # noqa: ANN002
+        def __exit__(self, *args: Any) -> None:
             pass
 
 
@@ -72,6 +72,7 @@ def cli() -> None:
 # ---------------------------------------------------------------------------
 # research command
 # ---------------------------------------------------------------------------
+
 
 @cli.command()
 @click.argument("query")
@@ -103,7 +104,7 @@ def research(query: str, stream: bool, supervisor: bool, session_id: str) -> Non
       research-agent research "What is retrieval augmented generation?"
       research-agent research --stream "Latest advances in LLM agents"
     """
-    from research_agent.logging_config import setup_logging  # noqa: PLC0415
+    from research_agent.logging_config import setup_logging
 
     setup_logging()
 
@@ -114,8 +115,8 @@ def research(query: str, stream: bool, supervisor: bool, session_id: str) -> Non
 
 
 def _run_sync(query: str, use_supervisor: bool = False) -> None:
-    from research_agent.graph import build_graph  # noqa: PLC0415
-    from research_agent.state import ResearchState  # noqa: PLC0415
+    from research_agent.graph import build_graph
+    from research_agent.state import ResearchState
 
     if _HAS_RICH:
         progress = Progress(SpinnerColumn(), TextColumn("{task.description}"), transient=True)
@@ -151,7 +152,9 @@ def _run_sync(query: str, use_supervisor: bool = False) -> None:
             answer = str(msg.content)
             break
 
-    _print_panel(f"[bold]Query:[/bold] {query}" if _HAS_RICH else f"Query: {query}", title="Research Result")
+    _print_panel(
+        f"[bold]Query:[/bold] {query}" if _HAS_RICH else f"Query: {query}", title="Research Result"
+    )
     _print_md(answer)
 
     notes = result.get("research_notes", [])
@@ -162,7 +165,7 @@ def _run_sync(query: str, use_supervisor: bool = False) -> None:
 
 
 def _run_stream(query: str) -> None:
-    from research_agent.streaming import stream_tokens  # noqa: PLC0415
+    from research_agent.streaming import stream_tokens
 
     _print(f"Streaming answer for: {query}\n")
     try:
@@ -177,6 +180,7 @@ def _run_stream(query: str) -> None:
 # ---------------------------------------------------------------------------
 # index command
 # ---------------------------------------------------------------------------
+
 
 @cli.command(name="index")
 @click.argument("path", type=click.Path(exists=True))
@@ -198,8 +202,8 @@ def index_command(path: str, collection: str, recursive: bool) -> None:
       research-agent index ./docs/report.pdf
       research-agent index ./docs/ --recursive --collection my_docs
     """
-    from research_agent.rag.retriever import index_document  # noqa: PLC0415
-    from research_agent.config import config as cfg  # noqa: PLC0415
+    from research_agent.config import config as cfg
+    from research_agent.rag.retriever import index_document
 
     coll = collection or cfg.chroma_collection
     target = Path(path)
@@ -223,10 +227,16 @@ def index_command(path: str, collection: str, recursive: bool) -> None:
     for f in files:
         try:
             count = index_document(f, collection=coll)
-            _print(f"  [green]OK[/green]  {f.name} ({count} chunks)" if _HAS_RICH else f"  OK  {f.name} ({count} chunks)")
+            _print(
+                f"  [green]OK[/green]  {f.name} ({count} chunks)"
+                if _HAS_RICH
+                else f"  OK  {f.name} ({count} chunks)"
+            )
             indexed += 1
         except Exception as exc:
-            _print(f"  [red]FAIL[/red] {f.name} — {exc}" if _HAS_RICH else f"  FAIL {f.name} — {exc}")
+            _print(
+                f"  [red]FAIL[/red] {f.name} — {exc}" if _HAS_RICH else f"  FAIL {f.name} — {exc}"
+            )
             failed += 1
 
     _print(f"\nDone. Indexed: {indexed}, Failed: {failed}")
@@ -235,6 +245,7 @@ def index_command(path: str, collection: str, recursive: bool) -> None:
 # ---------------------------------------------------------------------------
 # serve command
 # ---------------------------------------------------------------------------
+
 
 @cli.command()
 @click.option("--host", default="0.0.0.0", show_default=True, help="Bind host.")
@@ -245,7 +256,9 @@ def index_command(path: str, collection: str, recursive: bool) -> None:
     default=False,
     help="Enable auto-reload (development only).",
 )
-@click.option("--workers", default=1, show_default=True, type=int, help="Number of worker processes.")
+@click.option(
+    "--workers", default=1, show_default=True, type=int, help="Number of worker processes."
+)
 def serve(host: str, port: int, reload: bool, workers: int) -> None:
     """Start the FastAPI research agent server.
 
@@ -276,20 +289,24 @@ def serve(host: str, port: int, reload: bool, workers: int) -> None:
 # clear-cache command
 # ---------------------------------------------------------------------------
 
+
 @cli.command(name="clear-cache")
 @click.confirmation_option(prompt="This will clear all cached research results. Continue?")
 def clear_cache() -> None:
     """Clear the result cache (both in-memory and Redis, depending on config)."""
-    from research_agent.cache import ResultCache  # noqa: PLC0415
+    from research_agent.cache import ResultCache
 
     cache = ResultCache()
     cache.clear()
-    _print("[green]Cache cleared successfully.[/green]" if _HAS_RICH else "Cache cleared successfully.")
+    _print(
+        "[green]Cache cleared successfully.[/green]" if _HAS_RICH else "Cache cleared successfully."
+    )
 
 
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     """Package entry point called by ``research-agent`` console script."""

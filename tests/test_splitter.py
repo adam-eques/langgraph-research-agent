@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.splitter import sentence_split, paragraph_split, token_aware_split
+from research_agent.splitter import paragraph_split, sentence_split, token_aware_split
 
 
 def test_sentence_split_basic():

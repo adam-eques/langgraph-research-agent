@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import time
+
 from research_agent.cache_invalidator import CacheInvalidator
 
 

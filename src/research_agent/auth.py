@@ -1,9 +1,11 @@
 """FastAPI middleware for API-key authentication."""
+
 from __future__ import annotations
 
 import logging
 import os
-from typing import Callable
+from collections.abc import Callable
+from typing import cast
 
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
@@ -54,12 +56,14 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
     ) -> None:
         super().__init__(app)
         self._api_keys: set[str] = api_keys if api_keys is not None else _load_keys_from_env()
-        self._public_paths: frozenset[str] = public_paths if public_paths is not None else _PUBLIC_PATHS
+        self._public_paths: frozenset[str] = (
+            public_paths if public_paths is not None else _PUBLIC_PATHS
+        )
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         # Allow public / unauthenticated paths
         if request.url.path in self._public_paths:
-            return await call_next(request)
+            return cast(Response, await call_next(request))
 
         # Extract the API key from the request header
         api_key = request.headers.get("X-API-Key", "").strip()
@@ -72,9 +76,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
             )
             return JSONResponse(
                 status_code=401,
-                content={
-                    "detail": "Missing API key. Provide a valid key in the X-API-Key header."
-                },
+                content={"detail": "Missing API key. Provide a valid key in the X-API-Key header."},
             )
 
         if api_key not in self._api_keys:
@@ -90,7 +92,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
                 content={"detail": "Invalid API key."},
             )
 
-        return await call_next(request)
+        return cast(Response, await call_next(request))
 
 
 def add_api_key_auth(app: ASGIApp, api_keys: set[str] | None = None) -> None:

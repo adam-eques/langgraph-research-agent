@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import asyncio
 from collections import defaultdict
+from collections.abc import Callable, Coroutine
 from dataclasses import dataclass, field
-from typing import Any, Callable
+from typing import Any
 
 
 @dataclass
@@ -15,7 +15,7 @@ class Event:
 
 
 ListenerFn = Callable[[Event], None]
-AsyncListenerFn = Callable[[Event], "asyncio.Coroutine"]
+AsyncListenerFn = Callable[[Event], Coroutine[Any, Any, None]]
 
 
 class EventEmitter:
@@ -54,8 +54,8 @@ class EventEmitter:
         for fn in list(self._listeners[event_name]):
             fn(event)
             called += 1
-        for fn in list(self._async_listeners[event_name]):
-            await fn(event)
+        for afn in list(self._async_listeners[event_name]):
+            await afn(event)
             called += 1
         return called
 
@@ -63,6 +63,7 @@ class EventEmitter:
         def wrapper(event: Event) -> None:
             fn(event)
             self.off(event_name, wrapper)
+
         self.on(event_name, wrapper)
 
     def listener_count(self, event_name: str) -> int:

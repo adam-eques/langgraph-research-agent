@@ -1,10 +1,11 @@
 from __future__ import annotations
+
 from research_agent.agents.insight_extractor import (
     Insight,
     classify_sentence,
+    deduplicate_insights,
     extract_insights,
     extract_keywords,
-    deduplicate_insights,
 )
 
 

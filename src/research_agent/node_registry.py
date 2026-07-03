@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,7 @@ class NodeRegistry:
 
     def get(self, name: str) -> Callable | None:
         entry = self._nodes.get(name)
-        return entry["fn"] if entry else None
+        return cast(Callable, entry["fn"]) if entry else None
 
     def list_names(self) -> list[str]:
         return sorted(self._nodes.keys())

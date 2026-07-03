@@ -1,5 +1,6 @@
 from __future__ import annotations
-from research_agent.query_intent import detect_intent, IntentType
+
+from research_agent.query_intent import IntentType, detect_intent
 
 
 def test_detect_summarize():

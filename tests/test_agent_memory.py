@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from research_agent.agent_memory import AgentMemory
 
 

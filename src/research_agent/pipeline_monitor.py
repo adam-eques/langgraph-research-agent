@@ -25,26 +25,26 @@ class PipelineMonitor:
     def __init__(self, pipeline_id: str) -> None:
         self.pipeline_id = pipeline_id
         self._runs: list[NodeRun] = []
-        self._global_start: float = time.monotonic()
+        self._global_start: float = time.perf_counter()
 
     def node_started(self, node_name: str) -> NodeRun:
-        run = NodeRun(node_name=node_name, started_at=time.monotonic())
+        run = NodeRun(node_name=node_name, started_at=time.perf_counter())
         self._runs.append(run)
         return run
 
     def node_finished(self, run: NodeRun, output: dict[str, Any] | None = None) -> None:
-        run.ended_at = time.monotonic()
+        run.ended_at = time.perf_counter()
         run.status = "success"
         run.output_keys = list(output.keys()) if output else []
 
     def node_failed(self, run: NodeRun, error: str) -> None:
-        run.ended_at = time.monotonic()
+        run.ended_at = time.perf_counter()
         run.status = "error"
         run.error = error
 
     @property
     def total_duration_ms(self) -> float:
-        return (time.monotonic() - self._global_start) * 1000
+        return (time.perf_counter() - self._global_start) * 1000
 
     def summary(self) -> dict:
         return {

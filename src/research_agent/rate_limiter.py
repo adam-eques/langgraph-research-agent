@@ -48,3 +48,35 @@ class SlidingWindowLimiter:
 
     def reset(self) -> None:
         self._calls.clear()
+
+
+class RateLimiter:
+    """Per-client sliding-window rate limiter.
+
+    Tracks request timestamps independently for each client key and allows up
+    to ``max_requests`` within any ``window_seconds`` interval.
+    """
+
+    def __init__(self, max_requests: int, window_seconds: float) -> None:
+        self._max = max_requests
+        self._window = window_seconds
+        self._clients: dict[str, list[float]] = {}
+
+    def _active(self, client_id: str) -> list[float]:
+        now = time.monotonic()
+        calls = [t for t in self._clients.get(client_id, []) if now - t < self._window]
+        self._clients[client_id] = calls
+        return calls
+
+    def is_allowed(self, client_id: str) -> bool:
+        calls = self._active(client_id)
+        if len(calls) < self._max:
+            calls.append(time.monotonic())
+            return True
+        return False
+
+    def remaining(self, client_id: str) -> int:
+        return self._max - len(self._active(client_id))
+
+    def reset(self, client_id: str) -> None:
+        self._clients.pop(client_id, None)

@@ -1,6 +1,11 @@
 from __future__ import annotations
+
 from research_agent.data_normalizer import (
-    normalize_string, normalize_number, normalize_boolean, normalize_list, normalize_record,
+    normalize_boolean,
+    normalize_list,
+    normalize_number,
+    normalize_record,
+    normalize_string,
 )
 
 

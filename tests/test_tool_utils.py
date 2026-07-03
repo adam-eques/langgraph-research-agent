@@ -1,6 +1,6 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-from research_agent.tool_utils import format_tool_result, extract_tool_calls, tool_call_to_dict
+from research_agent.tool_utils import extract_tool_calls, format_tool_result, tool_call_to_dict
 
 
 def test_format_tool_result_short():
