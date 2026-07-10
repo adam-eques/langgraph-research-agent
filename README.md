@@ -112,3 +112,7 @@ pytest tests/ -v --cov=research_agent
 ## Tech
 
 LangGraph · LangChain · Anthropic Claude · Tavily · Chroma · pgvector · FastAPI · Pydantic · LangSmith
+
+## License
+
+MIT — see [LICENSE](LICENSE).
